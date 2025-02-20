@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>TeeHaven</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="../../../static/img/logo_teehaven.png" rel="icon">
+    <link href="../../../static/img/logo_teehaven.png" rel="apple-touch-icon">
+
+    <div th:replace="~{admin-template/fragment/header :: header}"></div>
+
+    <style>
+        .card {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
+        .btn-warning {
+            color: #212529;
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .btn-warning:hover {
+            color: #212529;
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .check-loi {
+            color: #dc3545;
+            font-size: 0.875em;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
+            <img src="../../static/img/logo.png" alt="">
+            <span class="d-none d-lg-block">TeeHaven</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${tenNhanVien}"></span>
+                </a><!-- End Profile Iamge Icon -->
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6 th:text="${tenNhanVien}"></h6>
+                        <span>Nhân Viên</span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Đăng Xuất</span>
+                        </a>
+                    </li>
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+        </ul>
+    </nav><!-- End Icons Navigation -->
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/thong-ke">
+                <i class="bi bi-graph-up-arrow"></i>
+                <span>Thống Kê</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
+                <i class="bi bi-shop"></i>
+                <span>Bán Hàng</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Quản Lý Sản Phẩm</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/san-pham-chi-tiet">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm Chi Tiết</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/san-pham">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/thuong-hieu">
+                        <i class="bi bi-circle"></i><span>Thương Hiệu</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/tay-ao">
+                        <i class="bi bi-circle"></i><span>Tay áo</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/mau-sac" class="active">
+                        <i class="bi bi-circle"></i><span>Màu Sắc</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/kich-co">
+                        <i class="bi bi-circle"></i><span>Kích Cỡ</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+                <i class="bi bi-receipt-cutoff"></i>
+                <span>Quản Lý Hóa Đơn</span>
+            </a>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person-vcard"></i><span>Quản Lý Tài Khoản</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/nhan-vien">
+                        <i class="bi bi-circle"></i><span>Quản lý nhân viên</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/khach-hang">
+                        <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/voucher">
+                <i class="bi bi-ticket-perforated-fill"></i>
+                <span>Quản Lý Voucher</span>
+            </a>
+        </li><!-- End Icons Nav -->
+    </ul>
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Cập Nhật Màu Sắc</h1>
+    </div>
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <a class="btn btn-link" href="/admin/mau-sac">
+                            <i class="bi bi-arrow-left-circle-fill"></i> Quay lại
+                        </a>
+                        <form method="post" style="max-width: 500px; margin: auto;" th:action="@{/admin/mau-sac/update}"
+                              th:object="${mauSac}">
+                            <input type="hidden" th:field="*{id}" name="id">
+                            <input type="hidden" th:field="*{maMau}">
+                            <h2 class="text-center mb-4">Cập Nhật Màu Sắc</h2>
+                            <div class="mb-3">
+                                <label for="tenMauSac" class="form-label">
+                                    <span class="text-danger">*</span> Màu Sắc
+                                </label>
+                                <input type="text" class="form-control" id="tenMauSac" placeholder="Nhập tên màu sắc"
+                                       th:field="*{ten}">
+                                <span class="check-loi" th:errors="*{ten}"></span>
+                                <span class="check-loi" th:text="${checkTenTrung}"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label d-block">
+                                    <span class="text-danger">*</span> Trạng Thái
+                                </label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="dangHoatDong" value="0"
+                                           th:field="*{trangThai}">
+                                    <label class="form-check-label" for="dangHoatDong">Đang hoạt động</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="ngungHoatDong" value="1"
+                                           th:field="*{trangThai}">
+                                    <label class="form-check-label" for="ngungHoatDong">Ngừng hoạt động</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-warning w-100">Cập nhật</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+<!--Thông báo thất bại-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <script th:if="${checkThongBao=='thaiBai'}">
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+            liveToast.show();
+        });
+    </script>
+    <div id="liveToastDanger" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+         style="background-color: rgb(252,134,134);border:2px solid #ff2020;border-radius:1rem;">
+        <div class="toast-body">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <img src="../../../static/img/successful_danger.png" alt="" style="margin: auto">
+                </div>
+                <div class="col-md-8" style=" margin-top:6.3%">
+          <span style="text-align: center; font-size: 1rem; font-weight: bold; color: white;">
+            Lỗi
+          </span>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                            style="font-size: 1.5rem;margin: auto"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Thông báo thất bại end-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+    </div>
+    <div class="credits">
+        Website bán áo Tee Haven
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<div th:replace="~{admin-template/fragment/script :: script}"></div>
+
+</body>
+</html>
+

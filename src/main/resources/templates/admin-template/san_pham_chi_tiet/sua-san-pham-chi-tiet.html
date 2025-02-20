@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Tee Haven</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <link href="../../../static/img/logo_teehaven.png" rel="icon">
+    <link href="../../../static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+
+    <!-- Favicons -->
+    <div th:replace="~{admin-template/fragment/header :: header}"></div>
+
+
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
+            <img src="../../../static/img/logo_teehaven.png" alt="">
+            <span class="d-none d-lg-block">Tee Haven</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/thong-ke">
+                <i class="bi bi-graph-up-arrow"></i>
+                <span>Thống Kê</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
+                <i class="bi bi-shop"></i>
+                <span>Bán Hàng</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Quản Lý Sản Phẩm</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/san-pham-chi-tiet">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm Chi Tiết</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/san-pham">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/thuong-hieu">
+                        <i class="bi bi-circle"></i><span>Thương Hiệu</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/tay-ao">
+                        <i class="bi bi-circle"></i><span>Tay áo</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/mau-sac">
+                        <i class="bi bi-circle"></i><span>Màu Sắc</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/kich-co">
+                        <i class="bi bi-circle"></i><span>Kích Cỡ</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+                <i class="bi bi-receipt-cutoff"></i>
+                <span>Quản Lý Hóa Đơn</span>
+            </a>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person-vcard"></i><span>Quản Lý Tài Khoản</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/nhan-vien">
+                        <i class="bi bi-circle"></i><span>Quản lý nhân viên</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/khach-hang" class="active">
+                        <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="../admin/voucher">
+                <i class="bi bi-ticket-perforated-fill"></i>
+                <span>Quản Lý Voucher</span>
+            </a>
+        </li><!-- End Icons Nav -->
+    </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Quản lý sản phẩm</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <a class="btn btn-link" style="float: left;margin-top: 1%;"
+                                   href="/admin/san-pham-chi-tiet">
+                                    <i class=" bi bi-arrow-left-circle-fill"></i>
+                                </a>
+                            </div>
+                            <div class="col-md-12">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="text-align: center">
+                                    Cập nhật sản phẩm chi tiết
+                                </h1>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row g-3" style="margin-top: 2%;width: 95%; margin: auto">
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">
+                                            <span class="dausao">*</span>Tên sản phẩm:
+                                        </label>
+                                        <input type="text" class="form-control"
+                                               th:value="${sanPhamDetail != null ? sanPhamDetail.ten : ''}" disabled>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label">
+                                            <span class="dausao">*</span>Thương Hiệu:
+                                        </label>
+                                        <!-- Kiểm tra nếu sanPhamDetail không null thì hiển thị giá trị, ngược lại hiển thị một giá trị mặc định hoặc không hiển thị gì cả -->
+                                        <input type="text" class="form-control"
+                                               th:value="${sanPhamDetail != null ? sanPhamDetail.thuongHieu.ten : ''}"
+                                               disabled>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">
+                                            <span class="dausao">*</span>Ngày Tạo:
+                                        </label>
+                                        <!-- Kiểm tra nếu sanPhamDetail không null thì hiển thị giá trị, ngược lại hiển thị một giá trị mặc định hoặc không hiển thị gì cả -->
+                                        <input type="text" class="form-control"
+                                               th:value="${#dates.format(listChiTietSP[0].ngayTao, 'HH:mm dd/MM/yyyy')}"
+                                               disabled>
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-form-label">
+                                            <span class="dausao">*</span>Ngày Sửa:
+                                        </label>
+                                        <!-- Kiểm tra nếu sanPhamDetail không null thì hiển thị giá trị, ngược lại hiển thị một giá trị mặc định hoặc không hiển thị gì cả -->
+                                        <input type="text" class="form-control"
+                                               th:value="${#dates.format(listChiTietSP[0].ngaySua, 'HH:mm dd/MM/yyyy')}"
+                                               disabled>
+
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="col-form-label"><span
+                                                class="dausao">*</span>Mô tả</label>
+                                        <textarea class="form-control"
+                                                  th:text="${sanPhamDetail != null ? sanPhamDetail.moTa : ''}"
+                                                  id="exampleFormControlTextarea1" rows="3" disabled>
+                                        </textarea>
+                                    </div>
+
+
+                                    <div class="col-md-12" id="nhapFullDuLieu">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Chọn Tất Cả Trạng thái:</label>
+                                                <div style="margin-top: 1%;">
+                                                    <input class="form-check-input" id="trangThai1" type="radio"
+                                                           name="trangThai1" style="margin-left:5%;"
+                                                           onchange="selectOnChange(0)">
+                                                    <label class="form-check-label" for="trangThai1">Đang hoạt
+                                                        động</label>
+
+                                                    <input class="form-check-input" id="trangThai2" type="radio"
+                                                           name="trangThai1" style="margin-left:5%;"
+                                                           onchange="selectOnChange(1)">
+                                                    <label class="form-check-label" for="trangThai2">Ngừng hoạt
+                                                        động</label>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+
+                                                        <label class="form-label">
+                                                            <span class="dau-sao">*</span>Nhập tất cả số lượng:</label>
+                                                        <input class="form-control" type="number"
+                                                               oninput="updateInputsSoLuong(this)">
+                                                        <script>
+                                                            function updateInputsSoLuong(sourceInput) {
+                                                                // Lấy giá trị của input nguồn
+                                                                var sourceValue = sourceInput.value;
+                                                                console.log(sourceValue)
+                                                                const donGiaInputs = document.getElementsByName("listSoLuong");
+                                                                for (let i = 0; i < donGiaInputs.length; i++) {
+                                                                    donGiaInputs[i].value = sourceValue
+
+                                                                }
+                                                            }
+                                                        </script>
+                                                    </div>
+                                                    <div class="col-md-6">
+
+                                                        <label class="form-label">
+                                                            <span class="dau-sao">*</span> Nhập tất cả giá:</label>
+
+                                                        <input class="form-control" type="number"
+                                                               oninput="updateInputsGia(this)">
+                                                        <script>
+                                                            function updateInputsGia(sourceInput) {
+                                                                // Lấy giá trị của input nguồn
+                                                                var sourceValue = sourceInput.value;
+                                                                console.log(sourceValue)
+                                                                const donGiaInputs = document.getElementsByName("listDonGia");
+                                                                for (let i = 0; i < donGiaInputs.length; i++) {
+                                                                    donGiaInputs[i].value = sourceValue
+
+                                                                }
+                                                            }
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form th:action="@{/admin/san-pham-chi-tiet/update}" method="post"
+                                      enctype="multipart/form-data"
+                                      class="row g-3" style="margin-top: 2%;width: 95%; margin: auto">
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Kích Cỡ</th>
+                                                <th scope="col">Màu Sắc</th>
+                                                <th scope="col">Tay áo</th>
+                                                <th scope="col" style="width: 18%">Trạng Thái</th>
+                                                <th scope="col" style="width: 12%">Số Lượng</th>
+                                                <th scope="col" style="width: 17%">Đơn Giá</th>
+<!--                                                <th scope="col" style="width: 17%">Hình ảnh</th>-->
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="chiTietSanPham,iterStat : ${listChiTietSP}">
+                                                <input type="hidden" th:value="${chiTietSanPham.id}"
+                                                       name="listIdChiTietSp">
+
+                                                <select hidden=class="form-control" name="listSanPham"
+                                                        aria-label="Default select example">
+                                                    <option th:value="${chiTietSanPham.sanPham.id}"
+                                                            th:label="${chiTietSanPham.sanPham.ten}"></option>
+                                                </select>
+
+                                                <td>
+                                                    <select class="form-control" name="listKichCo"
+                                                            style="color: black; pointer-events: none; user-select: none; opacity: 0.6;"
+                                                            aria-label="Default select example">
+                                                        <option th:value="${chiTietSanPham.kichCo.id}"
+                                                                th:label="${chiTietSanPham.kichCo.ten}"></option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="listMauSac"
+                                                            style="color: black; pointer-events: none; user-select: none; opacity: 0.6;"
+                                                            aria-label="Default select example">
+                                                        <option th:value="${chiTietSanPham.mauSac.id}"
+                                                                th:label="${chiTietSanPham.mauSac.ten}"></option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="form-control" name="listTayAo"
+                                                            style="color: black; pointer-events: none; user-select: none; opacity: 0.6;"
+                                                            aria-label="Default select example">
+                                                        <option th:value="${chiTietSanPham.tayAo.id}"
+                                                                th:label="${chiTietSanPham.tayAo.ten}"></option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <style>
+                                                        #selectTrangThai1 {
+                                                            background-color: #4bff52;
+                                                        }
+
+                                                        #selectTrangThai2 {
+                                                            background-color: #ff5959;
+                                                        }
+                                                    </style>
+                                                    <select class="form-control listTrangThai"
+                                                            th:id="${chiTietSanPham.trangThai == 0} ? 'selectTrangThai1' : 'selectTrangThai2'"
+                                                            name="listTrangThai"
+                                                            aria-label="Default select example">
+                                                        <option th:value="0" th:label="|Đang hoạt động|"
+                                                                th:selected="${chiTietSanPham.trangThai == 0}"></option>
+                                                        <option th:value="1" th:label="|Ngừng hoạt động|"
+                                                                th:selected="${chiTietSanPham.trangThai == 1}"></option>
+                                                    </select>
+                                                    <script>
+                                                        // Hàm xử lý sự kiện onchange của radio buttons
+                                                        function selectOnChange(trangThai) {
+                                                            // Lấy thẻ select
+                                                            var selectElements = document.querySelectorAll('.listTrangThai');
+
+                                                            // Chọn option tương ứng với giá trị của radio button
+                                                            selectElements.forEach(function (selectElement) {
+                                                                selectElement.value = trangThai;
+                                                            });
+                                                        }
+                                                    </script>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" min="0" name="listSoLuong"
+
+                                                           th:value="${chiTietSanPham.soLuong}">
+                                                    <div class="error-message"
+                                                         th:id="'checkSoLuong' + ${iterStat.index}"
+                                                         style="display: none;color: #ff0000;font-size: 14px;font-weight: bold;"></div>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control" min="0" name="listDonGia"
+                                                           th:value="${chiTietSanPham.giaHienHanh}">
+                                                    <div class="error-message" th:id="'checkDonGia' + ${iterStat.index}"
+                                                         style="display: none;color: #ff0000;font-size: 14px;font-weight: bold;"></div>
+                                                </td>
+<!--                                                <td>-->
+<!--                                                    <img th:src="${chiTietSanPham.hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;"/>-->
+<!--                                                </td>-->
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" onclick="return checkSuaCtsp()" class="btn btn-warning">
+                                            Cập nhật
+                                        </button>
+                                        <script>
+                                            function checkSuaCtsp() {
+                                                const soLuongInputs = document.getElementsByName("listSoLuong");
+                                                const donGiaInputs = document.getElementsByName("listDonGia");
+
+                                                let hasError = false; // Biến flag để kiểm tra lỗi
+
+                                                for (let i = 0; i < donGiaInputs.length; i++) {
+                                                    const checkDonGia = donGiaInputs[i].value;
+                                                    const errorDiv = document.getElementById("checkDonGia" + i);
+
+                                                    if (checkDonGia < 10000 || checkDonGia >= 1000000000) {
+                                                        hasError = true; // Có lỗi
+                                                        errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi
+                                                        errorDiv.textContent = (checkDonGia < 10000) ? "Giá phải >= 10000" : "Giá phải <= 1000000000"; // Hiển thị thông báo lỗi
+                                                    } else {
+                                                        errorDiv.style.display = "none"; // Ẩn div thông báo lỗi nếu giá trị hợp lệ
+                                                    }
+                                                }
+
+                                                for (let i = 0; i < soLuongInputs.length; i++) {
+                                                    const checkSoLuong = soLuongInputs[i].value;
+                                                    const errorDiv = document.getElementById("checkSoLuong" + i);
+
+                                                    if (checkSoLuong == "") {
+                                                        hasError = true; // Có lỗi
+                                                        errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi
+                                                        errorDiv.textContent = "Không được để null"; // Hiển thị thông báo lỗi
+                                                    } else if (checkSoLuong < 0 || checkSoLuong >= 100000) {
+                                                        hasError = true; // Có lỗi
+                                                        errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi
+                                                        errorDiv.textContent = (checkSoLuong < 0) ? "Số lượng phải >= 0" : "Số lượng phải <= 100000"; // Hiển thị thông báo lỗi
+                                                    } else {
+                                                        errorDiv.style.display = "none"; // Ẩn div thông báo lỗi nếu giá trị hợp lệ
+                                                    }
+                                                }
+
+                                                if (!hasError) {
+                                                    return true; // Trả về true nếu không có lỗi
+                                                } else {
+                                                    return false; // Trả về false nếu có lỗi
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+
+    </div>
+    <div class="credits">
+        Website bán áo Tee Haven
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<div th:replace="~{admin-template/fragment/script :: script}"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+</body>
+
+
+</html>
