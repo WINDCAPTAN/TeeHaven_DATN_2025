@@ -133,7 +133,7 @@ public class ChiTietSanPhamController {
             sanPham.setNgayTao(new Date());
             sanPham.setNgaySua(new Date());
             sanPham.setTrangThai(0);
-            sanPhamSerivce.add(sanPham);
+//            sanPhamSerivce.add(sanPham,);
 
 //            hinhAnhSanPhamSerivce.saveImage(multipartFiles, sanPham);
             return "redirect:/admin/san-pham-chi-tiet";
