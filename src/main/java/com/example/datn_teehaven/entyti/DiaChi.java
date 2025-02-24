@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ import java.util.Date;
 @Entity
 @Table(name = "dia_chi")
 @Builder
+
 public class DiaChi {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -32,7 +32,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "tai_khoan")
+
 @Builder
+
 public class TaiKhoan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +50,7 @@ public class TaiKhoan {
     @NotNull(message = "Ngày sinh không được trống")
     @PastOrPresent(message = "Phải là một ngày trong quá khứ hoặc hiện tại")
     private Date ngaySinh;
+
 
     // Kiem tra ngay sinh >= 1923
     public boolean isValidNgaySinh() {
@@ -80,6 +83,7 @@ public class TaiKhoan {
     private String tenTaiKhoan;
 
     @Column(name = "mat_khau")
+    @NotBlank(message = "Mật khẩu không được trống")
     private String matKhau;
 
     @Column(name = "ngay_tao")
@@ -99,6 +103,7 @@ public class TaiKhoan {
 
     @OneToMany(mappedBy = "taiKhoan")
     List<DiaChi> lstDiaChi;
+
 
     @OneToOne(mappedBy = "taiKhoan")
     GioHang gioHang;

@@ -28,6 +28,7 @@ public class SanPhamServiceImpl implements SanPhamService {
         return sanPhamRepo.save(sanPham);
     }
 
+
     @Override
     public List<SanPham> getAllDangHoatDong() {
         return sanPhamRepo.fillAllDangHoatDong();
