@@ -101,25 +101,21 @@ public class SanPhamController {
         sanPham.setSoLuongTon(0);
         sanPham.setNgayTao(Date.valueOf(LocalDate.now()));
         sanPham.setTrangThai(0);
-        sanPham.setHinhAnh(String.join(",", imageUrls)); // Lưu danh sách URL vào database
-        // Lưu sản phẩm vào database
+        sanPham.setHinhAnh(imageUrls.toString());
+        sanPham.setHinhAnh(String.join(",", imageUrls));
         sanPhamService.add(sanPham);
         redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
         return "redirect:/admin/san-pham";
     }
 
     private String uploadImageToFirebase(MultipartFile file) throws IOException {
-        String originalFileName = file.getOriginalFilename();
-        if (originalFileName == null || originalFileName.isEmpty()) {
-            return null;
-        }
-        // Loại bỏ khoảng trắng và ký tự đặc biệt trong tên file
-        String safeFileName = originalFileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
-        // Upload file lên Firebase Storage
-        StorageClient.getInstance().bucket(bucketName).create(safeFileName, file.getBytes(), file.getContentType());
-        // Lấy URL hình ảnh và mã hóa tên file để tránh lỗi khi truy xuất
-        String encodedFileName = URLEncoder.encode(safeFileName, StandardCharsets.UTF_8);
-        String imageUrl = String.format("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media", bucketName, encodedFileName);
+        String fileName = file.getOriginalFilename();
+        // Upload file to Firebase Storage
+        StorageClient.getInstance().bucket(bucketName).create(fileName, file.getBytes(), file.getContentType());
+
+        // Retrieve the download URL
+        String imageUrl = String.format("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media", bucketName, fileName);
+
         return imageUrl;
     }
     @GetMapping("/detail/{id}")
@@ -167,7 +163,7 @@ public class SanPhamController {
                 }
                 imageUrls.add(imageUrl);
             }
-            // Cập nhật danh sách ảnh mới vào sản phẩm
+//             Cập nhật danh sách ảnh mới vào sản phẩm
             sanPham.setHinhAnh(String.join(",", imageUrls));
         } else {
             // Nếu không có ảnh mới, giữ nguyên ảnh cũ

@@ -194,8 +194,10 @@
                     Chọn ảnh <i class="bi bi-images"></i>
                   </label>
                   <div id="testImg" class="image-container">
+                    <div th:each="url : ${#strings.listSplit(sanPham.hinhAnh, ',')}" style="display: inline-block; margin-right: 5px;">
                     <img class="thumbnail"
-                         th:src="${sanPham.hinhAnh}" alt="">
+                         th:src="${url}" alt="">
+                      </div>
                   </div>
                   <div class="img-them">
                     <input type="file" id="file--input" multiple
