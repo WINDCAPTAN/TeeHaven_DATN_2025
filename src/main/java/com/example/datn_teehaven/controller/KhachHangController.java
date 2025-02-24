@@ -26,7 +26,7 @@
     import java.util.Date;
     import java.util.List;
 
-    //24-2
+    //24-2 dung
     @Controller
     @RequestMapping("/admin/khach-hang")
     public class KhachHangController {
