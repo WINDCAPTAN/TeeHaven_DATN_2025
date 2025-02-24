@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,11 +43,13 @@ public class KhachHangServiceImpl implements KhachHangService {
 
     }
 
+    @Transactional
     @Override
     public TaiKhoan add(TaiKhoan taiKhoan) {
-
-        return repository.save(taiKhoan);
-
+        System.out.println("🟢 Bắt đầu thêm tài khoản");
+        TaiKhoan saved = repository.save(taiKhoan);
+        System.out.println("🟢 Tài khoản đã lưu: " + saved);
+        return saved;
     }
 
     @Override
@@ -147,30 +150,19 @@ public class KhachHangServiceImpl implements KhachHangService {
     public void sendEmail(TaiKhoan taiKhoan, String path, String random) {
         String from = "bachdung004@gmail.com";
         String to = taiKhoan.getEmail();
-        String subject = "Khôi Phục Mật Khẩu Tài Khoản Glacat của Bạn";
-        String content = "<p class=\"email-content\" style=\"font-family: 'Arial', sans-serif;font-size: 16px;color: #333;line-height: 1.5;\">\n" +
-                "Chào [[name]], <br>\n" +
-                "Chúc mừng! Bạn đã yêu cầu hướng dẫn khôi phục mật khẩu cho tài khoản của mình trên Glacat. Để tiếp tục quá trình này, vui lòng nhấn vào liên kết dưới đây:\n" +
-                "</p>\n" +
-
-                "<p class=\"email-content\">\n" +
-                "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" +
-                "</p>\n" +
-
-                "<p class=\"email-content\">\n" +
-                "<p>Tên tài khoản của bạn: " + taiKhoan.getTenTaiKhoan() + "</p>" +
-                "<p>Email của bạn: " + taiKhoan.getEmail() + "</p>" +
-                "Nếu bạn không yêu cầu hướng dẫn khôi phục mật khẩu hoặc không nhớ việc này, hãy bỏ qua email này. Liên kết xác nhận sẽ hết hạn sau 24 giờ.\n" +
-                "<br>\n" +
-                "Chân thành cảm ơn,\n" +
-                "<br>\n" +
-                "Đội ngũ TeeHaven\n" +
-                "</p>";
+        String subject = "Chào mừng bạn đến với TeeHaven - Tài khoản Khách Hàng mới đã được tạo";
+        String content =
+                "Chào bạn," + "<br>" +
+                        "Chúc mừng! Tài khoản Khách Hàng mới của bạn tại TeeHaven đã được tạo thành công. Dưới đây là thông tin đăng nhập của bạn:" + "<br>" +
+                        "- Tài khoản:  " + taiKhoan.getTenTaiKhoan() + "<br>" +
+                        "- Mật khẩu:   " + random +
+                        "<br>" +
+                        "Cảm ơn bạn đã chọn TeeHaven! Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.";
         try {
 
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setFrom(from, "Glacat");
+            helper.setFrom(from, "TeeHaven");
             helper.setTo(to);
             helper.setSubject(subject);
             content = content.replace("[[name]]", taiKhoan.getTenTaiKhoan());
@@ -193,7 +185,7 @@ public class KhachHangServiceImpl implements KhachHangService {
     @Override
     public void guiLieuHe(String hoTen, String email, String chuDe, String tinNhan) {
         String from = email;
-        String to = "glacatshopshoes@gmail.com";
+        String to = "bachdung004@gmail.com";
         String subject = chuDe;
         String content = tinNhan;
         try {

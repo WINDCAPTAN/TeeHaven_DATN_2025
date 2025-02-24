@@ -328,76 +328,32 @@
     </section>
 </main><!-- End #main -->
 
-<div class="toast-container position-fixed top-0 end-0 p-3">
-    <script th:if="${checkThongBao=='thanhCong'}">
-
-        window.addEventListener('DOMContentLoaded', (event) => {
-            // Hiển thị modal
-            var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
-            liveToast.show();
-        });
-    </script>
-    <div id="liveToastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
-         style="  background-color: rgba(62, 189, 97,0.2);border:2px solid #3ebd61;  border-radius:1rem;">
-        <div class="toast-body">
-            <div class="row g-3">
-                <div class="col-md-2">
-                    <img src="../../../static/img/successful_notification.png" alt="" style="margin: auto">
-                </div>
-                <div class="col-md-8" style=" margin-top:6.3%">
-                    <span style="
-                    text-align: center;
-                    font-size: 1rem; /* Kích thước phông chữ */
-                    font-weight: bold; /* Độ đậm của chữ */
-                    color: #3ebd61;">
-                        Thành công</span>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
-                            style="font-size: 1.5rem;margin: auto"></button>
-                </div>
-
-            </div>
-        </div>
+<!-- Thông báo thành công -->
+<script th:if="${checkThongBao=='thanhCong'}">
+    window.addEventListener('DOMContentLoaded', (event) => {
+        var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
+        liveToast.show();
+    });
+</script>
+<div id="liveToastSuccess" class="toast" style="background-color: rgba(62, 189, 97,0.2); border:2px solid #3ebd61;">
+    <div class="toast-body">
+        <span style="font-weight: bold; color: #3ebd61;">Thêm khách hàng thành công! Mật khẩu đã gửi qua email.</span>
     </div>
 </div>
-<!--Thông báo thành công end-->
 
-<!--Thông báo thất bại-->
-<div class="toast-container position-fixed top-0 end-0 p-3">
-    <script th:if="${checkThongBao=='thaiBai'}">
-
-        window.addEventListener('DOMContentLoaded', (event) => {
-            // Hiển thị modal
-            var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
-            liveToast.show();
-        });
-    </script>
-    <div id="liveToastDanger" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
-         style="background-color: rgb(252,134,134);border:2px solid #ff2020;border-radius:1rem;">
-        <div class="toast-body">
-            <div class="row g-3">
-                <div class="col-md-2">
-                    <img src="../../../static/img/successful_danger.png" alt="" style="margin: auto">
-                </div>
-                <div class="col-md-8" style=" margin-top:6.3%">
-                    <span style="
-                    text-align: center;
-                    font-size: 1rem; /* Kích thước phông chữ */
-                    font-weight: bold; /* Độ đậm của chữ */
-                    color: white;">
-                        Lỗi</span>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
-                            style="font-size: 1.5rem;margin: auto"></button>
-                </div>
-
-            </div>
-        </div>
+<!-- Thông báo thất bại -->
+<script th:if="${checkThongBao=='thaiBai'}">
+    window.addEventListener('DOMContentLoaded', (event) => {
+        var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+        liveToast.show();
+    });
+</script>
+<div id="liveToastDanger" class="toast" style="background-color: rgb(252,134,134); border:2px solid #ff2020;">
+    <div class="toast-body">
+        <span style="font-weight: bold; color: white;">Lỗi! Không thể thêm khách hàng.</span>
     </div>
 </div>
-<!--Thông báo thất bại end-->
+
 
 
 
