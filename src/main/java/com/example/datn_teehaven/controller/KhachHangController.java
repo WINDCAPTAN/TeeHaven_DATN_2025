@@ -26,7 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-
+//24-2
 @Controller
 @RequestMapping("/admin/khach-hang")
 public class KhachHangController {
