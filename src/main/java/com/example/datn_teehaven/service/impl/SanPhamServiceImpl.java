@@ -15,6 +15,7 @@ public class SanPhamServiceImpl implements SanPhamService {
     @Autowired
     private SanPhamRepository sanPhamRepo;
 
+
     @Override
     public List<SanPham> getAll() {
         Sort sort = Sort.by(Sort.Direction.DESC, "ngaySua");
