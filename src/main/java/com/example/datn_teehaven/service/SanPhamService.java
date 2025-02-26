@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface SanPhamService {
 
+
+
     List<SanPham> getAll();
+
+
     SanPham getById(Long id);
 
 

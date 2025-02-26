@@ -22,12 +22,15 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
 
 
 
-
-
     @Query(value = "select * from san_pham where trang_thai = 0",nativeQuery = true)
     List<SanPham> fillAllDangHoatDong();
 
     @Query(value = "select * from san_pham where trang_thai = 1",nativeQuery = true)
     List<SanPham> fillAllNgungHoatDong();
+
+    @Query(value = "SELECT COALESCE(SUM(ctsp.so_luong), 0) FROM chi_tiet_san_pham ctsp WHERE ctsp.san_pham_id = ?1", nativeQuery = true)
+    Integer tongSoLuongTon(Long sanPhamId);
+
+
 
 }
