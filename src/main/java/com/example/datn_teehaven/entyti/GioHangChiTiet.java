@@ -11,52 +11,49 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "dia_chi")
+@Table(name = "gio_hang_chi_tiet")
 @Builder
-
-public class DiaChi {
+public class GioHangChiTiet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "thanh_pho", length = 50)
-    private String thanhPho;
+    @Column(name = "so_luong")
+    private Integer soLuong;
 
-    @Column(name = "quan_huyen", length = 50)
-    private String quanHuyen;
-
-    @Column(name = "phuong_xa", length = 50)
-    private String phuongXa;
-
-    @Column(name = "dia_chi_cu_the", length = 100)
-    private String diaChiCuThe;
+    @Column(name = "ghi_chu", length = 255)
+    private String ghiChu;
 
     @Column(name = "ngay_tao")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngayTao;
 
     @Column(name = "ngay_sua")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ngaySua;
 
     @Column(name = "trang_thai")
     private Integer trangThai;
 
-    @ManyToOne(fetch = FetchType.EAGER )
-    @JoinColumn(name = "tai_khoan_id", referencedColumnName = "id")
-    private TaiKhoan taiKhoan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gio_hang_id", referencedColumnName = "id")
+    private GioHang gioHang;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chi_tiet_san_pham_id", referencedColumnName = "id")
+    private ChiTietSanPham chiTietSanPham;
+
+
+
 
 }

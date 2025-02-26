@@ -1,11 +1,22 @@
 package com.example.datn_teehaven.entyti;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +32,9 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "tai_khoan")
+
+@Builder
+
 public class TaiKhoan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +50,18 @@ public class TaiKhoan {
     @NotNull(message = "Ngày sinh không được trống")
     @PastOrPresent(message = "Phải là một ngày trong quá khứ hoặc hiện tại")
     private Date ngaySinh;
+
+
+    // Kiem tra ngay sinh >= 1923
+    public boolean isValidNgaySinh() {
+        if (ngaySinh != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(ngaySinh);
+            int year = cal.get(Calendar.YEAR);
+            return year >= 1900;
+        }
+        return true; // Truong ngaySinh co the de trong
+    }
 
     @Column(name = "gioi_tinh")
     @NotNull(message = "Giới tính không được để trống")
@@ -78,14 +104,9 @@ public class TaiKhoan {
     @OneToMany(mappedBy = "taiKhoan")
     List<DiaChi> lstDiaChi;
 
-    public boolean isValidNgaySinh() {
-        if (ngaySinh != null) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(ngaySinh);
-            int year = cal.get(Calendar.YEAR);
-            return year >= 1900;
-        }
-        return true; // Truong ngaySinh co the de trong
 
-    }
+    @OneToOne(mappedBy = "taiKhoan")
+    GioHang gioHang;
+
+
 }
