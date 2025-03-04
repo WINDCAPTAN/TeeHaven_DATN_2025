@@ -5,6 +5,7 @@ package com.example.datn_teehaven.service.impl;
 import com.example.datn_teehaven.entyti.*;
 import com.example.datn_teehaven.repository.ChiTietSanPhamRepository;
 import com.example.datn_teehaven.service.ChiTietSanPhamSerivce;
+import com.example.datn_teehaven.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,9 @@ import java.util.List;
 public class ChiTietSanPhamSerivceImpl implements ChiTietSanPhamSerivce {
     @Autowired
     private ChiTietSanPhamRepository repository;
+
+    @Autowired
+    private SanPhamService sanPhamService;
 
     @Override
     public List<ChiTietSanPham> getAll() {
@@ -64,7 +68,7 @@ public class ChiTietSanPhamSerivceImpl implements ChiTietSanPhamSerivce {
         for (int i = 0; i < listSanPham.size(); i++) {
             ChiTietSanPham chiTietSanPham = new ChiTietSanPham();
             boolean isUpdated = false;
-
+            Long sanPhamId = Long.valueOf(listSanPham.get(i));
             for (ChiTietSanPham listCheck : listCtspCheck) {
                 if (listCheck.getSanPham().getId().equals(Long.valueOf(listSanPham.get(i))) &&
                         listCheck.getKichCo().getId().equals(Long.valueOf(listKichCo.get(i))) &&
@@ -80,6 +84,7 @@ public class ChiTietSanPhamSerivceImpl implements ChiTietSanPhamSerivce {
 
                     ChiTietSanPham updatedChiTietSanPham = repository.save(listCheck);
                     chiTietSanPhamList.add(updatedChiTietSanPham);
+                    sanPhamService.updateSoLuongTon(sanPhamId);
                     isUpdated = true;
                     break;
                 }
@@ -100,6 +105,7 @@ public class ChiTietSanPhamSerivceImpl implements ChiTietSanPhamSerivce {
                 if (chiTietSanPham.getSoLuong() > 0) {
                     ChiTietSanPham savedChiTietSanPham = repository.save(chiTietSanPham);
                     chiTietSanPhamList.add(savedChiTietSanPham);
+                    sanPhamService.updateSoLuongTon(chiTietSanPham.getSanPham().getId()); // Cập nhật số lượng tồn
                 }
             }
         }
@@ -130,6 +136,7 @@ public class ChiTietSanPhamSerivceImpl implements ChiTietSanPhamSerivce {
             chiTietSanPham.setNgayTao(chiTietSanPhamNew.getNgayTao());
             chiTietSanPham.setNgaySua(new Date());
             ChiTietSanPham savedChiTietSanPham = repository.save(chiTietSanPham);
+            sanPhamService.updateSoLuongTon(chiTietSanPham.getSanPham().getId());
             chiTietSanPhamList.add(savedChiTietSanPham);
 //            chiTietSanPham.setHinhAnh(listHinhAnh.get(i));
         }
@@ -253,6 +260,7 @@ public class ChiTietSanPhamSerivceImpl implements ChiTietSanPhamSerivce {
     public List<Object[]> danhSachHangSapHet(Integer soLuong) {
         return null;
     }
+
 
 
 }

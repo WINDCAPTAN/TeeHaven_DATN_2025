@@ -58,5 +58,4 @@ public class SanPham {
     @JoinColumn(name = "thuong_hieu_id", referencedColumnName = "id")
     private ThuongHieu thuongHieu;
 
-
 }

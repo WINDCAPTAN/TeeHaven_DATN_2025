@@ -20,10 +20,6 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
     Page<SanPham> search(String ten, Boolean trangThai, Pageable pageable);
 
 
-
-
-
-
     @Query(value = "select * from san_pham where trang_thai = 0",nativeQuery = true)
     List<SanPham> fillAllDangHoatDong();
 

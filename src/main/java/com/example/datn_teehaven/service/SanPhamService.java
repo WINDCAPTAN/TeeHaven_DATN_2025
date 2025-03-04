@@ -33,4 +33,5 @@ public interface SanPhamService {
 
     boolean checkTenTrungSua(Long id, String ten);
 
+    void updateSoLuongTon(Long id);
 }
