@@ -130,7 +130,198 @@
 </aside><!-- End Sidebar-->
 
 <main id="main" class="main">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-tao-moi">
+                        <div class="tao-hd">
+                            <!-- <button type="button" class="btn btn-success">Tạo hóa đơn</button> -->
 
+                            <a th:if="${lstHoaDon.size()<5}" id="postLink" class="btn btn-success">Tạo Hóa đơn</a>
+                            <button th:if="${lstHoaDon.size()>=5}" type="button" class="btn btn-success"
+                                    data-bs-toggle="modal" data-bs-target="#error5HoaDon">
+                                Tạo Hóa đơn
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="error5HoaDon" tabindex="-1" role="dialog"
+                                 aria-labelledby="modalTitleId" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalTitleId">Thông báo</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div style="text-align: center;" class="container-fluid">
+                                                Bạn chỉ có thể tạo tối đa 5 hóa đơn!
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script>
+                                document.getElementById("postLink").addEventListener("click", function (event) {
+                                    event.preventDefault(); // Ngăn chặn thực hiện mặc định của thẻ <a>
+
+                                    var form = document.createElement("form");
+                                    form.method = "POST";
+                                    form.action = "/ban-hang-tai-quay/hoa-don/add"; // Đặt URL mà bạn muốn gửi yêu cầu POST đến
+
+                                    var input = document.createElement("input");
+                                    input.type = "hidden";
+                                    input.name = "key";
+                                    input.value = "value"; // Dữ liệu bạn muốn gửi
+
+                                    form.appendChild(input);
+
+                                    document.body.appendChild(form);
+                                    form.submit();
+                                });
+                            </script>
+
+
+                        </div>
+                        <!-- tao moi va danh sach hoa don tabs -->
+
+                        <div class="tab-content pt-2" id="myTabContent">
+                            <div class="tab-pane fade show active" id="tao-moi" role="tabpanel"
+                                 aria-labelledby="tao-moi-tab">
+                                <!-- Default Tabs -->
+                                <div class="hoa-don">
+
+                                    <div th:each="hd : ${lstHoaDon}" class="btn-group" role="group"
+                                         aria-label="Basic outlined example">
+                                        <a th:text="${hd.maHoaDon}" th:href="@{'/ban-hang-tai-quay/hoa-don/'+${hd.id}}"
+                                           class="btn btn-outline-primary"></a>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </section>
+                    <!--Thông báo thành công-->
+                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                        <script th:if="${checkThongBao=='thanhCong'}">
+                            window.addEventListener('DOMContentLoaded', (event) => {
+                                // Hiển thị modal
+                                var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
+                                liveToast.show();
+                            });
+                        </script>
+
+                        <div id="liveToastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                             style="  background-color: rgba(62, 189, 97,0.2);border:2px solid #3ebd61;  border-radius:1rem;">
+                            <div class="toast-body">
+                                <div class="row g-3">
+                                    <div class="col-md-2">
+                                        <img src="../../../static/img/successful_notification.png" alt=""
+                                             style="margin: auto">
+                                    </div>
+                                    <div class="col-md-8" style=" margin-top:6.3%">
+                        <span style="
+                    text-align: center;
+                    font-size: 1rem; /* Kích thước phông chữ */
+                    font-weight: bold; /* Độ đậm của chữ */
+                    color: #3ebd61;">
+                            [[${thongBao}]]</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close"
+                                                style="font-size: 1.5rem;margin: auto"></button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Thông báo thành công end-->
+
+                    <!--Thông báo cảnh báo-->
+                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                        <script th:if="${checkThongBao=='canhBao'}">
+                            window.addEventListener('DOMContentLoaded', (event) => {
+                                // Hiển thị modal
+                                var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+                                liveToast.show();
+                            });
+                        </script>
+                        <div id="liveToastWarning" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                             style=" background-color: rgba(239, 148, 0, 0.2);border:2px solid #fcca1b;  border-radius:1rem;">
+                            <div class="toast-body">
+                                <div class="row g-3">
+                                    <div class="col-md-2">
+                                        <img src="../../../static/img/successful_warning.png" alt=""
+                                             style="margin: auto">
+                                    </div>
+                                    <div class="col-md-8" style=" margin-top:6.3%">
+                        <span style="
+                    text-align: center;
+                    font-size: 1rem; /* Kích thước phông chữ */
+                    font-weight: bold; /* Độ đậm của chữ */
+                    color: #fcca1b;">
+                            [[${thongBao}]]</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close"
+                                                style="font-size: 1.5rem;margin: auto"></button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Thông báo cảnh báo end-->
+
+                    <!--Thông báo thất bại-->
+                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                        <script th:if="${checkThongBao=='thatBai'}">
+
+                            window.addEventListener('DOMContentLoaded', (event) => {
+                                // Hiển thị modal
+                                var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+                                liveToast.show();
+                            });
+                        </script>
+                        <div id="liveToastDanger" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                             style="background-color: rgb(252,134,134);border:2px solid #ff2020;border-radius:1rem;">
+                            <div class="toast-body">
+                                <div class="row g-3">
+                                    <div class="col-md-2">
+                                        <img src="../../../static/img/successful_danger.png" alt=""
+                                             style="margin: auto">
+                                    </div>
+                                    <div class="col-md-8" style=" margin-top:6.3%">
+                        <span style="
+                    text-align: center;
+                    font-size: 1rem; /* Kích thước phông chữ */
+                    font-weight: bold; /* Độ đậm của chữ */
+                    color: white;">
+                            [[${thongBao}]]</span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn-close" data-bs-dismiss="toast"
+                                                aria-label="Close"
+                                                style="font-size: 1.5rem;margin: auto"></button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </main><!-- End #main -->
 
