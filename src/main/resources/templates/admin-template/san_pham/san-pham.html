@@ -290,8 +290,8 @@
                                 <td th:text="${sanPham.ten}"></td>
                                 <td th:text="${sanPham.soLuongTon}"></td>
                                 <td th:text="${sanPham.moTa}"></td>
-                                <td class="trangthaidkd" th:if="${sanPham.trangThai==0}">Đang kinh doanh</td>
-                                <td class="trangthainkd" th:if="${sanPham.trangThai==1}">Ngừng kinh doanh</td>
+                                <td class="trangthaidkd" th:if="${sanPham.trangThai==0}">Đang hoạt động</td>
+                                <td class="trangthainkd" th:if="${sanPham.trangThai==1}">Ngừng hoạt động</td>
                                 <td>
                                     <a th:href="@{/admin/san-pham/detail/{id}(id=${sanPham.id})}"
                                        class="btn btn-warning">
