@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface HoaDonChiTietService {
     List<HoaDonChiTiet> findAll();
-
+    void deleteById(Long id);
     HoaDonChiTiet findById(Long id);
     void saveOrUpdate(HoaDonChiTiet hoaDonChiTiet);
 }

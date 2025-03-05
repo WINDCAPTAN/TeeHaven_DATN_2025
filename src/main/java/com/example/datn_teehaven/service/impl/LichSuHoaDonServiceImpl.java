@@ -21,6 +21,10 @@ public class LichSuHoaDonServiceImpl implements LichSuHoaDonService {
         return lichSuHoaDonRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        lichSuHoaDonRepository.deleteById(id);
+    }
 
     @Override
     public void saveOrUpdate(LichSuHoaDon lichSuHoaDon) {

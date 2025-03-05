@@ -21,6 +21,11 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
+    public void deleteById(Long id) {
+        hoaDonChiTietRepository.deleteById(id);
+    }
+
+    @Override
     public HoaDonChiTiet findById(Long id) {
         return hoaDonChiTietRepository.findById(id).orElse(null);
     }

@@ -191,4 +191,120 @@ public class BanHangController {
 //        lshd.setNgaySua(new Date());
         lichSuHoaDonService.saveOrUpdate(lshd);
     }
+
+    @GetMapping("/hoa-don-chi-tiet/delete/{id}")
+    public String deleteHdct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        // Lấy chi tiết hóa đơn từ service
+        HoaDonChiTiet hdct = hoaDonChiTietService.findById(id);
+        if (hdct == null) {
+            thongBao(redirectAttributes, "Không tìm thấy chi tiết hóa đơn.", 0);
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hdct.getHoaDon().getId();
+        }
+        // Lấy hóa đơn tương ứng
+        HoaDon hd = hdct.getHoaDon();
+        // Lấy sản phẩm chi tiết và tăng số lượng
+        ChiTietSanPham ctsp = hdct.getChiTietSanPham();
+        ctsp.setSoLuong(ctsp.getSoLuong() + hdct.getSoLuong());
+        // Đảm bảo trạng thái sản phẩm vẫn là đang hoạt động (0)
+        ctsp.setTrangThai(0);
+        chiTietSanPhamSerivce.update(ctsp); // Cập nhật số lượng sản phẩm
+
+        hoaDonChiTietService.deleteById(id);
+
+        // Thông báo thành công
+        thongBao(redirectAttributes, "Xóa chi tiết hóa đơn thành công.", 1);
+
+        if (hd.getTrangThai() == -1) {
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + hd.getId();
+        } else {
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+        }
+    }
+    @PostMapping("/hoa-don-chi-tiet/update")
+    public String updateSoLuong(RedirectAttributes redirectAttributes,
+                                @RequestParam(defaultValue = "") Integer soLuongEdit,
+                                @RequestParam(defaultValue = "") Integer soLuongEditTra, 
+                                @RequestParam Long idHdct) {
+        HoaDonChiTiet hdct = hoaDonChiTietService.findById(idHdct);
+        HoaDon hd = hdct.getHoaDon();
+        HoaDonChiTiet hdctnew = new HoaDonChiTiet();
+        ChiTietSanPham ctsp = hdct.getChiTietSanPham();
+
+        hdctnew.setSoLuong(0);
+        System.out.println(hd.getTrangThai() + "tthd");
+        if (hd.getTrangThai() == 3) {
+            // Xử lý trường hợp đổi trả
+            for (HoaDonChiTiet hdctf : hd.getLstHoaDonChiTiet()) {
+                if (hdctf.getChiTietSanPham() == hdct.getChiTietSanPham() && hdctf.getTrangThai() == 2) {
+                    hdctnew = hdctf;
+                    break;
+                }
+            }
+
+            hdct.setSoLuong(hdct.getSoLuong() - soLuongEditTra);
+            hdctnew.setHoaDon(hdct.getHoaDon());
+            hdctnew.setChiTietSanPham(hdct.getChiTietSanPham());
+            hdctnew.setSoLuong(hdctnew.getSoLuong() + soLuongEditTra);
+            hdctnew.setTrangThai(2);
+            hdctnew.setDonGia(hdct.getDonGia());
+            hoaDonChiTietService.saveOrUpdate(hdctnew);
+            hoaDonChiTietService.saveOrUpdate(hdct);
+
+            if (hd.getTrangThai() == -1) {
+                thongBao(redirectAttributes, "Thành công", 1);
+                return "redirect:/ban-hang-tai-quay/hoa-don/" + hd.getId();
+            } else {
+                thongBao(redirectAttributes, "Thành công", 1);
+                return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+            }
+        }
+
+        // Xử lý trường hợp cập nhật số lượng thông thường
+        if (soLuongEdit == 0) {
+            // Nếu số lượng mới là 0, hoàn lại số lượng vào kho và xóa chi tiết hóa đơn
+            ctsp.setSoLuong(ctsp.getSoLuong() + hdct.getSoLuong());
+            // Đảm bảo trạng thái sản phẩm vẫn là đang hoạt động (0)
+            ctsp.setTrangThai(0);
+            chiTietSanPhamSerivce.update(ctsp);
+            hoaDonChiTietService.deleteById(idHdct);
+            thongBao(redirectAttributes, "Đã xóa sản phẩm khỏi hóa đơn", 1);
+        } else {
+            // Tính số lượng tăng thêm
+            int soLuongTangThem = soLuongEdit - hdct.getSoLuong();
+            
+            if (soLuongTangThem > 0) {
+                // Nếu tăng số lượng, trừ đi số lượng trong kho
+                if (ctsp.getSoLuong() >= soLuongTangThem) {
+                    ctsp.setSoLuong(ctsp.getSoLuong() - soLuongTangThem);
+                    // Đảm bảo trạng thái sản phẩm vẫn là đang hoạt động (0)
+                    ctsp.setTrangThai(0);
+                    chiTietSanPhamSerivce.update(ctsp);
+                    thongBao(redirectAttributes, "Đã tăng số lượng sản phẩm", 1);
+                } else {
+                    thongBao(redirectAttributes, "Số lượng trong kho không đủ! Số lượng hiện tại: " + ctsp.getSoLuong(), 0);
+                    return "redirect:/ban-hang-tai-quay/hoa-don/" + hd.getId();
+                }
+            } else if (soLuongTangThem < 0) {
+                // Nếu giảm số lượng, hoàn lại số lượng vào kho
+                ctsp.setSoLuong(ctsp.getSoLuong() + Math.abs(soLuongTangThem));
+                // Đảm bảo trạng thái sản phẩm vẫn là đang hoạt động (0)
+                ctsp.setTrangThai(0);
+                chiTietSanPhamSerivce.update(ctsp);
+                thongBao(redirectAttributes, "Đã giảm số lượng sản phẩm", 1);
+            }
+            
+            hdct.setSoLuong(soLuongEdit);
+            hdct.setTrangThai(0);
+            hoaDonChiTietService.saveOrUpdate(hdct);
+        }
+
+        if (hd.getTrangThai() == -1) {
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + hd.getId();
+        } else if (hd.getTrangThai() == 3) {
+            return "redirect:/ban-hang-tai-quay/doi-tra/" + hd.getId();
+        } else {
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+        }
+    }
+
 }
