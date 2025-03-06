@@ -1,7 +1,5 @@
 package com.example.datn_teehaven.service.impl;
 
-
-
 import com.example.datn_teehaven.entyti.LichSuHoaDon;
 import com.example.datn_teehaven.repository.LichSuHoaDonRepository;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
@@ -9,14 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
-public class LichSuHoaDonServieImpl implements LichSuHoaDonService {
-
-
+public class LichSuHoaDonServiceImpl implements LichSuHoaDonService {
     @Autowired
     LichSuHoaDonRepository lichSuHoaDonRepository;
-
     @Override
     public List<LichSuHoaDon> findAll() {
         return lichSuHoaDonRepository.findAll();
@@ -48,4 +42,5 @@ public class LichSuHoaDonServieImpl implements LichSuHoaDonService {
         return lichSuHoaDonRepository.findByIdhdNgaySuaAsc(idhd);
 
     }
+
 }

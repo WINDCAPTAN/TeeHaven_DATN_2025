@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+
 @Service
 public interface HoaDonService {
     List<HoaDon> findAll();
 
     HoaDon findById(Long id);
+
 
     void deleteById(Long id);
 
@@ -24,5 +27,11 @@ public interface HoaDonService {
 
 
     List<HoaDon> findAllHoaDon();
+
+
+
+
+
+
 
 }

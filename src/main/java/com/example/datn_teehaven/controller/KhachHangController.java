@@ -26,12 +26,13 @@ import java.security.SecureRandom;
 import java.util.Date;
 import java.util.List;
 
-//24-2 dung
-@Controller
-@RequestMapping("/admin/khach-hang")
-public class KhachHangController {
-    @Autowired
-    KhachHangService khachHangService;
+
+    //24-2 dung
+    @Controller
+    @RequestMapping("/admin/khach-hang")
+    public class KhachHangController {
+        @Autowired
+        KhachHangService khachHangService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

@@ -18,6 +18,11 @@ import lombok.Setter;
 import java.util.Date;
 
 
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -44,6 +49,10 @@ public class HoaDonChiTiet {
 
     @Column(name = "nguoi_tao", length = 100)
     private String nguoiTao;
+
+
+//    @Column(name = "nguoi_sua", length = 100)
+//    private String nguoiSua;
 
     @Column(name = "trang_thai")
     private Integer trangThai;

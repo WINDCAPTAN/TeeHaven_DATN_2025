@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface SanPhamService {
 
+
+
     List<SanPham> getAll();
+
+
     SanPham getById(Long id);
 
 
@@ -33,4 +37,5 @@ public interface SanPhamService {
 
     boolean checkTenTrungSua(Long id, String ten);
 
+    void updateSoLuongTon(Long id);
 }

@@ -27,7 +27,7 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-        <a href="/hoa-don" class="logo d-flex align-items-center">
+        <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
             <img src="../../../static/img/logo_teehaven.png" alt="">
             <span class="d-none d-lg-block">Tee Haven</span>
         </a>
@@ -49,7 +49,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/hoa-don">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
                 <i class="bi bi-shop"></i>
                 <span>Bán Hàng</span>
             </a>
@@ -95,7 +95,7 @@
         </li><!-- End Components Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/hoa-don/quan-ly">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
                 <i class="bi bi-receipt-cutoff"></i>
                 <span>Quản Lý Hóa Đơn</span>
             </a>
@@ -173,7 +173,7 @@
 
                                         var form = document.createElement("form");
                                         form.method = "POST";
-                                        form.action = "/hoa-don/add"; // Đặt URL mà bạn muốn gửi yêu cầu POST đến
+                                        form.action = "/ban-hang-tai-quay/hoa-don/add"; // Đặt URL mà bạn muốn gửi yêu cầu POST đến
 
                                         var input = document.createElement("input");
                                         input.type = "hidden";
@@ -194,7 +194,7 @@
                                 <div th:each="hd : ${listHoaDon}" class="btn-group" role="group"
                                      aria-label="Basic outlined example">
                                     <a th:text="${hd.maHoaDon}"
-                                       th:href="@{'/hoa-don/' + ${hd.id}}"
+                                       th:href="@{'/ban-hang-tai-quay/hoa-don/' + ${hd.id}}"
                                        class="btn btn-outline-primary"></a>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
                         <div th:if="${hoaDon.trangThai !=-1}">
                             <h1 style="text-align: center;">[[${hoaDon.maHoaDon}]] - Chờ thanh toán</h1>
                             <a class="btn btn-link" style="float: left;margin-top: 1%;"
-                               href="/hoa-don/quan-ly">
+                               href="/ban-hang-tai-quay/hoa-don/quan-ly">
                                 <i class=" bi bi-arrow-left-circle-fill"></i>
                             </a>
                         </div>
@@ -237,7 +237,7 @@
                                 <tr th:each="obj, state:${hoaDon.lstHoaDonChiTiet}">
 
                                     <form th:id="${'myForm'+obj.id}"
-                                          action="/hoa-don-chi-tiet/update"
+                                          action="/ban-hang-tai-quay/hoa-don-chi-tiet/update"
                                           method="post">
 
                                         <th scope="row" th:text="${state.index+1}"></th>
@@ -369,7 +369,7 @@
                                                                         class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Close
                                                                 </button>
-                                                                <a th:href="@{'/hoa-don-chi-tiet/delete/'+${obj.id}}"
+                                                                <a th:href="@{'/ban-hang-tai-quay/hoa-don-chi-tiet/delete/'+${obj.id}}"
                                                                    class="btn btn-danger">Xóa
                                                                 </a>
                                                             </div>
@@ -387,332 +387,332 @@
                             </table>
                         </div>
 
-                    <div th:if="${#lists.size(hoaDon.lstHoaDonChiTiet) ==0}">
-                        <!-- giỏ hàng trống -->
-                        <div class="cart-no-product">
-                            <div style="margin: auto; margin-bottom: 8%;" class="row">
-                                <div class="col-md-12">
-                                    <img th:src="@{/static/img/cart.png}" alt="">
+                        <div th:if="${#lists.size(hoaDon.lstHoaDonChiTiet) ==0}">
+                            <!-- giỏ hàng trống -->
+                            <div class="cart-no-product">
+                                <div style="margin: auto; margin-bottom: 8%;" class="row">
+                                    <div class="col-md-12">
+                                        <img th:src="@{/static/img/cart.png}" alt="">
 
-                                </div>
+                                    </div>
 
-                                <div class="col-md-12">
-                                    <span style="text-align: center;">Không có sản phẩm nào trong giỏ</span>
+                                    <div class="col-md-12">
+                                        <span style="text-align: center;">Không có sản phẩm nào trong giỏ</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!--Table Khách Hàng-->
-                    <div class="line"></div>
+                        <!--Table Khách Hàng-->
+                        <div class="line"></div>
 
-                    <div class="tai-khoan-ban-hang">
-                        <div class="row mb-3">
-                            <h4 class="col-sm-2" style="font-family: Arial, sans-serif;font-size: 20px;
+                        <div class="tai-khoan-ban-hang">
+                            <div class="row mb-3">
+                                <h4 class="col-sm-2" style="font-family: Arial, sans-serif;font-size: 20px;
             font-weight: bold;
             color: black;">Tài khoản</h4>
 
 
-                            <div class="col-sm-10"
-                                 th:if="${hoaDon.trangThai ==-1 || hoaDon.trangThai ==4}">
-                                <!---->
-                                <button type="button" class="btn btn-primary"
-                                        data-bs-toggle="modal" style="float: right;"
-                                        data-bs-target="#chonKhachHangModal">
+                                <div class="col-sm-10"
+                                     th:if="${hoaDon.trangThai ==-1 || hoaDon.trangThai ==4}">
+                                    <!---->
+                                    <button type="button" class="btn btn-primary"
+                                            data-bs-toggle="modal" style="float: right;"
+                                            data-bs-target="#chonKhachHangModal">
 
-                                    Chọn tài khoản
-                                </button>
-                            </div>
-                            <div class="" th:each=" taiKhoan: ${listTaiKhoan}">
+                                        Chọn tài khoản
+                                    </button>
+                                </div>
+                                <div class="" th:each=" taiKhoan: ${listTaiKhoan}">
 
-                                <div class="modal fade" th:id="chonKhachHangModal"
-                                     tabindex="-1" aria-labelledby="chonKhachHangModalLabel"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5"
-                                                    id="chonKhachHangModalLabel">
-                                                    Danh sách khách
-                                                    hàng
-                                                </h1>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- form tìm kiếm khách hàng -->
-                                                <div class="row mb-3">
-                                                    <div class="col-sm-2 offset-10">
-                                                        <button type="button"
-                                                                class="btn btn-primary"
-                                                                data-bs-toggle="modal"
-                                                                style="float: right;"
-                                                                data-bs-target="#them-khach-hang">
-                                                            Thêm mới
-                                                        </button>
-                                                    </div>
+                                    <div class="modal fade" th:id="chonKhachHangModal"
+                                         tabindex="-1" aria-labelledby="chonKhachHangModalLabel"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5"
+                                                        id="chonKhachHangModalLabel">
+                                                        Danh sách khách
+                                                        hàng
+                                                    </h1>
                                                 </div>
+                                                <div class="modal-body">
+                                                    <!-- form tìm kiếm khách hàng -->
+                                                    <div class="row mb-3">
+                                                        <div class="col-sm-2 offset-10">
+                                                            <button type="button"
+                                                                    class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    style="float: right;"
+                                                                    data-bs-target="#them-khach-hang">
+                                                                Thêm mới
+                                                            </button>
+                                                        </div>
+                                                    </div>
 
 
-                                                <!-- table khách hàng -->
+                                                    <!-- table khách hàng -->
 
-                                                <table id="example1" class="display">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>STT</th>
-                                                        <th>Tên Khách Hàng</th>
-                                                        <th>Số Điện Thoại</th>
-                                                        <th>Email</th>
-                                                        <th>Hành Động</th>
-                                                    </tr>
-                                                    <thead>
-                                                    <tbody>
+                                                    <table id="example1" class="display">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>STT</th>
+                                                            <th>Tên Khách Hàng</th>
+                                                            <th>Số Điện Thoại</th>
+                                                            <th>Email</th>
+                                                            <th>Hành Động</th>
+                                                        </tr>
+                                                        <thead>
+                                                        <tbody>
 
-                                                    <tr
-                                                            th:each=" taiKhoan, state : ${listTaiKhoan}">
-                                                        <form
-                                                                action="/hoa-don/add-khach-hang"
-                                                                method="post">
+                                                        <tr
+                                                                th:each=" taiKhoan, state : ${listTaiKhoan}">
+                                                            <form
+                                                                    action="/ban-hang-tai-quay/hoa-don/add-khach-hang"
+                                                                    method="post">
 
-                                                            <td
-                                                                    th:text="${state.index+1}">
-                                                            </td>
-                                                            <td
-                                                                    th:text="${taiKhoan.hoVaTen}">
-                                                            </td>
-                                                            <td
-                                                                    th:text="${taiKhoan.soDienThoai}">
-                                                            </td>
-                                                            <td
-                                                                    th:text="${taiKhoan.email}">
-                                                            </td>
+                                                                <td
+                                                                        th:text="${state.index+1}">
+                                                                </td>
+                                                                <td
+                                                                        th:text="${taiKhoan.hoVaTen}">
+                                                                </td>
+                                                                <td
+                                                                        th:text="${taiKhoan.soDienThoai}">
+                                                                </td>
+                                                                <td
+                                                                        th:text="${taiKhoan.email}">
+                                                                </td>
 
-                                                            <td>
-                                                                <input type="hidden"
-                                                                       th:value="${taiKhoan.id}"
-                                                                       name="idTaiKhoan">
-                                                                <input name="idhdc"
-                                                                       type="hidden"
-                                                                       th:value="${hoaDon.id}">
-                                                                <button
-                                                                        type="submit"
-                                                                        class="btn btn-success">
-                                                                    Chọn
-                                                                </button>
-                                                            </td>
+                                                                <td>
+                                                                    <input type="hidden"
+                                                                           th:value="${taiKhoan.id}"
+                                                                           name="idTaiKhoan">
+                                                                    <input name="idhdc"
+                                                                           type="hidden"
+                                                                           th:value="${hoaDon.id}">
+                                                                    <button
+                                                                            type="submit"
+                                                                            class="btn btn-success">
+                                                                        Chọn
+                                                                    </button>
+                                                                </td>
 
-                                                        </form>
-                                                    </tr>
+                                                            </form>
+                                                        </tr>
 
-                                                    </tbody>
-                                                    <tfoot hidden="hidden">
-                                                    <tr>
-                                                        <th>STT</th>
-                                                        <th>Tên Khách Hàng</th>
-                                                        <th>Số Điện Thoại</th>
-                                                        <th>Email</th>
-                                                        <th>Hành Động</th>
-                                                    </tr>
-                                                    </tfoot>
-                                                </table>
+                                                        </tbody>
+                                                        <tfoot hidden="hidden">
+                                                        <tr>
+                                                            <th>STT</th>
+                                                            <th>Tên Khách Hàng</th>
+                                                            <th>Số Điện Thoại</th>
+                                                            <th>Email</th>
+                                                            <th>Hành Động</th>
+                                                        </tr>
+                                                        </tfoot>
+                                                    </table>
 
 
-                                            </div>
-                                            <div class="modal-footer">
+                                                </div>
+                                                <div class="modal-footer">
 
-                                                <form
-                                                        action="/hoa-don/add-khach-hang"
-                                                        method="post">
-                                                    <input type="hidden" name="idTaiKhoan"
-                                                           value="-1">
-                                                    <input name="idhdc" type="hidden"
-                                                           th:value="${hoaDon.id}">
-                                                    <button type="submit"
-                                                            class="btn btn-danger">Bỏ chọn
+                                                    <form
+                                                            action="/ban-hang-tai-quay/hoa-don/add-khach-hang"
+                                                            method="post">
+                                                        <input type="hidden" name="idTaiKhoan"
+                                                               value="-1">
+                                                        <input name="idhdc" type="hidden"
+                                                               th:value="${hoaDon.id}">
+                                                        <button type="submit"
+                                                                class="btn btn-danger">Bỏ chọn
+                                                        </button>
+                                                    </form>
+                                                    <button type="button"
+                                                            class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Đóng
                                                     </button>
-                                                </form>
-                                                <button type="button"
-                                                        class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Đóng
-                                                </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- JS bật thông tin khách hàng-->
-                        <!-- Modal -->
-                        <div class="modal fade" id="them-khach-hang" tabindex="-1"
-                             aria-labelledby="them-khach-hangLabel" aria-hidden="true">
+                            <!-- JS bật thông tin khách hàng-->
+                            <!-- Modal -->
+                            <div class="modal fade" id="them-khach-hang" tabindex="-1"
+                                 aria-labelledby="them-khach-hangLabel" aria-hidden="true">
 
-                            <!--js bật modal khi check-->
-                            <script th:if="${checkModal=='modal'}">
-                                window.addEventListener('DOMContentLoaded', (event) => {
-                                    // Hiển thị modal
-                                    var myModal = new bootstrap.Modal(document.getElementById('them-khach-hang'));
-                                    myModal.show();
-                                });
-                            </script>
-                            <!--js bật modal khi check-->
+                                <!--js bật modal khi check-->
+                                <script th:if="${checkModal=='modal'}">
+                                    window.addEventListener('DOMContentLoaded', (event) => {
+                                        // Hiển thị modal
+                                        var myModal = new bootstrap.Modal(document.getElementById('them-khach-hang'));
+                                        myModal.show();
+                                    });
+                                </script>
+                                <!--js bật modal khi check-->
 
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5"
-                                            id="them-khach-hangLabel">Thêm Khách Hàng
-                                        </h1>
-                                    </div>
-                                    <div class="modal-body">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5"
+                                                id="them-khach-hangLabel">Thêm Khách Hàng
+                                            </h1>
+                                        </div>
+                                        <div class="modal-body">
 
-                                        <!-- form thêm khách hàng -->
-                                        <form onsubmit="return validThemKhachHang()"
-                                              class="row g-3"
-                                              style="margin-top: 1%;margin-bottom: 5%;"
-                                              method="post" enctype="multipart/form-data"
-                                              th:action="@{/khach-hang/them-nhanh}"
-                                              th:object="${khachHang}">
-                                            <input type="hidden" th:value="${hoaDon.id}"
-                                                   name="idhdc">
-                                            <div class="col-md-6">
-                                                <label class="form-label">
-                                                    <span class="dau-sao">*</span>Tên
-                                                    tài
-                                                    khoản:</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Nhập tên tài khoản"
-                                                       th:field="*{tenTaiKhoan}">
-                                                <!-- <span class="check-loi" th:errors="*{tenTaiKhoan}"></span> -->
-                                                <span id="errorTenTaiKhoan"
-                                                      class="check-loi"
-                                                      th:text="${checkTenTrung}"></span>
-                                                <!-- <span class="check-loi"
-                                                id="errorTenTaiKhoan"></span> -->
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">
-                                                    <span class="dau-sao">*</span>Tên
-                                                    khách
-                                                    hàng:</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Nhập khách hàng"
-                                                       th:field="*{hoVaTen}">
-                                                <span class="check-loi"
-                                                      id="errorHoVaTen"></span>
-
-                                                <!-- <span class="check-loi" th:errors="*{hoVaTen}"></span> -->
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">
-                                                    <span class="dau-sao">*</span>Ngày
-                                                    sinh:</label>
-                                                <input type="date" class="form-control"
-                                                       th:field="*{ngaySinh}">
-                                                <!-- <span class="check-loi" th:errors="*{ngaySinh}"></span> -->
-                                                <span class="check-loi"
-                                                      id="errorNgaySinh"></span>
-
-                                                <span class="check-loi"
-                                                      th:if="${checkNgaySinh=='ngaySinh'}">Năm
-                                                                                    sinh phải lớn 1900</span>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">
-                                                    <span class="dau-sao">*</span>Giới
-                                                    tính:</label>
-                                                <div style="margin-top: 1%;">
-                                                    <input th:checked="true"
-                                                           class="form-check-input"
-                                                           type="radio" name="gridRadios"
-                                                           style="margin-left:5%;"
-                                                           th:field="*{gioiTinh}"
-                                                           value="0">
-                                                    <label class="form-check-label">
-                                                        Nam2
-                                                    </label>
-
-                                                    <input class="form-check-input"
-                                                           type="radio" name="gridRadios"
-                                                           style="margin-left:5%;"
-                                                           th:field="*{gioiTinh}"
-                                                           value="1">
-                                                    <label class="form-check-label">
-                                                        Nữ
-                                                    </label>
+                                            <!-- form thêm khách hàng -->
+                                            <form onsubmit="return validThemKhachHang()"
+                                                  class="row g-3"
+                                                  style="margin-top: 1%;margin-bottom: 5%;"
+                                                  method="post" enctype="multipart/form-data"
+                                                  th:action="@{/ban-hang-tai-quay/khach-hang/them-nhanh}"
+                                                  th:object="${khachHang}">
+                                                <input type="hidden" th:value="${hoaDon.id}"
+                                                       name="idhdc">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">
+                                                        <span class="dau-sao">*</span>Tên
+                                                        tài
+                                                        khoản:</label>
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Nhập tên tài khoản"
+                                                           th:field="*{tenTaiKhoan}">
+                                                    <!-- <span class="check-loi" th:errors="*{tenTaiKhoan}"></span> -->
+                                                    <span id="errorTenTaiKhoan"
+                                                          class="check-loi"
+                                                          th:text="${checkTenTrung}"></span>
+                                                    <!-- <span class="check-loi"
+                                                    id="errorTenTaiKhoan"></span> -->
                                                 </div>
-                                                <!-- <span class="check-loi" th:errors="*{gioiTinh}"></span> -->
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">
-                                                    <span class="dau-sao">*</span>Số
-                                                    điện
-                                                    thoại:</label>
-                                                <input type="text" class="form-control"
-                                                       placeholder="Nhập số điện thoại"
-                                                       th:field="*{soDienThoai}">
-                                                <!-- <span class="check-loi" th:errors="*{soDienThoai}"></span> -->
-                                                <span class="check-loi"
-                                                      id="errorsoDienThoai"></span>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">
+                                                        <span class="dau-sao">*</span>Tên
+                                                        khách
+                                                        hàng:</label>
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Nhập khách hàng"
+                                                           th:field="*{hoVaTen}">
+                                                    <span class="check-loi"
+                                                          id="errorHoVaTen"></span>
 
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label class="form-label">
+                                                    <!-- <span class="check-loi" th:errors="*{hoVaTen}"></span> -->
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">
+                                                        <span class="dau-sao">*</span>Ngày
+                                                        sinh:</label>
+                                                    <input type="date" class="form-control"
+                                                           th:field="*{ngaySinh}">
+                                                    <!-- <span class="check-loi" th:errors="*{ngaySinh}"></span> -->
+                                                    <span class="check-loi"
+                                                          id="errorNgaySinh"></span>
+
+                                                    <span class="check-loi"
+                                                          th:if="${checkNgaySinh=='ngaySinh'}">Năm
+                                                                                    sinh phải lớn 1900</span>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">
+                                                        <span class="dau-sao">*</span>Giới
+                                                        tính:</label>
+                                                    <div style="margin-top: 1%;">
+                                                        <input th:checked="true"
+                                                               class="form-check-input"
+                                                               type="radio" name="gridRadios"
+                                                               style="margin-left:5%;"
+                                                               th:field="*{gioiTinh}"
+                                                               value="0">
+                                                        <label class="form-check-label">
+                                                            Nam2
+                                                        </label>
+
+                                                        <input class="form-check-input"
+                                                               type="radio" name="gridRadios"
+                                                               style="margin-left:5%;"
+                                                               th:field="*{gioiTinh}"
+                                                               value="1">
+                                                        <label class="form-check-label">
+                                                            Nữ
+                                                        </label>
+                                                    </div>
+                                                    <!-- <span class="check-loi" th:errors="*{gioiTinh}"></span> -->
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">
+                                                        <span class="dau-sao">*</span>Số
+                                                        điện
+                                                        thoại:</label>
+                                                    <input type="text" class="form-control"
+                                                           placeholder="Nhập số điện thoại"
+                                                           th:field="*{soDienThoai}">
+                                                    <!-- <span class="check-loi" th:errors="*{soDienThoai}"></span> -->
+                                                    <span class="check-loi"
+                                                          id="errorsoDienThoai"></span>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label">
                                                                                     <span
                                                                                             class="dau-sao">*</span>Email:</label>
-                                                <input type="email" class="form-control"
-                                                       placeholder="Nhập email"
-                                                       th:field="*{email}" name="email">
-                                                <!-- <span class="check-loi" th:errors="*{email}"></span> -->
+                                                    <input type="email" class="form-control"
+                                                           placeholder="Nhập email"
+                                                           th:field="*{email}" name="email">
+                                                    <!-- <span class="check-loi" th:errors="*{email}"></span> -->
 
-                                                <span id="errorEmail" class="check-loi"
-                                                      th:text="${checkEmailTrung}"></span>
+                                                    <span id="errorEmail" class="check-loi"
+                                                          th:text="${checkEmailTrung}"></span>
 
-                                            </div>
+                                                </div>
 
-                                            <div class="modal-footer">
-                                                <button type="button"
-                                                        class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">
-                                                    Đóng
-                                                </button>
-                                                <button type="submit"
-                                                        class="btn btn-success">Thêm
-                                                </button>
-                                            </div>
-                                        </form>
-                                        <!-- form thêm khách hàng end-->
+                                                <div class="modal-footer">
+                                                    <button type="button"
+                                                            class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">
+                                                        Đóng
+                                                    </button>
+                                                    <button type="submit"
+                                                            class="btn btn-success">Thêm
+                                                    </button>
+                                                </div>
+                                            </form>
+                                            <!-- form thêm khách hàng end-->
+
+                                        </div>
 
                                     </div>
-
                                 </div>
                             </div>
+                            <!-- Modal end-->
+                            <!-- Thông tin khách hàng -->
+                            <div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-2">Tên khách hàng:</label>
+                                    <div class="col-sm-6">
+                                        <label class="thong-tin-tai-khoan"
+                                               th:text="${hoaDon.taiKhoan.hoVaTen}"></label>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label class="col-sm-2">Số điện thoại:</label>
+                                    <div class="col-sm-6">
+                                        <label class="thong-tin-tai-khoan"
+                                               th:text="${hoaDon.taiKhoan.soDienThoai}"></label>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <label class="col-sm-2">Email:</label>
+                                    <div class="col-sm-6">
+                                        <label class="thong-tin-tai-khoan"
+                                               th:text="${hoaDon.taiKhoan.email}"></label>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
-                        <!-- Modal end-->
-                        <!-- Thông tin khách hàng -->
-                        <div>
-                            <div class="row mb-3">
-                                <label class="col-sm-2">Tên khách hàng:</label>
-                                <div class="col-sm-6">
-                                    <label class="thong-tin-tai-khoan"
-                                           th:text="${hoaDon.taiKhoan.hoVaTen}"></label>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label class="col-sm-2">Số điện thoại:</label>
-                                <div class="col-sm-6">
-                                    <label class="thong-tin-tai-khoan"
-                                           th:text="${hoaDon.taiKhoan.soDienThoai}"></label>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <label class="col-sm-2">Email:</label>
-                                <div class="col-sm-6">
-                                    <label class="thong-tin-tai-khoan"
-                                           th:text="${hoaDon.taiKhoan.email}"></label>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
                         <div class="line"></div>
 
                         <!------------------ model chọn địa chỉ ------------------>
@@ -762,7 +762,7 @@
                                                 <tr th:each="dc,state : ${lstTaiKhoanDc.lstDiaChi}"
                                                     class="diaChiRow">
                                                     <form
-                                                            action="/hoa-don/add-dia-chi"
+                                                            action="/ban-hang-tai-quay/hoa-don/add-dia-chi"
                                                             method="post">
                                                         <td
                                                                 th:text="${state.index+1}">
@@ -930,7 +930,7 @@
                             </div>
                         </div>
                         <form onsubmit="return validateThanhToan()"
-                              action="/hoa-don/thanh-toan" class="row g-3"
+                              action="/ban-hang-tai-quay/hoa-don/thanh-toan" class="row g-3"
                               method="post">
                             <input type="hidden" th:value="${hoaDon.id}" name="idhdc">
                             <div class="col">
@@ -1706,109 +1706,109 @@
                             </div>
                             <input value="" name="voucherID" type="hidden" id="voucherID">
                         </form>
-                    <!-- Modal SP-->
-                    <div class="modal fade" th:id="${'addsp'+hoaDon.id}" tabindex="-1"
-                         aria-labelledby="themSanPhamLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <!-- form search -->
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" style="margin: auto;">
-                                            Danh sách sản phẩm
-                                        </h1>
-                                    </div>
-                                    <table id="example" class="display">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col">STT</th>
-                                            <th scope="col">Sản Phẩm</th>
-                                            <th scope="col">Số Lượng</th>
-                                            <th scope="col">Giá Bán</th>
-                                            <th scope="col">Hành Động</th>
-                                        </tr>
-                                        <thead>
-                                        <tbody>
-                                        <tr th:each=" ctsp, state: ${listCtsp}">
-                                            <form
-                                                    action="/hoa-don-chi-tiet/add"
-                                                    method="post">
-                                                <!-- input hidden -->
-                                                <input th:value="${hoaDon.id}"
-                                                       type="hidden" name="idHoaDon">
-                                                <input th:value="${ctsp.id}"
-                                                       type="hidden" name="idCtsp">
+                        <!-- Modal SP-->
+                        <div class="modal fade" th:id="${'addsp'+hoaDon.id}" tabindex="-1"
+                             aria-labelledby="themSanPhamLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <!-- form search -->
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" style="margin: auto;">
+                                                Danh sách sản phẩm
+                                            </h1>
+                                        </div>
+                                        <table id="example" class="display">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">STT</th>
+                                                <th scope="col">Sản Phẩm</th>
+                                                <th scope="col">Số Lượng</th>
+                                                <th scope="col">Giá Bán</th>
+                                                <th scope="col">Hành Động</th>
+                                            </tr>
+                                            <thead>
+                                            <tbody>
+                                            <tr th:each=" ctsp, state: ${listCtsp}">
+                                                <form
+                                                        action="/ban-hang-tai-quay/hoa-don-chi-tiet/add"
+                                                        method="post">
+                                                    <!-- input hidden -->
+                                                    <input th:value="${hoaDon.id}"
+                                                           type="hidden" name="idHoaDon">
+                                                    <input th:value="${ctsp.id}"
+                                                           type="hidden" name="idCtsp">
 
-                                                <th scope="row" style="width: 5%;"
-                                                    th:text="${state.index+1}"></th>
-                                                <td style="width: 50%;">
-                                                    <div class="row">
-                                                        <div class="col-4">
-                                                        <img th:src="${ctsp.hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;"/>
-                                                        </div>
+                                                    <th scope="row" style="width: 5%;"
+                                                        th:text="${state.index+1}"></th>
+                                                    <td style="width: 50%;">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <img th:src="${ctsp.hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;"/>
+                                                            </div>
 
-                                                        <div class="col-8">
-                                                            <div class="info-price">
-                                                                <h6>[[${ctsp.SanPham.ten}]]
-                                                                    [
-                                                                    [[${ctsp.MauSac.ten}]]
-                                                                    -
-                                                                    [[${ctsp.KichCo.ten}]]
-                                                                    ]
-                                                                </h6>
-                                                                <span>Đơn giá: <span
-                                                                        class="gia">
+                                                            <div class="col-8">
+                                                                <div class="info-price">
+                                                                    <h6>[[${ctsp.SanPham.ten}]]
+                                                                        [
+                                                                        [[${ctsp.MauSac.ten}]]
+                                                                        -
+                                                                        [[${ctsp.KichCo.ten}]]
+                                                                        ]
+                                                                    </h6>
+                                                                    <span>Đơn giá: <span
+                                                                            class="gia">
                                                                                                             [[${ctsp.giaHienHanh}]]
                                                                                                             VND</span></span>
-                                                                <p>Tay áo:
-                                                                    [[${ctsp.TayAo.ten}]]
-                                                                </p>
+                                                                    <p>Tay áo:
+                                                                        [[${ctsp.TayAo.ten}]]
+                                                                    </p>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    [[${ctsp.soLuong}]]
-                                                </td>
-                                                <td>
-                                                    [[${ctsp.giaHienHanh}]]VND
-                                                </td>
-                                                <td>
+                                                    </td>
+                                                    <td>
+                                                        [[${ctsp.soLuong}]]
+                                                    </td>
+                                                    <td>
+                                                        [[${ctsp.giaHienHanh}]]VND
+                                                    </td>
+                                                    <td>
 
-                                                    <button
-                                                            th:id="'themSp'+${ctsp.id}"
-                                                            type="submit"
-                                                            class="btn btn-success">Thêm
-                                                    </button>
-                                                    <!-- th:onclick="'handleButtonClick(`themSp'+${ctsp.id}+'`)'"  -->
-                                                </td>
-                                            </form>
-                                        </tr>
+                                                        <button
+                                                                th:id="'themSp'+${ctsp.id}"
+                                                                type="submit"
+                                                                class="btn btn-success">Thêm
+                                                        </button>
+                                                        <!-- th:onclick="'handleButtonClick(`themSp'+${ctsp.id}+'`)'"  -->
+                                                    </td>
+                                                </form>
+                                            </tr>
 
-                                        </tbody>
-                                        <tfoot hidden="hidden">
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Sản Phẩm</th>
-                                            <th>Số Lượng</th>
-                                            <th>Giá Bán</th>
-                                            <th>Hành Động</th>
-                                        </tr>
-                                        </tfoot>
-                                    </table>
+                                            </tbody>
+                                            <tfoot hidden="hidden">
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Sản Phẩm</th>
+                                                <th>Số Lượng</th>
+                                                <th>Giá Bán</th>
+                                                <th>Hành Động</th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
 
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Đóng
-                                    </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Đóng
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     </section>
 </main><!-- End #main -->

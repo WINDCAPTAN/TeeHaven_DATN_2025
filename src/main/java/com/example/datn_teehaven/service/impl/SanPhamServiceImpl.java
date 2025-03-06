@@ -2,8 +2,10 @@ package com.example.datn_teehaven.service.impl;
 
 
 import com.example.datn_teehaven.entyti.SanPham;
+import com.example.datn_teehaven.repository.ChiTietSanPhamRepository;
 import com.example.datn_teehaven.repository.SanPhamRepository;
 import com.example.datn_teehaven.service.SanPhamService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.List;
 public class SanPhamServiceImpl implements SanPhamService {
     @Autowired
     private SanPhamRepository sanPhamRepo;
+
 
     @Override
     public List<SanPham> getAll() {
@@ -85,4 +88,14 @@ public class SanPhamServiceImpl implements SanPhamService {
         return true;
     }
 
+    @Autowired
+    private ChiTietSanPhamRepository repository;
+
+    public void updateSoLuongTon(Long sanPhamId) {
+        Integer tongSoLuong = repository.sumSoLuongTonBySanPhamId(sanPhamId);
+        SanPham sanPham = sanPhamRepo.findById(sanPhamId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm!"));
+        sanPham.setSoLuongTon(tongSoLuong);
+        sanPhamRepo.save(sanPham);
+    }
 }

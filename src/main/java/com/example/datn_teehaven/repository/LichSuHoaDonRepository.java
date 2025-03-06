@@ -1,7 +1,6 @@
 package com.example.datn_teehaven.repository;
 
 
-
 import com.example.datn_teehaven.entyti.LichSuHoaDon;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +17,6 @@ public interface LichSuHoaDonRepository extends JpaRepository<LichSuHoaDon, Long
     List<LichSuHoaDon> findByIdHd(@Param("idhd") Long idhd);
 
     @Query(value = "select * from lich_su_hoa_don where hoa_don_id = :idhd and trang_thai in(0,1,2,3,4,5,6) order by ngay_sua asc",nativeQuery = true)
+
     List<LichSuHoaDon> findByIdhdNgaySuaAsc(@Param("idhd") Long idhd);
 }

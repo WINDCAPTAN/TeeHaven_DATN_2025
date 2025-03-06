@@ -15,6 +15,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -129,7 +131,6 @@ public class HoaDon {
         }
         return total;
     }
-
 
     public Long tongTienHoaDonKhiGiam() {
 

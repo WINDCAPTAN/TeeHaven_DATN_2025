@@ -1,10 +1,10 @@
 package com.example.datn_teehaven.repository;
 
-
 import com.example.datn_teehaven.entyti.HoaDonChiTiet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -12,11 +12,10 @@ import java.util.List;
 
 
 @Repository
-public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Long> {
 
+public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Long> {
     @Query("Select hdct from HoaDonChiTiet hdct where hdct.hoaDon.id=:idHoaDon")
     List<HoaDonChiTiet> findByIdHoaDon(@Param("idHoaDon") Long idHoaDon);
-
 
     @Query(value = "WITH RankedHoaDonChiTiet AS (\n" +
             "  SELECT\n" +
@@ -37,9 +36,14 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
             "\tdon_gia,\n" +
             "\tghi_chu,\n" +
             "\tngay_tao,\n" +
+
             "\tngay_sua,\n" +
             "\tnguoi_tao,\n" +
             "\tnguoi_sua,\n" +
+
+            "\tnguoi_tao,\n" +
+//            "\tnguoi_sua,\n" +
+
             "    hoa_don_id,\n" +
             "    chi_tiet_san_pham_id,\n" +
             "    trang_thai\n" +
@@ -52,8 +56,6 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
     List<HoaDonChiTiet> fillAllIdHoaDonTrangThaiHoanThanh(@Param("listIdHoaDon") List<Long> listIdHoaDon);
 
 
-    @Query("SELECT SUM(hd.soLuong) FROM HoaDonChiTiet hd WHERE hd.trangThai=0 and (hd.hoaDon.trangThai =3 or hd.hoaDon.trangThai = 6) and MONTH(hd.hoaDon.ngayTao) = MONTH(:ngayTao)")
-    Integer sumSanPhamHoaDonThang(@Param("ngayTao") Date ngayTao);
 
     @Query("select SUM(hd.soLuong) from HoaDonChiTiet hd where hd.trangThai=0 and (hd.hoaDon.trangThai =3 or hd.hoaDon.trangThai = 6) and CAST(hd.hoaDon.ngayTao AS DATE) = :ngayTao")
     Integer sumSanPhamHoaDonNgay(@Param("ngayTao") Date ngayTao);
@@ -110,4 +112,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
             "GROUP BY h.chiTietSanPham.sanPham.ten " +
             "ORDER BY SUM(h.soLuong) DESC ")
     List<Object[]> findByTongSoLuongAll();
+
+    @Query("SELECT SUM(hd.soLuong) FROM HoaDonChiTiet hd WHERE hd.trangThai=0 and (hd.hoaDon.trangThai =3 or hd.hoaDon.trangThai = 6) and MONTH(hd.hoaDon.ngayTao) = MONTH(:ngayTao)")
+    Integer sumSanPhamHoaDonThang(@Param("ngayTao") Date ngayTao);
 }

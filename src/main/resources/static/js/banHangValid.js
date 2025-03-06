@@ -1,4 +1,3 @@
-
 function validatePhoneNumber(phoneNumber) {
     // Biểu thức chính quy để kiểm tra số điện thoại cơ bản
     var phonePattern = /((09|03|07|08|05)+([0-9]{8})\b)/g;
@@ -8,24 +7,20 @@ function validatePhoneNumber(phoneNumber) {
     return phonePattern.test(phoneNumber);
 }
 function validateAndSubmit(slg, sl, idCtsp) {
-
     var soLuong = document.getElementById('soLuongEdit' + idCtsp).value;
     var soLuongGoc = slg;
+    var errorElement = document.getElementById('errorSoLuongEdit' + idCtsp);
+    
     if (isNaN(soLuong) || soLuong < 0) {
         console.log('eeee')
-        document.getElementById('errorSoLuongEdit').innerHTML = "Số lượng không hợp lệ!"
-
-        // alert("Vui lòng nhập một số nguyên không âm.");
-    } else if (parseInt(soLuong) > parseInt(soLuongGoc)) {
-        document.getElementById('errorSoLuongEdit').innerHTML = "Số lượng không được lớn hơn số lượng trong kho"
-
-        // alert("Số lượng không được lớn hơn số lượng hiện tại (" + soLuongGoc + ").");
+        errorElement.innerHTML = "Số lượng không hợp lệ!"
+    } else if (parseInt(soLuong) > parseInt(soLuongGoc) + parseInt(sl)) {
+        errorElement.innerHTML = "Số lượng không được lớn hơn tổng số lượng trong kho và số lượng hiện tại"
+        errorElement.style.color = "red";
     } else if (soLuong === "") {
-        document.getElementById('errorSoLuongEdit').innerHTML = "Vui lòng nhập số lượng"
-        // alert("Vui lòng nhập số lượng");
+        errorElement.innerHTML = "Vui lòng nhập số lượng"
+        errorElement.style.color = "red";
     } else {
-        // alert("Số lượng hợp lệ: " + soLuong);
-
         // Nếu số lượng hợp lệ, thực hiện submit form
         document.getElementById("myForm" + idCtsp).submit();
     }

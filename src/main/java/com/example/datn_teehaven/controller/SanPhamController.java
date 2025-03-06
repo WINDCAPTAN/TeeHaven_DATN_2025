@@ -38,7 +38,7 @@ public class SanPhamController {
     public String getAll(Model model){
         model.addAttribute("listSP",sanPhamService.getAll());
         model.addAttribute("sanPham",new SanPham());
-        model.addAttribute("listTH",thuongHieuService.getAll());
+        model.addAttribute("listTH",thuongHieuService.getAllDangHoatDong());
         return "admin-template/san_pham/san-pham";
     }
     @GetMapping("/dang-hoat-dong")
@@ -72,7 +72,7 @@ public class SanPhamController {
             model.addAttribute("checkModal", "modal");
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("listSP", sanPhamService.getAll());
-            model.addAttribute("listTH", thuongHieuService.getAll());
+            model.addAttribute("listTH", thuongHieuService.getAllDangHoatDong());
             return "admin-template/san_pham/san-pham";
         }
 
@@ -82,7 +82,7 @@ public class SanPhamController {
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("checkTenTrung", "Sản phẩm đã tồn tại");
             model.addAttribute("listSP", sanPhamService.getAll());
-            model.addAttribute("listTH", thuongHieuService.getAll());
+            model.addAttribute("listTH", thuongHieuService.getAllDangHoatDong());
             return "admin-template/san_pham/san-pham";
         }
 
@@ -123,7 +123,7 @@ public class SanPhamController {
                          Model model){
         SanPham sanPham = sanPhamService.getById(id);
         model.addAttribute("sanPham",sanPham);
-        model.addAttribute("listTH",thuongHieuService.getAll());
+        model.addAttribute("listTH",thuongHieuService.getAllDangHoatDong());
         return "admin-template/san_pham/sua-san-pham";
     }
 
@@ -137,7 +137,7 @@ public class SanPhamController {
         if (result.hasErrors()) {
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("listSP", sanPhamService.getAll());
-            model.addAttribute("listTH", thuongHieuService.getAll());
+            model.addAttribute("listTH", thuongHieuService.getAllDangHoatDong());
             return "admin-template/san_pham/sua-san-pham";
         }
 
@@ -145,7 +145,7 @@ public class SanPhamController {
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("checkTenTrung", "Sản phẩm đã tồn tại");
             model.addAttribute("listSP", sanPhamService.getAll());
-            model.addAttribute("listTH", thuongHieuService.getAll());
+            model.addAttribute("listTH", thuongHieuService.getAllDangHoatDong());
             return "admin-template/san_pham/sua-san-pham";
         }
 
