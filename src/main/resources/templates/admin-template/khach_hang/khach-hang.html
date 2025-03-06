@@ -131,7 +131,7 @@
 </aside><!-- End Sidebar-->
 
 <main id="main" class="main">
-    // code ở đây
+
     <div class="pagetitle">
         <h1>Quản Lý Khách Hàng</h1>
     </div><!-- End Page Title -->
@@ -147,13 +147,13 @@
                             <div class="col-md-8">
                                 <label>Trạng thái:</label>
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                                    <a href="/admin/khach-hang" class="btn btn-outline-primary">
+                                    <a href="/admin/khach-hang" class="btn btn-outline-primary active" id="all-btn">
                                         Tất cả</a>
                                     <a href="/admin/khach-hang/dang-hoat-dong"
-                                       class="btn btn-outline-primary">
+                                       class="btn btn-outline-primary" id="active-btn">
                                         Đang hoạt động</a>
                                     <a href="/admin/khach-hang/ngung-hoat-dong"
-                                       class="btn btn-outline-primary">
+                                       class="btn btn-outline-primary" id="inactive-btn">
                                         Ngừng hoạt động</a>
                                 </div>
                             </div>
@@ -329,30 +329,70 @@
 </main><!-- End #main -->
 
 <!-- Thông báo thành công -->
-<script th:if="${checkThongBao=='thanhCong'}">
-    window.addEventListener('DOMContentLoaded', (event) => {
-        var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
-        liveToast.show();
+<script th:if="${checkThongBao == 'thanhCong'}">
+    window.addEventListener('DOMContentLoaded', () => {
+        let toastEl = document.getElementById('liveToastSuccess');
+        let toast = new bootstrap.Toast(toastEl);
+        toast.show();
     });
 </script>
-<div id="liveToastSuccess" class="toast" style="background-color: rgba(62, 189, 97,0.2); border:2px solid #3ebd61;">
-    <div class="toast-body">
-        <span style="font-weight: bold; color: #3ebd61;">Thêm khách hàng thành công! Mật khẩu đã gửi qua email.</span>
+<div id="liveToastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert"
+     aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+        <div class="toast-body">
+            Thêm khách hàng thành công! Mật khẩu đã gửi qua email.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
     </div>
 </div>
 
+
 <!-- Thông báo thất bại -->
-<script th:if="${checkThongBao=='thaiBai'}">
-    window.addEventListener('DOMContentLoaded', (event) => {
-        var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
-        liveToast.show();
+<script th:if="${checkThongBao == 'thaiBai'}">
+    window.addEventListener('DOMContentLoaded', () => {
+        let toastEl = document.getElementById('liveToastDanger');
+        let toast = new bootstrap.Toast(toastEl);
+        toast.show();
+        var myModal = new bootstrap.Modal(document.getElementById('them-khach-hang'));
+        myModal.show();
     });
 </script>
-<div id="liveToastDanger" class="toast" style="background-color: rgb(252,134,134); border:2px solid #ff2020;">
-    <div class="toast-body">
-        <span style="font-weight: bold; color: white;">Lỗi! Không thể thêm khách hàng.</span>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentPath = window.location.pathname;
+        const allBtn = document.getElementById('all-btn');
+        const activeBtn = document.getElementById('active-btn');
+        const inactiveBtn = document.getElementById('inactive-btn');
+
+        // Xóa lớp 'active' khỏi tất cả các nút trước khi đặt lại
+        [allBtn, activeBtn, inactiveBtn].forEach(btn => btn?.classList.remove('active'));
+
+        // Chỉ thêm 'active' vào nút tương ứng với đường dẫn hiện tại
+        if (currentPath === '/admin/khach-hang') {
+            allBtn?.classList.add('active');
+        } else if (currentPath === '/admin/khach-hang/dang-hoat-dong') {
+            activeBtn?.classList.add('active');
+        } else if (currentPath === '/admin/khach-hang/ngung-hoat-dong') {
+            inactiveBtn?.classList.add('active');
+        }
+    });
+
+</script>
+
+<div id="liveToastDanger" class="toast align-items-center text-white bg-danger border-0" role="alert"
+     aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+        <div class="toast-body" th:text="${errorMessage}">
+            <!-- Thông báo lỗi cụ thể sẽ hiển thị ở đây -->
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
     </div>
 </div>
+
+
 
 
 
@@ -423,6 +463,20 @@
         /* Sử dụng pseudo-element :after để ẩn văn bản cuối cùng */
         content: ''; /* Xóa nội dung */
     }
+
+    .toast {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+        min-width: 300px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .toast-body {
+        font-weight: bold;
+    }
+
 </style>
 <!--    thư viện của bảng tích hợp tìm kiếm end-->
 <!-- ======= Footer ======= -->

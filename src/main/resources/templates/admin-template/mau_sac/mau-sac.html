@@ -336,6 +336,19 @@
     background-color: #f8d7da;
     color: #721c24;
   }
+
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    min-width: 300px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .toast-body {
+    font-weight: bold;
+  }
 </style>
 
 <script>
@@ -358,7 +371,63 @@
     }
   });
 
+
 </script>
+
+<script>
+  function validateMauSac(input) {
+    var regex = /^[\p{L}\s]+$/u; // Chỉ cho phép chữ cái tiếng Việt có dấu và khoảng trắng
+    if (!regex.test(input.value)) {
+      input.setCustomValidity("Tên màu sắc chỉ được chứa chữ cái tiếng Việt có dấu.");
+    } else {
+      input.setCustomValidity("");
+    }
+  }
+</script>
+
+<!-- Hiển thị thông báo thành công -->
+<script th:if="${checkThongBao == 'thanhCong'}">
+  window.addEventListener('DOMContentLoaded', () => {
+    var toastEl = document.getElementById('liveToastSuccess');
+    var toast = new bootstrap.Toast(toastEl);
+    toast.show();
+  });
+</script>
+
+<div id="liveToastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert"
+     aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+    <div class="toast-body" th:text="${successMessage}">
+      <!-- Thông báo thành công sẽ hiển thị ở đây -->
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+            aria-label="Close"></button>
+  </div>
+</div>
+
+<!-- Hiển thị thông báo thất bại -->
+<script th:if="${checkThongBao == 'thaiBai'}">
+  window.addEventListener('DOMContentLoaded', () => {
+    var toastEl = document.getElementById('liveToastDanger');
+    var toast = new bootstrap.Toast(toastEl);
+    toast.show();
+    var myModal = new bootstrap.Modal(document.getElementById('them-mau-sac'));
+    myModal.show();
+  });
+</script>
+
+<div id="liveToastDanger" class="toast align-items-center text-white bg-danger border-0" role="alert"
+     aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+    <div class="toast-body" th:text="${errorMessage}">
+      <!-- Thông báo lỗi cụ thể sẽ hiển thị ở đây -->
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+            aria-label="Close"></button>
+  </div>
+</div>
+
+
 
 </body>
 

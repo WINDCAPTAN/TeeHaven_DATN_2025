@@ -15,6 +15,10 @@ import java.util.Optional;
 @Repository
 public interface KhachHangRepository extends JpaRepository<TaiKhoan, Long> {
 
+    Optional<TaiKhoan> findByEmail(String email);
+    Optional<TaiKhoan> findByTenTaiKhoan(String tenTaiKhoan);
+    Optional<TaiKhoan> findBySoDienThoai(String soDienThoai);
+
     @Query(value = "SELECT * FROM tai_khoan WHERE vai_tro_id = 2 ORDER BY ngay_sua DESC", nativeQuery = true)
     List<TaiKhoan> fillAllKhachHang();
 
@@ -26,8 +30,6 @@ public interface KhachHangRepository extends JpaRepository<TaiKhoan, Long> {
 
     @Query(value = "select top(1) * from tai_khoan where ho_va_ten =N'Khách lẻ'", nativeQuery = true)
     TaiKhoan findKhachLe();
-
-    Optional<TaiKhoan> findByEmail(String email);
 
     @Transactional
     @Modifying
