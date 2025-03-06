@@ -24,6 +24,7 @@ public class ChiTietSanPham {
     // dung khong dep trai
     // huynh dep trai
     // duong xau trai nhat
+    // phong
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

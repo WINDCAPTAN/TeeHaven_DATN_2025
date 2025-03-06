@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,12 +15,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/admin/nhan-vien")
 public class NhanVienController {
     @Autowired
     private NhanVienService nhanVienService;
+
+    @Autowired
+            private PasswordEncoder passwordEncoder;
+
+    String random2 = ranDom1();
 
 //.
 
@@ -70,11 +77,13 @@ public class NhanVienController {
         } else {
             redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
             String url = request.getRequestURL().toString();
-            System.out.println(url);
             url = url.replace(request.getServletPath(), "");
-            System.out.println(userInfo);
+            
+
+            
             userInfo.setNgayTao(new Date());
             userInfo.setNgaySua(new Date());
+            userInfo.setMatKhau(passwordEncoder.encode(random2));
             VaiTro vaiTro = new VaiTro();
             vaiTro.setId(Long.valueOf(1));
             userInfo.setVaiTro(vaiTro);
@@ -151,6 +160,53 @@ public class NhanVienController {
             nhanVienService.update(taiKhoan);
             return "redirect:/admin/nhan-vien";
         }
+    }
+
+    @GetMapping("/update-mat-khau")
+    public String updateMatKhau(
+            Model model,
+            @RequestParam("idNhanVien") String idNhanVien,
+            @RequestParam("matKhauCu") String matKhauCu,
+            @RequestParam("nhapLaiMatKhauMoi") String nhapLaiMatKhauMoi,
+            RedirectAttributes redirectAttributes
+    ) {
+        TaiKhoan nhanVien = nhanVienService.getById(Long.valueOf(idNhanVien));
+        if (!passwordEncoder.matches(matKhauCu, nhanVien.getMatKhau())) {
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBaiTrue");
+            redirectAttributes.addFlashAttribute("checkModalLoi", "true");
+        } else {
+            nhanVien.setNgaySua(new Date());
+            nhanVien.setMatKhau(passwordEncoder.encode(nhapLaiMatKhauMoi));
+            nhanVienService.update(nhanVien);
+            redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+            return "redirect:/admin/nhan-vien/view-update-nhan-vien/" + idNhanVien;
+        }
+        return "redirect:/admin/nhan-vien/view-update-nhan-vien/" + idNhanVien;
+
+    }
+
+
+
+    public String ranDom1() {
+        // Khai báo một mảng chứa 6 số nguyên ngẫu nhiên
+        String ran = "";
+        int[] randomNumbers = new int[6];
+
+        // Tạo một đối tượng Random
+        Random random = new Random();
+
+        // Đổ số nguyên ngẫu nhiên vào mảng
+        for (int i = 0; i < 6; i++) {
+            randomNumbers[i] = random.nextInt(100); // Giới hạn số ngẫu nhiên từ 0 đến 99
+        }
+
+        // In ra các số nguyên ngẫu nhiên trong mảng
+        System.out.println("Dãy 6 số nguyên ngẫu nhiên:");
+        for (int number : randomNumbers) {
+            ran = ran + number;
+            System.out.println(number);
+        }
+        return ran;
     }
 
 }

@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public interface VoucherRepository extends JpaRepository<Voucher, Long> {
+
 
     @Query(value = "select * from voucher where ma_voucher = 'vouchernull'",nativeQuery = true)
     Voucher getByMaVoucher();

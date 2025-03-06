@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Configuration
 public class FireBaeConfig {
-
+//huynh
     @Value("${app.firebase.config.path}")
     private String firebaseConfigPath;
 

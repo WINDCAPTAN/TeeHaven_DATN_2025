@@ -147,4 +147,8 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     ChiTietSanPham findChiTietSanPham(@Param("idSanPham") Long idSanPham, @Param("idMauSac") Long idMauSac,
                                       @Param("idTayAo") Long idTayAo, @Param("idKichCo") Long idKichCo);
 
+    @Query("SELECT COALESCE(SUM(c.soLuong), 0) FROM ChiTietSanPham c WHERE c.sanPham.id = :sanPhamId")
+    Integer sumSoLuongTonBySanPhamId(@Param("sanPhamId") Long sanPhamId);
+
+
 }

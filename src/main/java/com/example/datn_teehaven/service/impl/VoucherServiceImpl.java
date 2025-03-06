@@ -1,6 +1,7 @@
 package com.example.datn_teehaven.service.impl;
 
 
+
 import com.example.datn_teehaven.entyti.Voucher;
 import com.example.datn_teehaven.repository.VoucherRepository;
 import com.example.datn_teehaven.service.VoucherService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 
 @Service
 public class VoucherServiceImpl implements VoucherService {
@@ -49,7 +51,6 @@ public class VoucherServiceImpl implements VoucherService {
     }
 
 
-
     @Override
     public List<Voucher> fillAllDaKetThuc() {
         return voucherRepository.fillAllDaKetThuc();
@@ -75,7 +76,6 @@ public class VoucherServiceImpl implements VoucherService {
         }
         return true;
     }
-
 
 
     @Override
@@ -155,6 +155,4 @@ public class VoucherServiceImpl implements VoucherService {
             update(voucher);
         }
     }
-
-
 }

@@ -6,25 +6,26 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>TeeHaven</title>
+  <title>Tee Haven</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <link href="../../../static/img/logo_teehaven.png" rel="icon">
-  <link href="../../../static/img/logo_teehaven.png" rel="apple-touch-icon">
+  <link href="../../../static/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <div th:replace="~{admin-template/fragment/header :: header}"></div>
 
 </head>
 
 <body>
+
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
 
   <div class="d-flex align-items-center justify-content-between">
     <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
-      <img src="../../static/img/logo.png" alt="">
-      <span class="d-none d-lg-block">TeeHaven</span>
+      <img src="../../static/img/logo_teehaven.png" alt="">
+      <span class="d-none d-lg-block">Tee Haven</span>
     </a>
     <i class="bi bi-list toggle-sidebar-btn"></i>
   </div><!-- End Logo -->
@@ -44,6 +45,17 @@
             <span>Nhân Viên</span>
           </li>
 
+          <!--                    <li>-->
+          <!--                        <hr class="dropdown-divider">-->
+          <!--                    </li>-->
+
+          <!--                    <li>-->
+          <!--                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">-->
+          <!--                            <i class="bi bi-person"></i>-->
+          <!--                            <span>Thông tin của tôi</span>-->
+          <!--                        </a>-->
+          <!--                    </li>-->
+
           <li>
             <hr class="dropdown-divider">
           </li>
@@ -62,6 +74,7 @@
   </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->
+
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
@@ -118,6 +131,7 @@
         </li>
       </ul>
     </li><!-- End Components Nav -->
+
     <li class="nav-item">
       <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
         <i class="bi bi-receipt-cutoff"></i>
@@ -148,6 +162,7 @@
         </li>
       </ul>
     </li><!-- End Tables Nav -->
+
     <li class="nav-item">
       <a class="nav-link collapsed" href="/admin/voucher">
         <i class="bi bi-ticket-perforated-fill"></i>
@@ -284,6 +299,14 @@
             <!-- form sửa khách hàng end-->
             <!-- Modal -->
             <script th:if="${checkModalLoi=='true'}">
+              // <script>
+              //     function showToast() {
+              //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+              //         liveToast.show();
+              //     }
+              //     // Show the toast when the page loads
+              //     document.addEventListener('DOMContentLoaded', showToast);
+              //
               window.addEventListener('DOMContentLoaded', (event) => {
                 // Hiển thị modal
                 var liveToast = new bootstrap.Modal(document.getElementById('modalDoiMatKhau'));
@@ -375,20 +398,34 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
   <div class="copyright">
-    <!-- &copy; Copyright <strong><span>TeeHaven</span></strong>. All Rights Reserved -->
+    <!-- &copy; Copyright <strong><span>Tee Haven</span></strong>. All Rights Reserved -->
   </div>
   <div class="credits">
     <!-- All the links in the footer should remain intact. -->
     <!-- You can delete the links only if you purchased the pro version. -->
     <!-- Licensing information: https://bootstrapmade.com/license/ -->
     <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-    Website bán áo TeeHaven
+    Website bán áo Tee Haven
   </div>
 </footer><!-- End Footer -->
 
 <!--Thông báo thành công-->
 <div class="toast-container position-fixed top-0 end-0 p-3">
   <script th:if="${checkThongBao=='thanhCong'}">
+    // <script>
+    //     function showToast() {
+    //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
+    //         liveToast.show();
+    //
+    //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+    //         liveToast.show();
+    //
+    //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+    //         liveToast.show();
+    //     }
+    //     // Show the toast when the page loads
+    //     document.addEventListener('DOMContentLoaded', showToast);
+    //
     window.addEventListener('DOMContentLoaded', (event) => {
       // Hiển thị modal
       var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
@@ -424,6 +461,14 @@
 <!--Thông báo thất bại-->
 <div class="toast-container position-fixed top-0 end-0 p-3">
   <script th:if="${checkThongBao=='thaiBai'}">
+    // <script>
+    //     function showToast() {
+    //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+    //         liveToast.show();
+    //     }
+    //     // Show the toast when the page loads
+    //     document.addEventListener('DOMContentLoaded', showToast);
+    //
     window.addEventListener('DOMContentLoaded', (event) => {
       // Hiển thị modal
       var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
@@ -458,6 +503,14 @@
 <!--Thông báo thất bại-->
 <div class="toast-container position-fixed top-0 end-0 p-3">
   <script th:if="${checkThongBao=='thaiBaiTrue'}">
+    // <script>
+    //     function showToast() {
+    //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+    //         liveToast.show();
+    //     }
+    //     // Show the toast when the page loads
+    //     document.addEventListener('DOMContentLoaded', showToast);
+    //
     window.addEventListener('DOMContentLoaded', (event) => {
       // Hiển thị modal
       var liveToast = new bootstrap.Toast(document.getElementById('thaiBaiTrue'));
