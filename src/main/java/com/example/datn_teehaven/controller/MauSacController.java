@@ -55,46 +55,27 @@ public class MauSacController {
             Model model,
             RedirectAttributes redirectAttributes
     ) {
-        // Kiểm tra trường trống
-        if (mauSac.getTen() == null || mauSac.getTen().trim().isEmpty()) {
-            result.rejectValue("ten", "error.mauSac", "Tên màu sắc không được để trống.");
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            return "/admin-template/mau_sac/sua-mau-sac"; // Giữ nguyên trang
-        }
-
-        // Kiểm tra lỗi trong quá trình nhập dữ liệu
-        if (result.hasErrors()) {
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            return "/admin-template/mau_sac/sua-mau-sac"; // Giữ nguyên trang
-        }
-
-        // Kiểm tra ký tự đặc biệt trong tên màu sắc
         if (!mauSacService.isTenValid(mauSac.getTen())) {
-            result.rejectValue("ten", "error.mauSac", "Tên màu sắc không được chứa ký tự đặc biệt.");
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            return "/admin-template/mau_sac/sua-mau-sac"; // Giữ nguyên trang
+            result.rejectValue("ten", "error.mauSac", "Tên màu sắc chỉ được chứa chữ cái tiếng Việt có dấu.");
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("errorMessage", "Tên màu sắc không hợp lệ.");
+            return "/admin-template/mau_sac/sua-mau-sac";
         }
 
-        // Kiểm tra trùng tên khi cập nhật
         if (!mauSacService.checkTenTrungSua(mauSac.getId(), mauSac.getTen())) {
             model.addAttribute("checkTenTrung", "Màu sắc đã tồn tại");
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            return "/admin-template/mau_sac/sua-mau-sac"; // Giữ nguyên trang
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("errorMessage", "Tên màu sắc đã tồn tại.");
+            return "/admin-template/mau_sac/sua-mau-sac";
         }
 
         // Cập nhật dữ liệu màu sắc
         mauSac.setNgaySua(new Date());
         mauSacService.update(mauSac);
 
-        // Lưu thông báo và chuyển hướng
-        redirectAttributes.addFlashAttribute("checkThongBaoUpdate", "thanhCongUpdate");
-        return "redirect:/admin/mau-sac"; // Chuyển hướng
-    }
-
-    @GetMapping("/add")
-    public String showAddForm(Model model) {
-        model.addAttribute("mauSac", new MauSac());
-        return "/admin-template/mau_sac/them-mau-sac"; // Đường dẫn tới template cho form thêm
+        redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+        redirectAttributes.addFlashAttribute("successMessage", "Cập nhật màu sắc thành công!");
+        return "redirect:/admin/mau-sac";
     }
 
     @PostMapping("/add")
@@ -104,42 +85,31 @@ public class MauSacController {
             Model model,
             RedirectAttributes redirectAttributes
     ) {
-        // Kiểm tra trường trống
-        if (mauSac.getTen() == null || mauSac.getTen().trim().isEmpty()) {
-            result.rejectValue("ten", "error.mauSac", "Tên màu sắc không được để trống.");
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            return "/admin-template/mau_sac/mau-sac"; // Giữ nguyên trang
-        }
-
-        // Kiểm tra lỗi trong quá trình nhập dữ liệu
-        if (result.hasErrors()) {
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            return "/admin-template/mau_sac/mau-sac"; // Giữ nguyên trang
-        }
-
-        // Kiểm tra ký tự đặc biệt trong tên màu sắc
+        // Kiểm tra tên có hợp lệ không
         if (!mauSacService.isTenValid(mauSac.getTen())) {
-            result.rejectValue("ten", "error.mauSac", "Tên màu sắc không được chứa ký tự đặc biệt.");
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            return "/admin-template/mau_sac/mau-sac"; // Giữ nguyên trang
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("errorMessage", "Tên màu sắc chỉ được chứa chữ cái tiếng Việt có dấu.");
+            return "redirect:/admin/mau-sac"; // Chuyển hướng về trang danh sách
         }
 
-        // Kiểm tra trùng tên khi thêm
         if (!mauSacService.checkTenTrung(mauSac.getTen())) {
-            model.addAttribute("checkTenTrung", "Màu sắc đã tồn tại");
-            model.addAttribute("listMauSac", mauSacService.findAll());
-            return "/admin-template/mau_sac/them-mau-sac"; // Giữ nguyên trang
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("errorMessage", "Tên màu sắc đã tồn tại.");
+            return "redirect:/admin/mau-sac"; // Chuyển hướng về trang danh sách
         }
 
-        // Lưu thông báo và thêm màu sắc
+        // Lưu màu sắc nếu hợp lệ
         mauSac.setMaMau("MS" + mauSacService.genMaTuDong());
         mauSac.setNgayTao(new Date());
         mauSac.setNgaySua(new Date());
         mauSac.setTrangThai(0);
         mauSacService.save(mauSac);
 
-        redirectAttributes.addFlashAttribute("checkThongBaoAdd", "thanhCongAdd"); // Thêm thông báo cho việc thêm
-        return "redirect:/admin/mau-sac";
+        redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+        redirectAttributes.addFlashAttribute("successMessage", "Thêm màu sắc thành công!");
+        return "redirect:/admin/mau-sac"; // Chuyển hướng về danh sách màu sắc
     }
+
+
 }
 

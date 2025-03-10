@@ -1,8 +1,27 @@
 package com.example.datn_teehaven.entyti;
 
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -52,6 +71,7 @@ public class Voucher {
 
     @Column(name = "so_luong")
     @NotNull(message = "Số lượng không để trống")
+    @DecimalMin(value = "1", inclusive = true,message = "Số lượng  không nhỏ hơn 1")
     @DecimalMin(value = "0", inclusive = true,message = "Số lượng  không nhỏ hơn 0")
     @DecimalMax(value = "100000", inclusive = true,message = "Số lượng  không lớn hơn 100,000")
     private BigDecimal soLuong;

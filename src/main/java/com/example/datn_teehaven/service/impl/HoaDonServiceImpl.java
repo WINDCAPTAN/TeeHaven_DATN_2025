@@ -1,5 +1,13 @@
 package com.example.datn_teehaven.service.impl;
 
+
+
+
+import com.example.datn_teehaven.entyti.HoaDon;
+import com.example.datn_teehaven.repository.HoaDonRepository;
+import com.example.datn_teehaven.service.HoaDonService;
+import com.example.datn_teehaven.service.LichSuHoaDonService;
+
 import com.example.datn_teehaven.entyti.HoaDon;
 import com.example.datn_teehaven.repository.HoaDonRepository;
 import com.example.datn_teehaven.service.HoaDonService;
@@ -7,11 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+
 @Service
 public class HoaDonServiceImpl implements HoaDonService {
 
     @Autowired
-    HoaDonRepository hoaDonRepository;
+    private HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    LichSuHoaDonService lichSuHoaDonService;
+
+
     @Override
     public List<HoaDon> findAll() {
         return hoaDonRepository.findAll();
@@ -23,6 +38,9 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
+    public void deleteById(Long id) {
+        hoaDonRepository.deleteById(id);}
+
     public List<HoaDon> find5ByTrangThai(Integer trangThai) {
         return hoaDonRepository.find5ByTrangThai(trangThai);
     }
@@ -36,4 +54,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     public void saveOrUpdate(HoaDon hoaDon) {
         hoaDonRepository.save(hoaDon);
     }
+
+
+    @Override
+    public List<HoaDon> findAllHoaDon() {
+        return hoaDonRepository.findAllHoaDon();
+    }
+
 }

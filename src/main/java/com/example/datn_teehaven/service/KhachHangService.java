@@ -6,6 +6,7 @@ import com.example.datn_teehaven.entyti.TaiKhoan;
 import java.util.List;
 
 public interface KhachHangService {
+
     List<TaiKhoan> getAll();
 
     List<TaiKhoan> getAllDangHoatDong();
@@ -29,6 +30,10 @@ public interface KhachHangService {
     boolean checkTenTkTrungSua(Long id, String ten);
 
     boolean checkEmailSua(Long id, String email);
+
+    boolean checkSoDienThoaiTrung(String soDienThoai);
+
+    boolean checkSoDienThoaiTrungSua(Long id, String soDienThoai);
 
     TaiKhoan findKhachLe();
 

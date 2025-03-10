@@ -36,4 +36,11 @@ public class LichSuHoaDonServiceImpl implements LichSuHoaDonService {
         return lichSuHoaDonRepository.findByIdHd(idhd);
     }
 
+    @Override
+    public List<LichSuHoaDon> findByIdhdNgaySuaAsc(Long idhd) {
+
+        return lichSuHoaDonRepository.findByIdhdNgaySuaAsc(idhd);
+
+    }
+
 }

@@ -16,7 +16,7 @@ import java.util.Date;
 @RequestMapping("/ban-hang-tai-quay")
 @RequiredArgsConstructor
 public class BanHangController {
-    // 123 ///longduong //huynh
+    // 123 ///longduong //huynh //123 // dung123
     @Autowired
     HttpServletRequest request;
     @Autowired
@@ -164,6 +164,30 @@ public class BanHangController {
         } else {
             return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + idHoaDon;
         }
+    }
+
+    @PostMapping("/hoa-don/add-khach-hang")
+    public String addKhachHang(@RequestParam Long idTaiKhoan, @RequestParam Long idhdc, RedirectAttributes redirectAttributes) {
+        HoaDon hd = hoaDonService.findById(idhdc);
+        if (idTaiKhoan == -1) {
+            hd.setTaiKhoan(khachHangService.findKhachLe());
+            hd.setDiaChiNguoiNhan(null);
+            hd.setThanhPho(null);
+            hd.setQuanHuyen(null);
+            hd.setPhuongXa(null);
+            hd.setNguoiNhan(null);
+            hd.setSdtNguoiNhan(null);
+        } else {
+            TaiKhoan kh = khachHangService.getById(idTaiKhoan);
+            hd.setTaiKhoan(kh);
+            hd.setNguoiNhan(kh.getHoVaTen());
+            hd.setSdtNguoiNhan(kh.getSoDienThoai());
+
+        }
+
+        hoaDonService.saveOrUpdate(hd);
+        thongBao(redirectAttributes, "Thành công", 1);
+        return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
     }
 
     void thongBao(RedirectAttributes redirectAttributes, String thongBao, int trangThai) {
