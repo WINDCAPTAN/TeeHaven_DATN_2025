@@ -83,7 +83,7 @@ public class TaiKhoan {
     private String tenTaiKhoan;
 
     @Column(name = "mat_khau")
-    @NotBlank(message = "Mật khẩu không được trống")
+//    @NotBlank(message = "Mật khẩu không được trống")
     private String matKhau;
 
     @Column(name = "ngay_tao")

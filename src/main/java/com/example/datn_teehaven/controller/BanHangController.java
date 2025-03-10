@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/ban-hang-tai-quay")
@@ -203,6 +204,75 @@ public class BanHangController {
             redirectAttributes.addFlashAttribute("thongBao", thongBao);
         }
 
+    }
+
+    @PostMapping("/khach-hang/them-nhanh")
+    public String add(@ModelAttribute("khachHang") TaiKhoan taiKhoan, @RequestParam Long idhdc,
+                      Model model,
+                      RedirectAttributes redirectAttributes,
+                      HttpServletRequest request,
+                      @RequestParam("email") String email) {
+        String random3 = ranDom1();
+        TaiKhoan userInfo = taiKhoan;
+        TaiKhoan taiKhoanEntity = new TaiKhoan();
+        taiKhoanEntity.setNgaySinh(taiKhoan.getNgaySinh());
+        if (!taiKhoanEntity.isValidNgaySinh()) {
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("checkNgaySinh", "ngaySinh");
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        } else if (!khachHangService.checkTenTaiKhoanTrung(taiKhoan.getTenTaiKhoan())) {
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("checkTenTrung", "Tên tài khoản đã tồn tại");
+            redirectAttributes.addFlashAttribute("checkEmailTrung", "Email đã tồn tại");
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        } else if (!khachHangService.checkEmail(taiKhoan.getEmail())) {
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("checkEmailTrung", "Email đã tồn tại");
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        } else {
+            redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+            String url = request.getRequestURL().toString();
+            System.out.println(url);
+            url = url.replace(request.getServletPath(), "");
+            khachHangService.sendEmail(userInfo, url, random3);
+            System.out.println(userInfo);
+            userInfo.setNgayTao(new java.util.Date());
+            userInfo.setNgaySua(new java.util.Date());
+            VaiTro vaiTro = new VaiTro();
+            vaiTro.setId(Long.valueOf(2));
+            userInfo.setVaiTro(vaiTro);
+            userInfo.setTrangThai(0);
+            userInfo.setVaiTro(vaiTro);
+            khachHangService.update(userInfo);
+
+
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        }
+    }
+
+    public String ranDom1() {
+        // Khai báo một mảng chứa 6 số nguyên ngẫu nhiên
+        String ran = "";
+        int[] randomNumbers = new int[6];
+
+        // Tạo một đối tượng Random
+        Random random = new Random();
+
+        // Đổ số nguyên ngẫu nhiên vào mảng
+        for (int i = 0; i < 6; i++) {
+            randomNumbers[i] = random.nextInt(100); // Giới hạn số ngẫu nhiên từ 0 đến 99
+        }
+
+        // In ra các số nguyên ngẫu nhiên trong mảng
+        System.out.println("Dãy 6 số nguyên ngẫu nhiên:");
+        for (int number : randomNumbers) {
+            ran = ran + number;
+            System.out.println(number);
+        }
+        return ran;
     }
 
 
