@@ -124,7 +124,6 @@ public class BanHangController {
     @PostMapping("/hoa-don-chi-tiet/add")
     public String addHdct(@RequestParam Long idHoaDon, @RequestParam Long idCtsp,
                           RedirectAttributes redirectAttributes) {
-
         Boolean cr = true;
         HoaDonChiTiet hdct = new HoaDonChiTiet();
         HoaDon hoaDon = hoaDonService.findById(idHoaDon);
@@ -409,47 +408,6 @@ public class BanHangController {
         } else {
             return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
         }
-    }
-    @GetMapping("/hoa-don/detail/{id}")
-    public String detailHoaDon(@PathVariable Long id, Model model) {
-
-//        lstHoaDonCtDoiTra = new ArrayList<HoaDonChiTiet>();
-        model.addAttribute("lstHoaDon", hoaDonService.find5ByTrangThai(-1));
-        model.addAttribute("lstHdct", hoaDonChiTietService.findAll());
-        model.addAttribute("lstCtsp", chiTietSanPhamSerivce.fillAllDangHoatDongLonHon0());
-        model.addAttribute("lstTaiKhoan", khachHangService.getAll());
-        model.addAttribute("lstTaiKhoanDc",
-                khachHangService.getById(hoaDonService.findById(id).getTaiKhoan().getId()));
-        model.addAttribute("listVoucher", voucherService.fillAllDangDienRa());
-        // idhdc = id;
-
-        model.addAttribute("lstLshd", lichSuHoaDonService.findByIdhd(id));
-        model.addAttribute("listLichSuHoaDon", lichSuHoaDonService.findByIdhdNgaySuaAsc(id));
-        HoaDon hd = hoaDonService.findById(id);
-        if (hd.getTrangThai() == 6 && hd.getNgayMongMuon() == null) {
-            hd.setNgayMongMuon(new java.util.Date());
-//            sendMail(hd);
-            hoaDonService.saveOrUpdate(hd);
-        }
-        if (hd.getVoucher() != null && hd.getTrangThai() != 6) {
-            if (hd.tongTienHoaDonDaNhan() < hd.getVoucher().getGiaTriDonToiThieu().longValue()) {
-                hd.setVoucher(null);
-                hd.setTienGiam((long) 0);
-                hd.setTongTien(hd.tongTienHoaDonDaNhan());
-                hd.setTongTienKhiGiam(hd.tongTienHoaDonDaNhan());
-                hoaDonService.saveOrUpdate(hd);
-            }
-        }
-        List<LichSuHoaDon> lstLshd = lichSuHoaDonService.findByIdhd(id);
-        Integer tt = lstLshd.get(0).getTrangThai();
-        model.addAttribute("checkRollback", tt);
-        // checkVoucher();
-        model.addAttribute("hoaDon", hd);
-        model.addAttribute("byHoaDon", hd);
-        if (hd.getTrangThai() == 4) {
-            return "redirect:/ban-hang-tai-quay/hoa-don/" + id;
-        }
-        return "/admin-template/detail-hoa-don";
     }
     @PostMapping("/hoa-don/rollback/{id}")
     public String rollback(@RequestParam String ghiChu, @PathVariable Long id, RedirectAttributes redirectAttributes) {
@@ -867,3 +825,4 @@ public class BanHangController {
 
 }
 // dung ngu
+// 123
