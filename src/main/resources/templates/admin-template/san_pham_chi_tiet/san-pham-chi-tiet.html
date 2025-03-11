@@ -208,7 +208,7 @@
                                         <!--                                        <td th:text="${chiTietSP.kichCo.ten}"></td>-->
                                         <!--                                                                                <td th:text="${chiTietSP.tayAo.ten}"></td>-->
                                         <td th:text="${chiTietSP.sanPham.thuongHieu.ten}"></td>
-                                        <td th:text="${#numbers.formatDecimal(chiTietSP.giaHienHanh, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}"></td>
+                                        <td th:text="${#numbers.formatDecimal(chiTietSP.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></td>
 
 
                                         <!--                                        <td class="trangthaidkd" th:if="${chiTietSP.trangThai==0}">Đang kinh-->
