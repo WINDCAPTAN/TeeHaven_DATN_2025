@@ -21,16 +21,14 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class BanHangController {
 
-    // 123 ///longduong //huynh //123// 1234/  12/3
-
-    // 123 ///longduong //huynh //123 // dung123 // phong10/03
+    // 123 ///longduong //huynh //123 // dung123 // phong10/03 //12/3
 
     @Autowired
     HttpServletRequest request;
     @Autowired
     KhachHangService khachHangService;
     @Autowired
-     LichSuHoaDonService lichSuHoaDonService;
+    LichSuHoaDonService lichSuHoaDonService;
     @Autowired
     ChiTietSanPhamSerivce chiTietSanPhamSerivce;
     @Autowired
@@ -327,7 +325,7 @@ public class BanHangController {
     @PostMapping("/hoa-don-chi-tiet/update")
     public String updateSoLuong(RedirectAttributes redirectAttributes,
                                 @RequestParam(defaultValue = "") Integer soLuongEdit,
-                                @RequestParam(defaultValue = "") Integer soLuongEditTra, 
+                                @RequestParam(defaultValue = "") Integer soLuongEditTra,
                                 @RequestParam Long idHdct) {
         HoaDonChiTiet hdct = hoaDonChiTietService.findById(idHdct);
         HoaDon hd = hdct.getHoaDon();
@@ -375,7 +373,7 @@ public class BanHangController {
         } else {
             // Tính số lượng tăng thêm
             int soLuongTangThem = soLuongEdit - hdct.getSoLuong();
-            
+
             if (soLuongTangThem > 0) {
                 // Nếu tăng số lượng, trừ đi số lượng trong kho
                 if (ctsp.getSoLuong() >= soLuongTangThem) {
@@ -396,7 +394,7 @@ public class BanHangController {
                 chiTietSanPhamSerivce.update(ctsp);
                 thongBao(redirectAttributes, "Đã giảm số lượng sản phẩm", 1);
             }
-            
+
             hdct.setSoLuong(soLuongEdit);
             hdct.setTrangThai(0);
             hoaDonChiTietService.saveOrUpdate(hdct);

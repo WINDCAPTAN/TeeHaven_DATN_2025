@@ -169,14 +169,6 @@
                     <span>Quản Lý Hóa Đơn</span>
                 </a>
             </li><!-- End Forms Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/ban-hang-tai-quay/doi-tra">
-                    <i class="bi bi-truck"></i>
-                    <span>Trả hàng</span>
-                </a>
-            </li><!-- End Forms Nav -->
-
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-person-vcard"></i><span>Quản Lý Tài Khoản</span><i
@@ -323,7 +315,6 @@
                                                                             <span th:case="1">Đã Xác Nhận</span>
                                                                             <span th:case="2">Đã Giao Cho ĐVVC</span>
                                                                             <span th:case="3">Đã Nhận Được Hàng</span>
-                                                                            <span th:case="6">Trả Hàng Thành Công</span>
                                                                         </span>
                                                                     <span class="status-end"
                                                                           th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -391,8 +382,6 @@
                                                                                     ĐVVC</span>
                                                                                 <span th:case="3">Đã Nhận Được
                                                                                     Hàng</span>
-                                                                                <span th:case="6">Trả Hàng Thành
-                                                                                    Công</span>
                                                                             </span>
                                                                         <span class="status-end"
                                                                               th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -419,8 +408,7 @@
                                                                                         ĐVVC</span>
                                                                                     <span th:case="3">Đã Nhận Được
                                                                                         Hàng</span>
-                                                                                    <span th:case="6">Trả Hàng Thành
-                                                                                        Công</span>
+
                                                                                 </span>
                                                                             <span class="status-end"
                                                                                   th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -439,8 +427,6 @@
                                                                                     <span th:case="0">Đã Đặt Hàng</span>
                                                                                     <span th:case="3">Đã Nhận Được
                                                                                         Hàng</span>
-                                                                                    <span th:case="6">Trả Hàng Thành
-                                                                                        Công</span>
                                                                                 </span>
                                                                             <span class="status-end"
                                                                                   th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -690,7 +676,7 @@
                                                                 <th>STT</th>
                                                                 <th>Hành động</th>
                                                                 <th>Thời gian</th>
-<!--                                                                <th>Nhân viên</th>-->
+                                                                <!--                                                                <th>Nhân viên</th>-->
                                                                 <th>Ghi chú</th>
                                                             </tr>
                                                             <thead>
@@ -722,7 +708,7 @@
                                                                 <th>STT</th>
                                                                 <th>Hành động</th>
                                                                 <th>Thời gian</th>
-<!--                                                                <th>Nhân viên</th>-->
+                                                                <!--                                                                <th>Nhân viên</th>-->
                                                                 <th>Ghi chú</th>
                                                             </tr>
                                                             </tfoot>
@@ -2224,7 +2210,7 @@
 
                 thongBao.style.display = 'block';
                 // thongBao.style
-                thongBao.innerText += 'Mua thêm ' + (voucherGiaTriDonToiThieu - totalAmount) + ' sản phẩm để sử dụng Voucher cho mã ';
+                // thongBao.innerText += 'Mua thêm ' + (voucherGiaTriDonToiThieu - totalAmount) + ' sản phẩm để sử dụng Voucher cho mã ';
             } else {
                 radio.classList.remove('muted-radio');
                 card.classList.remove('muted-card');
@@ -2264,7 +2250,7 @@
                 <h2>HÓA ĐƠN BÁN HÀNG</h2>
 
                 <h5>Mã: [[${hoaDon.maHoaDon}]]
-<!--                    - <span th:text="${hoaDon.ngaySua}"></span>-->
+                    <!--                    - <span th:text="${hoaDon.ngaySua}"></span>-->
                 </h5>
             </div>
         </div>
