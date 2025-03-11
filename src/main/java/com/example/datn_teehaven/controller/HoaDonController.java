@@ -13,6 +13,9 @@ import com.example.datn_teehaven.service.HoaDonChiTietService;
 import com.example.datn_teehaven.service.HoaDonService;
 import com.example.datn_teehaven.service.KhachHangService;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
+import com.example.datn_teehaven.service.SanPhamService;
+import com.example.datn_teehaven.service.TaiKhoanService;
+import com.example.datn_teehaven.service.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,6 +53,16 @@ public class HoaDonController {
 
     @Autowired
     private KhachHangService khachHangService;
+
+    @Autowired
+    private TaiKhoanService taiKhoanService;
+
+    @Autowired
+    private VoucherService voucherService;
+
+    @Autowired
+    private SanPhamService sanPhamService;
+
     @GetMapping("/quan-ly")
     public String quanLyHoaDon(Model model) {
         List<HoaDon> lstHdctAll = hoaDonService.findAllHoaDon();
@@ -60,7 +73,6 @@ public class HoaDonController {
         List<HoaDon> lstHdChoThanhToan = hoaDonService.find5ByTrangThai(4);
         List<HoaDon> lstHdHuy = hoaDonService.find5ByTrangThai(5);
         List<HoaDon> lstHdTra = hoaDonService.find5ByTrangThai(6);
-
         model.addAttribute("lstHdctAll", lstHdctAll != null ? lstHdctAll : new ArrayList<>());
         model.addAttribute("lstHdChoXacNhan", lstHdChoXacNhan);
         model.addAttribute("lstHdChoGiao", lstHdChoGiao);
@@ -117,11 +129,11 @@ public class HoaDonController {
                 chiTietSanPhamSerivce.update(ctsp);
             }
         }
-//        if (hd.getVoucher() != null) {
-//            Voucher v = hd.getVoucher();
-//            v.setSoLuong(v.getSoLuong().subtract(new BigDecimal(1)));
-//            voucherService.save(v);
-//        }
+        if (hd.getVoucher() != null) {
+            Voucher v = hd.getVoucher();
+            v.setSoLuong(v.getSoLuong().subtract(new BigDecimal(1)));
+            voucherService.save(v);
+        }
     }
     @PostMapping("/hoa-don/thanh-toan")
     public String thanhToan(@RequestParam(defaultValue = "off") String treo,
@@ -142,8 +154,8 @@ public class HoaDonController {
         chiTietSanPhamSerivce.checkSoLuongBang0();
         System.out.println("ttttttttt" + thanhPho + quanHuyen + phuongXa);
         if (voucherID != "") {
-//            hd.setVoucher(voucherService.findById(Long.parseLong(voucherID)));
-//            hd.setTienGiam(giamGia);
+            hd.setVoucher(voucherService.findById(Long.parseLong(voucherID)));
+            hd.setTienGiam(giamGia);
         }
 
         switch (hd.getTrangThai()) {
@@ -283,11 +295,11 @@ public class HoaDonController {
                     }
 
                 }
-                // addLichSuHoaDon(hd.getId(), ghiChuThanhToan, 3);
-                // hd.setTrangThai(3);
-                // hd.setNgaySua(new Date());
-                // hd.setNgayThanhToan(new Date());
-                // updateSl(hd);
+//                 addLichSuHoaDon(hd.getId(), ghiChuThanhToan, 3);
+//                 hd.setTrangThai(3);
+//                 hd.setNgaySua(new Date());
+//                 hd.setNgayThanhToan(new Date());
+//                 updateSl(hd);
                 break;
             case 6:
                 hd.setTrangThai(7);
@@ -326,43 +338,7 @@ public class HoaDonController {
 
         return "redirect:/hoa-don/quan-ly";
     }
-    @GetMapping("/hoa-don/{id}")
-    public String hoaDon(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        chiTietSanPhamSerivce.checkSoLuongBang0();
-
-        TaiKhoan tk = new TaiKhoan();
-        model.addAttribute("khachHang", tk);
-        model.addAttribute("listHoaDon", hoaDonService.find5ByTrangThai(-1));
-        model.addAttribute("listHdct", hoaDonChiTietService.findAll());
-        model.addAttribute("listCtsp", chiTietSanPhamSerivce.fillAllDangHoatDongLonHon0());
-//        model.addAttribute("listTaiKhoan", taiKhoanService.getAll());
-        model.addAttribute("lstTaiKhoanDc", khachHangService.getById(hoaDonService.findById(id).getTaiKhoan().getId()));
-//        model.addAttribute("listVoucher", voucherService.fillAllDangDienRa());
-
-        HoaDon hd = hoaDonService.findById(id);
-
-        Boolean ctb = false;
-
-        if (hd.getVoucher() != null && hd.getTrangThai() != 6) {
-            if (hd.tongTienHoaDonDaNhan() < hd.getVoucher().getGiaTriDonToiThieu().longValue()) {
-
-                hd.setVoucher(null);
-                hd.setTongTien(hd.tongTienHoaDonDaNhan());
-                hd.setTongTienKhiGiam(hd.tongTienHoaDonDaNhan());
-                hoaDonService.saveOrUpdate(hd);
-                ctb = true;
-                thongBao(redirectAttributes, "Đã xóa mã giảm giá vì chưa đạt giá trị đơn tối thiếu", 0);
-            }
-        }
-        if (ctb) {
-            model.addAttribute("thongBao", "Đã xóa mã giảm giá vì chưa đạt giá trị đơn tối thiếu");
-            model.addAttribute("checkThongBao", "thatBai");
-        }
-        model.addAttribute("hoaDon", hd);
-
-        return "admin-template/hoa-don-chi-tiet";
-    }
-    @GetMapping("/hoa-don/detail/{id}")
+    @GetMapping("/detail/{id}")
     public String detailHoaDon(@PathVariable Long id, Model model) {
 
 //        lstHoaDonCtDoiTra = new ArrayList<HoaDonChiTiet>();
@@ -370,6 +346,7 @@ public class HoaDonController {
         model.addAttribute("lstHdct", hoaDonChiTietService.findAll());
         model.addAttribute("lstCtsp", chiTietSanPhamSerivce.fillAllDangHoatDongLonHon0());
         model.addAttribute("lstTaiKhoan", khachHangService.getAll());
+        model.addAttribute("sanpham", sanPhamService.getAll());
         model.addAttribute("lstTaiKhoanDc",
                 khachHangService.getById(hoaDonService.findById(id).getTaiKhoan().getId()));
 //        model.addAttribute("listVoucher", voucherService.fillAllDangDienRa());
@@ -403,5 +380,6 @@ public class HoaDonController {
         }
         return "/admin-template/detail-hoa-don";
     }
+
 
 }

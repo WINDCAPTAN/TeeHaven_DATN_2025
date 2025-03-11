@@ -93,8 +93,9 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
             "ORDER BY mau_sac_id, kich_co_id", nativeQuery = true)
     List<ChiTietSanPham> fillAllChiTietSpBySanPham(@Param("idSanPham") Long idSanPham);
 
-    @Query(value = "select * from chi_tiet_san_pham where trang_thai = 0 and so_luong>0", nativeQuery = true)
+    @Query("SELECT ctsp FROM ChiTietSanPham ctsp JOIN FETCH ctsp.sanPham WHERE ctsp.trangThai = 1")
     List<ChiTietSanPham> fillAllDangHoatDongLonHon0();
+
 
     @Query(value = "SELECT p FROM ChiTietSanPham p WHERE p.trangThai = 0 AND p.sanPham.ten LIKE CONCAT('%',:tenSanPham,'%') \n"
             +

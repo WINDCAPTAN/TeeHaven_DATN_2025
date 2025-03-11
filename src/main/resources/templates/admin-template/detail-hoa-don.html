@@ -164,7 +164,7 @@
             </li><!-- End Components Nav -->
 
             <li class="nav-item">
-                <a class="nav-link" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+                <a class="nav-link" href="/hoa-don/quan-ly">
                     <i class="bi bi-receipt-cutoff"></i>
                     <span>Quản Lý Hóa Đơn</span>
                 </a>
@@ -1570,6 +1570,7 @@
                                                                     <thead>
                                                                     <tr>
                                                                         <th scope="col">STT</th>
+
                                                                         <th scope="col">Sản Phẩm</th>
                                                                         <th scope="col">Số Lượng</th>
                                                                         <th scope="col">Giá Bán</th>
@@ -1596,26 +1597,26 @@
                                                                             <td style="width: 50%;">
                                                                                 <div class="row">
                                                                                     <div class="col-4">
-                                                                                        <img th:src="${ctsp.hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;"/>
+                                                                                        <img th:if="${ctsp.sanPham != null && ctsp.sanPham.hinhAnh != null}"
+                                                                                             th:src="@{|/uploads/${#strings.arraySplit(ctsp.sanPham.hinhAnh, ',')[0]}|}"
+                                                                                             alt="Hình ảnh sản phẩm"
+                                                                                             style="width: 100px; height: auto;"/>
                                                                                     </div>
-
                                                                                     <div class="col-8">
-                                                                                        <div
-                                                                                                class="info-price">
-                                                                                            <h6>[[${ctsp.SanPham.ten}]]
+                                                                                        <div class="info-price">
+                                                                                            <h6>[[${ctsp.sanPham.ten}]]
                                                                                                 [
-                                                                                                [[${ctsp.MauSac.ten}]]
+                                                                                                [[${ctsp.mauSac.ten}]]
                                                                                                 -
-                                                                                                [[${ctsp.KichCo.ten}]]
+                                                                                                [[${ctsp.kichCo.ten}]]
                                                                                                 ]
                                                                                             </h6>
                                                                                             <span>Đơn giá:
-                                                                                                            <span
-                                                                                                                    class="gia">
-                                                                                                                [[${ctsp.giaHienHanh}]]
-                                                                                                                VND</span></span>
+                                                                                                <span class="gia">
+                                                                                                    [[${ctsp.giaHienHanh}]]
+                                                                                                    VND</span></span>
                                                                                             <p>Loại đế:
-                                                                                                [[${ctsp.TayAo.ten}]]
+                                                                                                [[${ctsp.tayAo.ten}]]
                                                                                             </p>
                                                                                         </div>
                                                                                     </div>
@@ -1691,16 +1692,20 @@
                                                                 <td>
                                                                     <div class="row">
                                                                         <div class="col-4">
-                                                                            <img th:src="${obj.chiTietSanPham.hinhAnh}" alt="Hình ảnh sản phẩm" style="width: 100px; height: auto;"/>
-                                                                        </div>
+                                                                            <img th:if="${obj.chiTietSanPham.sanPham.hinhAnh != null}"
+                                                                                 th:src="${#strings.arraySplit(obj.chiTietSanPham.sanPham.hinhAnh, ',')[0]}"
+                                                                                 alt="Hình ảnh sản phẩm"
+                                                                                 style="width: 100px; height: auto;">
 
+
+                                                                        </div>
                                                                         <div class="col-8">
                                                                             <div class="info-price">
-                                                                                <h6>[[${obj.ChiTietSanPham.SanPham.ten}]]
+                                                                                <h6>[[${obj.chiTietSanPham.sanPham.ten}]]
                                                                                     [
-                                                                                    [[${obj.ChiTietSanPham.MauSac.ten}]]
+                                                                                    [[${obj.chiTietSanPham.mauSac.ten}]]
                                                                                     -
-                                                                                    [[${obj.ChiTietSanPham.KichCo.ten}]]
+                                                                                    [[${obj.chiTietSanPham.kichCo.ten}]]
                                                                                     ]
                                                                                 </h6>
                                                                                 <span>Đơn giá: <span
@@ -1708,9 +1713,9 @@
                                                                                                 [[${obj.donGia}]]
                                                                                                 VND</span></span>
                                                                                 <p>Loại đế:
-                                                                                    [[${obj.ChiTietSanPham.TayAo.ten}]]
+                                                                                    [[${obj.chiTietSanPham.tayAo.ten}]]
                                                                                 </p>
-                                                                                <span  th:if="${obj.soLuong>obj.ChiTietSanPham.soLuong&&hoaDon.trangThai==0}" style="color: rgb(255, 255, 255); font-weight: bold;background-color: red; padding: 10px 20px;">Số lượng còn: [[${obj.ChiTietSanPham.soLuong}]]</span>
+                                                                                <span  th:if="${obj.soLuong>obj.chiTietSanPham.soLuong&&hoaDon.trangThai==0}" style="color: rgb(255, 255, 255); font-weight: bold;background-color: red; padding: 10px 20px;">Số lượng còn: [[${obj.chiTietSanPham.soLuong}]]</span>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1772,7 +1777,7 @@
                                                                                     </div>
                                                                                     <div class="modal-body">
                                                                                         <p>(Sẵn
-                                                                                            [[${obj.ChiTietSanPham.soLuong}]]
+                                                                                            [[${obj.chiTietSanPham.soLuong}]]
                                                                                             sản phẩm )</p>
                                                                                         <input type="number"
                                                                                                name="soLuongEdit"
@@ -1785,7 +1790,7 @@
                                                                                                 data-bs-dismiss="modal">Đóng
                                                                                         </button>
                                                                                         <button
-                                                                                                th:onclick="'validateAndSubmit('+${obj.ChiTietSanPham.soLuong}+','+${obj.ChiTietSanPham.soLuong}+','+${obj.id}+')'"
+                                                                                                th:onclick="'validateAndSubmit('+${obj.chiTietSanPham.soLuong}+','+${obj.chiTietSanPham.soLuong}+','+${obj.id}+')'"
                                                                                                 type="button"
                                                                                                 class="btn btn-primary">Xác nhận
                                                                                         </button>
@@ -1820,7 +1825,7 @@
                                                                                         <div
                                                                                                 class="container-fluid">
                                                                                             Xóa
-                                                                                            [[${obj.ChiTietSanPham.SanPham.ten}]]
+                                                                                            [[${obj.chiTietSanPham.sanPham.ten}]]
                                                                                             ?
                                                                                         </div>
                                                                                     </div>
@@ -2018,11 +2023,9 @@
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 id="totalAmount" class="thong-tin-gia">
-                                                                        [[${hoaDon.tongTienHoaDon()}]]
-                                                                        VND</h6>
-                                                                    <input
-                                                                            th:value="${hoaDon.tongTienHoaDonDaNhan()}"
-                                                                            type="hidden" name="tongTienHoaDon">
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDon(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                                                                    </h6>
+                                                                    <input th:value="${hoaDon.tongTienHoaDonDaNhan()}" type="hidden" name="tongTienHoaDon">
                                                                 </div>
                                                             </div>
                                                             <div class="row">
@@ -2031,70 +2034,49 @@
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 id="phi-van-chuyen" class="thong-tin-gia">
-                                                                        [[${hoaDon.phiShip}]]
-                                                                        VND</h6>
-
-
-
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.phiShip, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                                                                    </h6>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <h6>Tiền giảm:</h6>
-
                                                                     <input id="giamGiaInput" type="hidden"
-                                                                           th:value="${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}"
+                                                                           th:value="${hoaDon.tongTien - hoaDon.tongTienKhiGiam}"
                                                                            name="giamGia">
                                                                 </div>
                                                                 <div class="col">
-                                                                    <h6 th:if="${hoaDon.trangThai!=6}"
-                                                                        id="moneyVoucher" class="thong-tin-gia">
-                                                                        [[${hoaDon.tienGiam}]]
-                                                                        VND
-                                                                        <!-- binh thuong -->
+                                                                    <h6 th:if="${hoaDon.trangThai!=6}" id="moneyVoucher" class="thong-tin-gia">
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                                     </h6>
-                                                                    <h6 th:if="${hoaDon.trangThai==6}"
-                                                                        class="thong-tin-gia">
-                                                                        [[${hoaDon.tienGiam}]]
-                                                                        VND
-                                                                        <!-- hoantra -->
+                                                                    <h6 th:if="${hoaDon.trangThai==6}" class="thong-tin-gia">
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                                     </h6>
                                                                 </div>
-
                                                             </div>
-
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <h6>Khách đã thanh toán:</h6>
-
-
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 id="moneyVoucher" class="thong-tin-gia">
-                                                                        [[${hoaDon.tongTienHoaDon()+hoaDon.phiShip-hoaDon.tienGiam}]]
-                                                                        VND
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
-
-                                                            <div  th:if="${hoaDon.trangThai==6}" class="row">
+                                                            <div th:if="${hoaDon.trangThai==6}" class="row">
                                                                 <div class="col">
                                                                     <h6>Tổng tiền hoàn trả:</h6>
                                                                 </div>
                                                                 <div class="col">
-                                                                    <h6 th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}"
-                                                                        class="thong-tin-gia">
-                                                                        [[${hoaDon.tongTienHoaDonHoanTra()-hoaDon.tienGiam}]]
-                                                                        VND
+                                                                    <h6 th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" class="thong-tin-gia">
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDonHoanTra() - hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                                     </h6>
-                                                                    <h6 th:if="${hoaDon.tongTienHoaDonDaNhan()==0}"
-                                                                        class="thong-tin-gia">
-                                                                        [[${(hoaDon.tongTienHoaDonHoanTra-hoaDon.tienGiam)}]]
-                                                                        VND
+                                                                    <h6 th:if="${hoaDon.tongTienHoaDonDaNhan()==0}" class="thong-tin-gia">
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDonHoanTra - hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
-
                                                             <div class="ngan-cach"></div>
                                                             <div class="row">
                                                                 <div class="col">
@@ -2102,21 +2084,15 @@
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 class="thong-tin-gia" id="tongGiaH6">
-                                                                            <span
-                                                                                    th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}"
-                                                                                    id="tongGiaValue">[[${hoaDon.tongTienKhiGiam}]]</span>
-
-                                                                        <span
-                                                                                th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">0</span>
-                                                                        VND
+            <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" id="tongGiaValue">
+                <span th:text="${#numbers.formatDecimal(hoaDon.tongTienKhiGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+            </span>
+                                                                        <span th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">0 VND</span>
                                                                     </h6>
-                                                                    <input
-                                                                            th:value="${hoaDon.tongTienHoaDonKhiGiam()}"
-                                                                            type="hidden" id="tongAll">
+                                                                    <input th:value="${hoaDon.tongTienHoaDonKhiGiam()}" type="hidden" id="tongAll">
                                                                 </div>
-
-
                                                             </div>
+
 
                                                         </div>
                                                     </div>
@@ -2340,7 +2316,7 @@
 
                 <p><span class="info-label">Khách đã thanh toán:</span> <span class="info-value">
                     <span>[[${hoaDon.tongTienHoaDon()+hoaDon.phiShip-hoaDon.tienGiam}]]
-                        
+
                     </span>
                     VND</span>
                 </p>
