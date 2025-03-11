@@ -169,14 +169,6 @@
                     <span>Quản Lý Hóa Đơn</span>
                 </a>
             </li><!-- End Forms Nav -->
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/ban-hang-tai-quay/doi-tra">
-                    <i class="bi bi-truck"></i>
-                    <span>Trả hàng</span>
-                </a>
-            </li><!-- End Forms Nav -->
-
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-person-vcard"></i><span>Quản Lý Tài Khoản</span><i
@@ -323,7 +315,6 @@
                                                                             <span th:case="1">Đã Xác Nhận</span>
                                                                             <span th:case="2">Đã Giao Cho ĐVVC</span>
                                                                             <span th:case="3">Đã Nhận Được Hàng</span>
-                                                                            <span th:case="6">Trả Hàng Thành Công</span>
                                                                         </span>
                                                                     <span class="status-end"
                                                                           th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -391,8 +382,6 @@
                                                                                     ĐVVC</span>
                                                                                 <span th:case="3">Đã Nhận Được
                                                                                     Hàng</span>
-                                                                                <span th:case="6">Trả Hàng Thành
-                                                                                    Công</span>
                                                                             </span>
                                                                         <span class="status-end"
                                                                               th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -419,8 +408,7 @@
                                                                                         ĐVVC</span>
                                                                                     <span th:case="3">Đã Nhận Được
                                                                                         Hàng</span>
-                                                                                    <span th:case="6">Trả Hàng Thành
-                                                                                        Công</span>
+
                                                                                 </span>
                                                                             <span class="status-end"
                                                                                   th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -439,8 +427,6 @@
                                                                                     <span th:case="0">Đã Đặt Hàng</span>
                                                                                     <span th:case="3">Đã Nhận Được
                                                                                         Hàng</span>
-                                                                                    <span th:case="6">Trả Hàng Thành
-                                                                                        Công</span>
                                                                                 </span>
                                                                             <span class="status-end"
                                                                                   th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
