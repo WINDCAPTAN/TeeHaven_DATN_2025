@@ -1420,12 +1420,12 @@
                                                                                     <small
                                                                                             class="text-body-secondary"
                                                                                             style="display: block"
-                                                                                            th:text="${'Giảm tối đa '+voucher.giamToiDa+ ' VND'}"></small>
+                                                                                            th:text="${'Giảm tối đa :' + #numbers.formatDecimal(voucher.giamToiDa, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}"></small>
                                                                                     <small
                                                                                             id="donToiThieu"
                                                                                             class="text-body-secondary"
                                                                                             style="display: block"
-                                                                                            th:text="${'Đơn Tối Thiểu '+voucher.giaTriDonToiThieu+ ' VND'}"></small>
+                                                                                            th:text="${'Đơn tối thiểu :' + #numbers.formatDecimal(voucher.giaTriDonToiThieu, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}"></small>
                                                                                     <small
                                                                                             class="text-body-secondary"
                                                                                             style="display: block"
