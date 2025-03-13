@@ -1434,11 +1434,10 @@
                                                                                             class="text-body-secondary"
                                                                                             style="display: block"
                                                                                             th:text="${'Giảm tối đa '+#numbers.formatDecimal(voucher.giamToiDa, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></small>
-                                                                                    <small
-                                                                                            id="donToiThieu"
-                                                                                            class="text-body-secondary"
-                                                                                            style="display: block"
-                                                                                            th:text="${'Đơn Tối Thiểu '+#numbers.formatDecimal(voucher.giaTriDonToiThieu, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></small>
+                                                                                    <small class="text-body-secondary donToiThieu"
+                                                                                           th:text="${'Đơn Tối Thiểu '+#numbers.formatDecimal(voucher.giaTriDonToiThieu, 0, 'POINT', 0, 'POINT') + ' VNĐ'}">
+                                                                                    </small>
+
                                                                                     <small
                                                                                             class="text-body-secondary"
                                                                                             style="display: block"
@@ -1459,14 +1458,13 @@
                                                                                             name="voucherRadio"
                                                                                             th:data-index="${voucher.id + ' ' +voucher.phanTramGiam+ ' ' +voucher.giamToiDa}"
                                                                                             onchange="handleRadioVoucher(this)">
+
                                                                                 </div>
                                                                             </div>
                                                                             <div
                                                                                     class="col-md-12">
-                                                                                <small
-                                                                                        class="text-body-secondary"
-                                                                                        style=" display: none;margin-left: 50px;color: red"
-                                                                                        id="thongBaoThieuTien"></small>
+                                                                                <small class="text-body-secondary thongBaoThieuTien" style="display: none; color: red;"></small>
+
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1501,10 +1499,7 @@
                                             </div>
                                             <div class="col">
                                                 <h6 id="totalAmount" class="thong-tin-gia">
-
-
                                                     [[${#numbers.formatDecimal(hoaDon.tongTienHoaDon(), 0, 'POINT', 0, 'POINT') + ' VNĐ'}]]
-
                                                 </h6>
                                                 <input th:value="${hoaDon.tongTienHoaDon()}"
                                                        type="hidden" name="tongTienHoaDon">
@@ -2063,6 +2058,15 @@
         opacity: 0.5;
         /* hoặc kiểu định dạng mờ khác */
     }
+    .muted-card {
+        opacity: 0.5; /* Làm mờ thẻ */
+        pointer-events: none; /* Ngăn click vào thẻ */
+    }
+
+    .muted-radio {
+        display: none; /* Ẩn radio button nếu không đủ điều kiện */
+    }
+
 </style>
 <script>
     function handleRadioVoucher(rowIndex) {
@@ -2124,37 +2128,52 @@
     }
 
     function checkAndDisplayVouchers() {
+        var totalAmountElement = document.getElementById('totalAmount');
+        if (!totalAmountElement) {
+            console.error("Không tìm thấy phần tử #totalAmount");
+            return;
+        }
 
-        // Lấy giá trị totalAmount từ #totalAmount
-        var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(' VND', '').trim());
-        console.log(totalAmount)
+        var totalAmount = parseFloat(totalAmountElement.innerText.replace(/[,.]/g, '').replace(' VND', '').trim());
+        console.log("Tổng tiền đơn hàng:", totalAmount);
 
-        // Lặp qua danh sách voucher và kiểm tra điều kiện
         document.querySelectorAll('.card.mb-3').forEach(function (card) {
-            var voucherGiaTriDonToiThieu = parseFloat(card.querySelector('#donToiThieu').innerText.replace('Đơn Tối Thiểu ', '').replace(' VND', '').trim());
+            var donToiThieuElement = card.querySelector('.donToiThieu');
             var radio = card.querySelector('input[name="voucherRadio"]');
-            var thongBao = card.querySelector('#thongBaoThieuTien');
+            var thongBao = card.querySelector('.thongBaoThieuTien');
 
-            // Nếu giá trị voucherGiaTriDonToiThieu nhỏ hơn totalAmount, làm mờ radio button
+            if (!donToiThieuElement || !radio || !thongBao) {
+                console.warn("Không tìm thấy một số phần tử trong thẻ voucher.");
+                return;
+            }
+
+            var voucherGiaTriDonToiThieu = parseFloat(donToiThieuElement.innerText.replace(/[,.]/g, '').replace('Đơn Tối Thiểu ', '').replace(' VND', '').trim());
+
+            console.log(`Voucher yêu cầu tối thiểu: ${voucherGiaTriDonToiThieu}, Tổng đơn hàng: ${totalAmount}`);
+
             if (voucherGiaTriDonToiThieu > totalAmount) {
-                radio.classList.add('muted-radio');
-                card.classList.add('muted-card');
-
-                // Thêm thông báo cho mỗi thẻ voucher không đủ điều kiện
-                thongBao.innerHTML = '';
-
+                radio.disabled = true;
+                radio.classList.add('muted-radio'); // Ẩn radio button
+                card.classList.add('muted-card'); // Làm mờ voucher
                 thongBao.style.display = 'block';
-                // thongBao.style
-                thongBao.innerText += 'Mua thêm ' + (voucherGiaTriDonToiThieu - totalAmount) + ' sản phẩm để sử dụng Voucher cho mã ';
+
+                var soTienThieu = voucherGiaTriDonToiThieu - totalAmount;
+                thongBao.innerText = `Cần mua thêm ${soTienThieu.toLocaleString()} VND để sử dụng voucher này.`;
             } else {
-                radio.classList.remove('muted-radio');
-                card.classList.remove('muted-card');
+                radio.disabled = false;
+                radio.classList.remove('muted-radio'); // Hiển thị radio nếu đủ điều kiện
+                card.classList.remove('muted-card'); // Bỏ làm mờ voucher
+                thongBao.style.display = 'none';
             }
         });
 
-        // Hiển thị modal
         $('#voucher').modal('show');
     }
+
+
+
+
+
 
     function boChonVoucher() {
         location.reload();

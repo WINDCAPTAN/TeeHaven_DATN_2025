@@ -856,7 +856,7 @@ public class BanHangController {
         hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
 
         hoaDonService.saveOrUpdate(hd);
-        updateSL(hd);
+//        updateSL(hd);
         if (hd.getTrangThai() == 4) {
             return "redirect:/ban-hang-tai-quay/hoa-don";
         }

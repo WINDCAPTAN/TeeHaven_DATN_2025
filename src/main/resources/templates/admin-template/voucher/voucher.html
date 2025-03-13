@@ -361,9 +361,9 @@
                                 <td th:text="${iterStat.index+1}"></td>
                                 <td th:text="${voucher.maVoucher}"></td>
                                 <td th:text="${voucher.tenVoucher}"></td>
-                                <td th:text="${voucher.giaTriDonToiThieu+' VND'}"></td>
+                                <td th:text="${#numbers.formatDecimal(voucher.giaTriDonToiThieu, 0, 'POINT', 0, 'COMMA') + ' VND'}"></td>
                                 <td th:text="${voucher.phanTramGiam + '%'}"></td>
-                                <td th:text="${voucher.giamToiDa+' VND'}"></td>
+                                <td th:text="${#numbers.formatDecimal(voucher.giamToiDa, 0, 'POINT', 0, 'COMMA') + ' VND'}"></td>
                                 <td th:text="${voucher.soLuong}"></td>
                                 <td class="trangthaidkd" th:if="${voucher.trangThai==0}">Đang diễn ra</td>
                                 <td class="trangthainkd" th:if="${voucher.trangThai==1}">Đã kết thúc</td>
