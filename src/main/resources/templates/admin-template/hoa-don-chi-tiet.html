@@ -95,7 +95,7 @@
         </li><!-- End Components Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+            <a class="nav-link collapsed" href="/hoa-don/quan-ly">
                 <i class="bi bi-receipt-cutoff"></i>
                 <span>Quản Lý Hóa Đơn</span>
             </a>
@@ -258,7 +258,7 @@
                                                             ]
                                                         </h6>
                                                         <span>Đơn giá: <span class="gia">
-                                                                                        [[${#numbers.formatDecimal(obj.DonGia, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}]]
+                                                                                        [[${#numbers.formatDecimal(obj.DonGia, 0, 'POINT', 0, 'POINT') + ' VNĐ'}]]
                                                                                         </span></span>
                                                         <p>Tay áo:
                                                             [[${obj.ChiTietSanPham.TayAo.ten}]]
@@ -278,7 +278,7 @@
 
                                         <td>
                                             <div class="price-table">
-                                                [[${#numbers.formatDecimal(obj.tongTien(), 0, 'COMMA', 0, 'POINT') + ' VNĐ'}]]
+                                                [[${#numbers.formatDecimal(obj.tongTien(), 0, 'POINT', 0, 'POINT') + ' VNĐ'}]]
                                             </div>
                                         </td>
 
@@ -1004,6 +1004,234 @@
                                             <span class="errorInput"
                                                   id="errorWardSelect"></span>
                                             <!-- phishipjs -->
+                                            <script th:inline="javascript">
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    var citySelect = document.getElementById('citySelect');
+                                                    var districtSelect = document.getElementById('districtSelect');
+                                                    var wardSelect = document.getElementById('wardSelect');
+                                                    console.log(citySelect)
+                                                    console.log(districtSelect)
+                                                    console.log(wardSelect)
+                                                    var selectedCityValue = /*[[ ${hoaDon.thanhPho} ]]*/ '';
+                                                    var selectedDistrictValue = /*[[ ${hoaDon.quanHuyen} ]]*/ '';
+                                                    var selectedWardValue = /*[[ ${hoaDon.phuongXa} ]]*/ '';
+
+                                                    fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+                                                        method: 'GET',
+                                                        headers: {
+                                                            'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                            'Content-Type': 'application/json',
+                                                        },
+                                                    })
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            // Xử lý dữ liệu khi API trả về thành công
+                                                            populateSelect(citySelect, data.data, 'ProvinceID', 'ProvinceName');
+
+                                                            // Tìm option có giá trị là selectedCityValue và đặt nó làm được chọn
+                                                            var selectedOption = citySelect.querySelector(`option[value="${selectedCityValue}"]`);
+                                                            if (selectedOption) {
+                                                                selectedOption.selected = true;
+                                                                // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                                if (selectedCityValue) {
+                                                                    // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                    populateDistricts(selectedCityValue);
+                                                                }
+                                                            }
+
+                                                        })
+                                                        .catch(error => {
+                                                            console.error('Lỗi khi tải dữ liệu thành phố:', error);
+                                                        });
+
+                                                    // Sự kiện khi chọn thành phố
+                                                    citySelect.addEventListener('change', function () {
+                                                        // Lấy ID của thành phố đã chọn
+                                                        var selectedCityId = this.value;
+
+                                                        console.log(selectedCityId);
+                                                        // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                        if (selectedCityId) {
+                                                            // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                            districtSelect.innerHTML = '<option value="">Chọn Quận/Huyện</option>';
+                                                            // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                            populateDistricts(selectedCityId);
+                                                        }
+                                                    });
+
+                                                    // Sự kiện khi chọn thành phố
+                                                    districtSelect.addEventListener('change', function () {
+                                                        // Lấy ID của thành phố đã chọn
+                                                        var selectedDistrictId = this.value;
+
+                                                        console.log(selectedDistrictId);
+                                                        // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                        if (selectedDistrictId) {
+                                                            // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                            wardSelect.innerHTML = '<option value="">Chọn Phường / Xã</option>';
+                                                            // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                            populateWard(selectedDistrictId);
+                                                        }
+                                                    });
+
+                                                    // Hàm để tải và populate quận/huyện
+                                                    function populateDistricts(selectedCityId) {
+                                                        fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${selectedCityId}`, {
+                                                            method: 'GET',
+                                                            headers: {
+                                                                'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                                'Content-Type': 'application/json',
+                                                            },
+                                                        })
+                                                            .then(response => response.json())
+                                                            .then(data => {
+                                                                // Xử lý dữ liệu khi API trả về thành công
+                                                                populateSelect(districtSelect, data.data, 'DistrictID', 'DistrictName');
+
+                                                                // Tìm option có giá trị là selectedCityValue và đặt nó làm được chọn
+                                                                var selectedOption = districtSelect.querySelector(`option[value="${selectedDistrictValue}"]`);
+                                                                if (selectedOption) {
+                                                                    selectedOption.selected = true;
+                                                                    // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                                    if (selectedDistrictValue) {
+                                                                        // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                        populateWard(selectedDistrictValue);
+                                                                    }
+                                                                }
+
+                                                            })
+                                                            .catch(error => {
+                                                                console.error('Lỗi khi tải dữ liệu quận:', error);
+                                                            });
+                                                    }
+
+                                                    // Hàm để tải và populate xã phường
+                                                    function populateWard(selectedDistrictId) {
+                                                        fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${selectedDistrictId}`, {
+                                                            method: 'GET',
+                                                            headers: {
+                                                                'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                                'Content-Type': 'application/json',
+                                                            },
+                                                        })
+                                                            .then(response => response.json())
+                                                            .then(data => {
+                                                                // Xử lý dữ liệu khi API trả về thành công
+                                                                populateSelect(wardSelect, data.data, 'WardCode', 'WardName');
+
+                                                                // Tìm option có giá trị là selectedCityValue và đặt nó làm được chọn
+                                                                var selectedOption = wardSelect.querySelector(`option[value="${selectedWardValue}"]`);
+                                                                if (selectedOption) {
+                                                                    selectedOption.selected = true;
+                                                                    // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                                    // if (selectedWardValue) {
+                                                                    //     // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                    //     populateWard(selectedWardValue);
+                                                                    // }
+                                                                }
+
+                                                            })
+                                                            .catch(error => {
+                                                                console.error('Lỗi khi tải dữ liệu quận:', error);
+                                                            });
+                                                    }
+
+                                                    // Hàm để populate dropdown
+                                                    function populateSelect(select, data, idKey, textKey) {
+                                                        // select.innerHTML = '<option value="">Chọn thành phố</option>';
+                                                        data.forEach(item => {
+                                                            var option = document.createElement('option');
+                                                            option.value = item[idKey];
+                                                            option.text = item[textKey];
+                                                            select.appendChild(option);
+                                                        });
+                                                    }
+                                                });
+                                                // giao hàng nhanh
+                                                function calculateShippingFee() {
+
+                                                    var citySelect = document.getElementById('citySelect').value;
+                                                    var districtSelect = document.getElementById('districtSelect').value;
+                                                    var wardSelect = document.getElementById('wardSelect').value;
+                                                    const shippingInfo = {
+                                                        // weight: parseFloat(weight),
+                                                        service_type_id: 2,
+                                                        from_district_id: 3440,
+                                                        to_district_id: Number(districtSelect),
+                                                        to_ward_code: wardSelect,
+                                                        height: 10, //cao cm
+                                                        length: 10, //chieu dai cm
+                                                        weight: 500, //can nang (g)
+                                                        width: 10, //rong cm
+                                                        insurance_value: 0,
+                                                        coupon: null,
+                                                        items: [
+                                                            {
+                                                                "name": "TEST1",
+                                                                "quantity": 1,
+                                                                "height": 20,
+                                                                "weight": 1,
+                                                                "length": 20,
+                                                                "width": 20
+                                                            }
+                                                        ]
+                                                    };
+                                                    console.log(shippingInfo)
+
+                                                    fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            'Token': '0c4a5894-7fc8-11ee-96dc-de6f804954c9', // Replace with your GHN API token
+                                                            // 'shop_id': 4689281
+                                                        },
+                                                        body: JSON.stringify(shippingInfo)
+                                                    })
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            const shippingFeeResult = document.getElementById('shippingFeeResult');
+                                                            shippingFeeResult.value = `${data.data.total}`; // Thay đổi ở đây
+                                                            const shippingFeeResult2 = document.getElementById('phi-van-chuyen');
+                                                            shippingFeeResult2.innerHTML = `${data.data.total} VND`;
+                                                            console.log(data)
+                                                            const phiShipInput = document.getElementById('shippingFeeResult');
+
+                                                            // Lấy thẻ <h6> có class là tong-gia
+                                                            const tongGiaElement = document.querySelector('.tong-gia');
+                                                            const shippingFeeResultInput = document.getElementById('shippingFeeResult');
+                                                            const tongTienHoaDonInput = document.querySelector('input[name="tongTienHoaDon"]');
+                                                            const tongGiaValue = document.getElementById('tongGiaValue');
+                                                            const tongAll = document.getElementById('tongAll');
+                                                            const giamGia = document.getElementById('giamGiaInput');
+                                                            // Hàm cộng giá trị từ hai ô input và cập nhật nội dung của thẻ <h6>
+                                                            function congHaiInputVaCapNhatTongGia() {
+                                                                const tongTienHoaDon = parseFloat(tongTienHoaDonInput.value);
+                                                                const shippingFee = parseFloat(shippingFeeResultInput.value);
+                                                                const giamGia1 = isNaN(parseFloat(giamGia.value)) ? 0 : parseFloat(giamGia.value);
+
+                                                                // Kiểm tra nếu shippingFee không có giá trị hợp lệ thì gán giá trị mặc định là 0
+                                                                const phiShip = isNaN(shippingFee) ? 0 : shippingFee;
+
+                                                                // Thực hiện phép tính tổng
+                                                                const tongGia = tongTienHoaDon + phiShip - giamGia1;
+
+                                                                // Hiển thị kết quả trong thẻ <h6>
+                                                                tongGiaValue.textContent = tongGia.toFixed(0);
+                                                                tongAll.value = tongGia.toFixed(0);
+                                                            }
+
+                                                            // Gọi hàm khi giá trị trong ô input thay đổi
+                                                            shippingFeeResultInput.addEventListener('input', congHaiInputVaCapNhatTongGia);
+                                                            tongTienHoaDonInput.addEventListener('input', congHaiInputVaCapNhatTongGia);
+
+                                                            // Gọi hàm lần đầu để hiển thị kết quả ban đầu
+                                                            congHaiInputVaCapNhatTongGia();
+
+
+                                                        })
+                                                        .catch(error => console.error('Error:', error));
+                                                }
+                                            </script>
 
                                         </div>
                                         <div class="col-md-6">
@@ -1192,12 +1420,12 @@
                                                                                     <small
                                                                                             class="text-body-secondary"
                                                                                             style="display: block"
-                                                                                            th:text="${'Giảm tối đa '+voucher.giamToiDa+ ' VND'}"></small>
+                                                                                            th:text="${'Giảm tối đa '+#numbers.formatDecimal(voucher.giamToiDa, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></small>
                                                                                     <small
                                                                                             id="donToiThieu"
                                                                                             class="text-body-secondary"
                                                                                             style="display: block"
-                                                                                            th:text="${'Đơn Tối Thiểu '+voucher.giaTriDonToiThieu+ ' VND'}"></small>
+                                                                                            th:text="${'Đơn Tối Thiểu '+#numbers.formatDecimal(voucher.giaTriDonToiThieu, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></small>
                                                                                     <small
                                                                                             class="text-body-secondary"
                                                                                             style="display: block"
@@ -1260,7 +1488,7 @@
                                             </div>
                                             <div class="col">
                                                 <h6 id="totalAmount" class="thong-tin-gia">
-                                                    [[${#numbers.formatDecimal(hoaDon.tongTienHoaDon(), 0, 'COMMA', 0, 'POINT') + ' VNĐ'}]]
+                                                    [[${#numbers.formatDecimal(hoaDon.tongTienHoaDon(), 0, 'POINT', 0, 'POINT') + ' VNĐ'}]]
                                                 </h6>
                                                 <input th:value="${hoaDon.tongTienHoaDon()}"
                                                        type="hidden" name="tongTienHoaDon">
@@ -1273,7 +1501,7 @@
                                             <div class="col">
                                                 <h6 id="phi-van-chuyen"
                                                     class="thong-tin-gia">
-                                                    [[${#numbers.formatDecimal(hoaDon.phiShip, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}]]
+                                                    [[${#numbers.formatDecimal(hoaDon.phiShip, 0, 'POINT', 0, 'POINT') + ' VNĐ'}]]
                                                 </h6>
 
 
@@ -1292,7 +1520,7 @@
                                             </div>
                                             <div class="col">
                                                 <h6 id="moneyVoucher" class="thong-tin-gia">
-                                                    [[${#numbers.formatDecimal(hoaDon.tongTien, 0, 'COMMA', 0, 'POINT')}-${#numbers.formatDecimal(hoaDon.tongTienKhiGiam, 0, 'COMMA', 0, 'POINT')}]]
+                                                    [[${#numbers.formatDecimal(hoaDon.tongTien, 0, 'POINT', 0, 'POINT')}-${#numbers.formatDecimal(hoaDon.tongTienKhiGiam, 0, 'POINT', 0, 'POINT')}]]
                                                     VNĐ
                                                 </h6>
                                             </div>
@@ -1333,7 +1561,7 @@
                                             <div class="col">
                                                 <h6 class="thong-tin-gia" id="tongGiaH6">
                                                                                 <span
-                                                                                        id="tongGiaValue">[[${#numbers.formatDecimal(hoaDon.tongTienHoaDonKhiGiam(), 0, 'COMMA', 0, 'POINT') + ' VNĐ'}]]</span>
+                                                                                        id="tongGiaValue">[[${#numbers.formatDecimal(hoaDon.tongTienHoaDonKhiGiam(), 0, 'POINT', 0, 'POINT') + ' VNĐ'}]]</span>
                                                 </h6>
                                                 <input
                                                         th:value="${hoaDon.tongTienHoaDonKhiGiam()}"
@@ -1462,13 +1690,13 @@
                                     data-bs-toggle="modal" data-bs-target="#ghiChuThanhToan"
                                     style="float: right;" class="btn btn-success">Từ chối
                                 </button> -->
-                                    <button id="thanhToan" type="button"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#ghiChuThanhToan"
-                                            style="float: right;" class="btn btn-success">Xác
-                                        nhận
-                                        trả hàng
-                                    </button>
+<!--                                    <button id="thanhToan" type="button"-->
+<!--                                            data-bs-toggle="modal"-->
+<!--                                            data-bs-target="#ghiChuThanhToan"-->
+<!--                                            style="float: right;" class="btn btn-success">Xác-->
+<!--                                        nhận-->
+<!--                                        trả hàng-->
+<!--                                    </button>-->
                                 </div>
 
                                 <button id="thanhToan" th:case="4" type="button"
@@ -1490,6 +1718,46 @@
                                             <h1 class="modal-title fs-5" style="margin: auto;">
                                                 Danh sách sản phẩm
                                             </h1>
+                                        </div>
+                                        <!-- Add filter section -->
+                                        <div class="row mb-3" style="padding: 15px;">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Tên sản phẩm:</label>
+                                                <input type="text" class="form-control" id="filterTenSanPham" placeholder="Nhập tên sản phẩm">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Màu sắc:</label>
+                                                <select class="form-select" id="filterMauSac">
+                                                    <option value="">Tất cả</option>
+                                                    <option th:each="mau : ${listCtsp}" th:value="${mau.mauSac.ten}" th:text="${mau.mauSac.ten}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Kích thước:</label>
+                                                <select class="form-select" id="filterKichThuoc">
+                                                    <option value="">Tất cả</option>
+                                                    <option th:each="kich : ${listCtsp}" th:value="${kich.kichCo.ten}" th:text="${kich.kichCo.ten}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Tay áo:</label>
+                                                <select class="form-select" id="filterTayAo">
+                                                    <option value="">Tất cả</option>
+                                                    <option th:each="tay : ${listCtsp}" th:value="${tay.mauSac.ten}" th:text="${tay.kichCo.ten}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Giá từ:</label>
+                                                <input type="number" class="form-control" id="filterGiaTu" placeholder="Nhập giá từ">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Giá đến:</label>
+                                                <input type="number" class="form-control" id="filterGiaDen" placeholder="Nhập giá đến">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">&nbsp;</label>
+                                                <button class="btn btn-primary w-100" onclick="applyFilters()">Lọc</button>
+                                            </div>
                                         </div>
                                         <table id="example" class="display">
                                             <thead>
@@ -1532,7 +1800,7 @@
                                                                     </h6>
                                                                     <span>Đơn giá: <span
                                                                             class="gia">
-                                                                                                            [[${#numbers.formatDecimal(ctsp.giaHienHanh, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}]]
+                                                                                                            [[${#numbers.formatDecimal(ctsp.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}]]
                                                                                                             </span></span>
                                                                     <p>Tay áo:
                                                                         [[${ctsp.TayAo.ten}]]
@@ -1545,7 +1813,7 @@
                                                         [[${ctsp.soLuong}]]
                                                     </td>
                                                     <td>
-                                                        [[${#numbers.formatDecimal(ctsp.giaHienHanh, 0, 'COMMA', 0, 'POINT') + ' VNĐ'}]]
+                                                        [[${#numbers.formatDecimal(ctsp.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}]]
                                                     </td>
                                                     <td>
 
@@ -1617,12 +1885,7 @@
             },
             "initComplete": function (settings, json) {
                 // CSS changes
-                $('#example_filter input[type="search"]').addClass('form-control');
-                $('#example_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
-                $('#example_filter label').contents().filter(function () {
-                    return this.nodeType === 3;
-                }).replaceWith(' ');
-
+                $('#example_filter').hide(); // Hide the default search box
                 $('#example_length label').contents().filter(function () {
                     return this.nodeType === 3;
                 }).first().replaceWith('Hiển thị');
@@ -1632,6 +1895,11 @@
 
                 $('#example_length select').addClass('form-select');
             }
+        });
+
+        // Add event listener for the product name filter
+        $('#filterTenSanPham').on('keyup', function() {
+            table.column(1).search(this.value).draw(); // Search in the second column (product name)
         });
 
         table.on('draw.dt', function () {
@@ -1777,7 +2045,7 @@
     function handleRadioVoucher(rowIndex) {
         var index = rowIndex.getAttribute('data-index');
         if (index == null) {
-            indẽ
+            return;
         }
         console.log(index)
         // Tách chuỗi thành mảng các phần tử (số)
@@ -1808,24 +2076,27 @@
 
         var detailVoucher = document.getElementById("c_code");
 
-
-        var shippingFeeResultInt = parseInt(shippingFeeResult.innerText);
-        // var tongTien = document.getElementById("tongAll");
-        var tongTienHangInt = parseInt(tongTienHang.innerText);
+        // Parse số từ text, loại bỏ 'VNĐ' và dấu chấm ngăn cách
+        var shippingFeeResultInt = parseInt(shippingFeeResult.innerText.replace(/\./g, '').replace(' VNĐ', ''));
+        var tongTienHangInt = parseInt(tongTienHang.innerText.replace(/\./g, '').replace(' VNĐ', ''));
 
         var tongTienGiamTheoPhanTram = ((tongTienHangInt * phamTramGiam) / 100)
         if (tongTienGiamTheoPhanTram > giaTriGiam) {
             tongTienGiamTheoPhanTram = giaTriGiam
         }
 
-        detailVoucher.value = -tongTienGiamTheoPhanTram + ' VND';
-        moneyVoucher.innerText = tongTienGiamTheoPhanTram + ' VND';
-        // document.getElementById('giamGiaIn').innerText = tongTienGiamTheoPhanTram;
-        console.log(tongTienGiamTheoPhanTram + 'giamgia')
-        // tongTien.value = shippingFeeResultInt + tongTienHangInt;
-        tongTienAndSale.value = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram.toFixed(0);
-        totalElementSale.innerHTML = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram.toFixed(0);
-        // document.getElementById('thanhTienIn').innerHTML = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram.toFixed(0);
+        // Format số với dấu chấm ngăn cách hàng nghìn
+        function formatMoney(amount) {
+            return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        detailVoucher.value = '-' + formatMoney(tongTienGiamTheoPhanTram) + ' VNĐ';
+        moneyVoucher.innerText = formatMoney(tongTienGiamTheoPhanTram) + ' VNĐ';
+        
+        var tongTienSauGiam = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram;
+        
+        tongTienAndSale.value = tongTienSauGiam;
+        totalElementSale.innerHTML = formatMoney(tongTienSauGiam) + ' VNĐ';
         document.getElementById('giamGiaInput').value = tongTienGiamTheoPhanTram.toFixed(0);
     }
 

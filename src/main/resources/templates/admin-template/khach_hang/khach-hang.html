@@ -95,7 +95,7 @@
         </li><!-- End Components Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+            <a class="nav-link collapsed" href="/hoa-don/quan-ly">
                 <i class="bi bi-receipt-cutoff"></i>
                 <span>Quản Lý Hóa Đơn</span>
             </a>
@@ -131,10 +131,6 @@
 </aside><!-- End Sidebar-->
 
 <main id="main" class="main">
-<<<<<<< HEAD
-
-=======
->>>>>>> 248d7de0e49c555c3646a92716787dbb5acb45e3
     <div class="pagetitle">
         <h1>Quản Lý Khách Hàng</h1>
     </div><!-- End Page Title -->
@@ -181,15 +177,7 @@
                              aria-labelledby="them-khach-hangLabel"
                              aria-hidden="true">
 
-                            <!--js bật modal khi check-->
-                            <script th:if="${checkModal=='modal'}">
-                                window.addEventListener('DOMContentLoaded', (event) => {
-                                    // Hiển thị modal
-                                    var myModal = new bootstrap.Modal(document.getElementById('them-khach-hang'));
-                                    myModal.show();
-                                });
-                            </script>
-                            <!--js bật modal khi check-->
+
 
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -396,10 +384,6 @@
 </div>
 
 
-
-
-
-
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
 
@@ -479,6 +463,56 @@
     .toast-body {
         font-weight: bold;
     }
+
+    .modal-dialog {
+        top: 5%;
+        transform: translateY(-30%);
+        left: 170px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: calc(100% - 1rem);
+    }
+
+    .modal-content {
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        border: none;
+        max-width: 600px;
+        width: 100%;
+    }
+
+    .modal-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding: 1rem 1.5rem;
+    }
+
+   .modal-footer {
+        border-top: 1px solid #e9ecef;
+        padding: 1rem 1.5rem;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+   .form-control {
+        border-radius: 4px;
+        padding: 0.5rem 0.75rem;
+    }
+
+   .btn {
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+    }
+
 
 </style>
 <!--    thư viện của bảng tích hợp tìm kiếm end-->

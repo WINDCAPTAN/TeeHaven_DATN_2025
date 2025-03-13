@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Calendar;
@@ -85,6 +86,17 @@ public class TaiKhoan {
     @Column(name = "mat_khau")
 //    @NotBlank(message = "Mật khẩu không được trống")
     private String matKhau;
+
+    public String getConfirmMatKhau() {
+        return confirmMatKhau;
+    }
+
+    public void setConfirmMatKhau(String confirmMatKhau) {
+        this.confirmMatKhau = confirmMatKhau;
+    }
+
+    @Transient // Không lưu vào database
+    private String confirmMatKhau;
 
     @Column(name = "ngay_tao")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
