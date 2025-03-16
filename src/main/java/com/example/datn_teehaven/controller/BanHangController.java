@@ -21,9 +21,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class BanHangController {
 
-    // 123 ///longduong //huynh //123// 1234/  12/3
-
-    // 123 ///longduong //huynh //123 // dung123 // phong10/03
+    // 123 ///longduong //huynh //123 // dung123 // phong10/03 //12/3
 
     @Autowired
     HttpServletRequest request;
@@ -858,7 +856,7 @@ public class BanHangController {
         hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
 
         hoaDonService.saveOrUpdate(hd);
-        updateSL(hd);
+//        updateSL(hd);
         if (hd.getTrangThai() == 4) {
             return "redirect:/ban-hang-tai-quay/hoa-don";
         }
@@ -869,3 +867,4 @@ public class BanHangController {
 // dung ngu
 // phong oc cho
 // phong 12345
+// fix được voucher rồi
