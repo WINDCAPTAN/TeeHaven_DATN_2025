@@ -369,6 +369,8 @@ public class HoaDonController {
                 hoaDonService.saveOrUpdate(hd);
             }
         }
+
+
         List<LichSuHoaDon> lstLshd = lichSuHoaDonService.findByIdhd(id);
         Integer tt = lstLshd.get(0).getTrangThai();
         model.addAttribute("checkRollback", tt);

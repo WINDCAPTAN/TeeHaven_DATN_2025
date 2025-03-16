@@ -122,15 +122,16 @@ public class HoaDon {
 
 
 
-    public Long tongTienHoaDonDaNhan() {
-        Long total = (long) 0;
-        for (HoaDonChiTiet hoaDonChiTiet : lstHoaDonChiTiet) {
-            if (hoaDonChiTiet.getTrangThai() == 0) {
-                total += hoaDonChiTiet.tongTien();
-            }
+    public long tongTienHoaDonDaNhan() {
+        long tongTien = 0;
+
+        for (HoaDonChiTiet hdct : this.lstHoaDonChiTiet) {
+            tongTien += hdct.getSoLuong() * hdct.getDonGia();
         }
-        return total;
+
+        return tongTien;
     }
+
 
     public Long tongTienHoaDonKhiGiam() {
 

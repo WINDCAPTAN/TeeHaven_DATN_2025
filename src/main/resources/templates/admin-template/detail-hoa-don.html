@@ -566,7 +566,7 @@
 
 
 
-                                    <form onsubmit="return validGhiChuRollback()" th:action="@{'/ban-hang-tai-quay/hoa-don/rollback/' + ${hoaDon.id}}"
+                                    <form onsubmit="return validGhiChuRollback()" th:action="@{'/ban-hang-tai-quay/hoa-don/ rollback/' + ${hoaDon.id}}"
                                           method="post">
                                         <!-- Button trigger modal -->
                                         <input type="hidden" th:value="${hoaDon.id}" name="idhdc">
@@ -690,10 +690,8 @@
                                                                 <td>
                                                                     [[${lshd.getStringTrangThai()}]]
                                                                 </td>
-                                                                <td
-                                                                        th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}">
+                                                                <td th:text="${#dates.format(lshd.ngaySua, 'EEEE, dd/MM/yyyy HH:mm:ss')}"></td>
 
-                                                                </td>
 
                                                                 <td>
                                                                     [[${lshd.ghiChu}]]
@@ -969,6 +967,7 @@
                                                                                     });
                                                                                 }
                                                                             });
+                                                                            // giao hàng nhanh
                                                                             function calculateShippingFee() {
 
                                                                                 var citySelect = document.getElementById('citySelect').value;
@@ -977,13 +976,13 @@
                                                                                 const shippingInfo = {
                                                                                     // weight: parseFloat(weight),
                                                                                     service_type_id: 2,
-                                                                                    // from_district_id: 3440,
+                                                                                    from_district_id: 3440,
                                                                                     to_district_id: Number(districtSelect),
                                                                                     to_ward_code: wardSelect,
-                                                                                    height: 30, //cao cm
-                                                                                    length: 30, //chieu dai cm
-                                                                                    weight: 1000, //can nang (g)
-                                                                                    width: 30, //rong cm
+                                                                                    height: 10, //cao cm
+                                                                                    length: 10, //chieu dai cm
+                                                                                    weight: 500, //can nang (g)
+                                                                                    width: 10, //rong cm
                                                                                     insurance_value: 0,
                                                                                     coupon: null,
                                                                                     items: [
@@ -1012,9 +1011,7 @@
                                                                                     .then(data => {
                                                                                         const shippingFeeResult = document.getElementById('shippingFeeResult');
                                                                                         shippingFeeResult.value = `${data.data.total}`; // Thay đổi ở đây
-                                                                                        // document.getElementById('phiShip2').value = `${data.data.total}`; // Thay đổi ở đây
                                                                                         const shippingFeeResult2 = document.getElementById('phi-van-chuyen');
-                                                                                        document.getElementById('phiVanChuyenIn').innerHTML = `${data.data.total}`;
                                                                                         shippingFeeResult2.innerHTML = `${data.data.total} VND`;
                                                                                         console.log(data)
                                                                                         const phiShipInput = document.getElementById('shippingFeeResult');
@@ -1028,24 +1025,19 @@
                                                                                         const giamGia = document.getElementById('giamGiaInput');
                                                                                         // Hàm cộng giá trị từ hai ô input và cập nhật nội dung của thẻ <h6>
                                                                                         function congHaiInputVaCapNhatTongGia() {
-                                                                                            // Lấy giá trị từ hai ô input
                                                                                             const tongTienHoaDon = parseFloat(tongTienHoaDonInput.value);
                                                                                             const shippingFee = parseFloat(shippingFeeResultInput.value);
-                                                                                            const giamGia1 = parseFloat(giamGia.value);
-                                                                                            // Kiểm tra nếu ô input shippingFee không có giá trị hợp lệ thì gán giá trị mặc định là 0
+                                                                                            const giamGia1 = isNaN(parseFloat(giamGia.value)) ? 0 : parseFloat(giamGia.value);
+
+                                                                                            // Kiểm tra nếu shippingFee không có giá trị hợp lệ thì gán giá trị mặc định là 0
                                                                                             const phiShip = isNaN(shippingFee) ? 0 : shippingFee;
 
-                                                                                            // Thực hiện phép cộng
+                                                                                            // Thực hiện phép tính tổng
                                                                                             const tongGia = tongTienHoaDon + phiShip - giamGia1;
 
                                                                                             // Hiển thị kết quả trong thẻ <h6>
-
-                                                                                            tongGiaValue.textContent = tongGia;
-
-                                                                                            // Giữ hai chữ số sau dấu thập phân
-
-                                                                                            document.getElementById('thanhTienIn').innerHTML = tongGia;
-                                                                                            tongAll.value = tongGia;
+                                                                                            tongGiaValue.textContent = tongGia.toFixed(0);
+                                                                                            tongAll.value = tongGia.toFixed(0);
                                                                                         }
 
                                                                                         // Gọi hàm khi giá trị trong ô input thay đổi
@@ -1059,95 +1051,6 @@
                                                                                     })
                                                                                     .catch(error => console.error('Error:', error));
                                                                             }
-
-                                                                            function calculateShippingFee2() {
-
-                                                                                var citySelect = document.getElementById('citySelect').value;
-                                                                                var districtSelect = document.getElementById('districtSelect').value;
-                                                                                var wardSelect = document.getElementById('wardSelect').value;
-                                                                                const shippingInfo = {
-                                                                                    // weight: parseFloat(weight),
-                                                                                    service_type_id: 2,
-                                                                                    // from_district_id: 3440,
-                                                                                    to_district_id: Number(districtSelect),
-                                                                                    to_ward_code: wardSelect,
-                                                                                    height: 30, //cao cm
-                                                                                    length: 30, //chieu dai cm
-                                                                                    weight: 1000, //can nang (g)
-                                                                                    width: 30, //rong cm
-                                                                                    insurance_value: 0,
-                                                                                    coupon: null,
-                                                                                    items: [
-                                                                                        {
-                                                                                            "name": "TEST1",
-                                                                                            "quantity": 1,
-                                                                                            "height": 20,
-                                                                                            "weight": 1,
-                                                                                            "length": 20,
-                                                                                            "width": 20
-                                                                                        }
-                                                                                    ]
-                                                                                };
-                                                                                console.log(shippingInfo)
-
-                                                                                fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', {
-                                                                                    method: 'POST',
-                                                                                    headers: {
-                                                                                        'Content-Type': 'application/json',
-                                                                                        'Token': '0c4a5894-7fc8-11ee-96dc-de6f804954c9', // Replace with your GHN API token
-                                                                                        // 'shop_id': 4689281
-                                                                                    },
-                                                                                    body: JSON.stringify(shippingInfo)
-                                                                                })
-                                                                                    .then(response => response.json())
-                                                                                    .then(data => {
-                                                                                        const shippingFeeResult = document.getElementById('shippingFeeResult');
-                                                                                        shippingFeeResult.value = `${data.data.total}`; // Thay đổi ở đây
-
-                                                                                        // document.getElementById('phiShip2').value = `${data.data.total}`; // Thay đổi ở đây
-                                                                                        // const shippingFeeResult2 = document.getElementById('phi-van-chuyen');
-                                                                                        // shippingFeeResult2.innerHTML = `${data.data.total} VND`;
-                                                                                        console.log(data)
-                                                                                        const phiShipInput = document.getElementById('shippingFeeResult');
-
-                                                                                        // Lấy thẻ <h6> có class là tong-gia
-                                                                                        const tongGiaElement = document.querySelector('.tong-gia');
-                                                                                        const shippingFeeResultInput = document.getElementById('shippingFeeResult');
-                                                                                        const tongTienHoaDonInput = document.querySelector('input[name="tongTienHoaDon"]');
-                                                                                        const tongGiaValue = document.getElementById('tongGiaValue');
-                                                                                        const tongAll = document.getElementById('tongAll');
-                                                                                        const giamGia = document.getElementById('giamGiaInput');
-                                                                                        // Hàm cộng giá trị từ hai ô input và cập nhật nội dung của thẻ <h6>
-                                                                                        function congHaiInputVaCapNhatTongGia() {
-                                                                                            // Lấy giá trị từ hai ô input
-                                                                                            const tongTienHoaDon = parseFloat(tongTienHoaDonInput.value);
-                                                                                            const shippingFee = parseFloat(shippingFeeResultInput.value);
-                                                                                            const giamGia1 = parseFloat(giamGia.value);
-                                                                                            // Kiểm tra nếu ô input shippingFee không có giá trị hợp lệ thì gán giá trị mặc định là 0
-                                                                                            const phiShip = isNaN(shippingFee) ? 0 : shippingFee;
-
-                                                                                            // Thực hiện phép cộng
-                                                                                            const tongGia = tongTienHoaDon + phiShip - giamGia1;
-
-
-
-                                                                                            // Hiển thị kết quả trong thẻ <h6>
-                                                                                            // tongGiaValue.textContent = tongGia.toFixed(0); // Giữ hai chữ số sau dấu thập phân
-                                                                                            // tongAll.value = tongGia.toFixed(0);
-                                                                                        }
-
-                                                                                        // Gọi hàm khi giá trị trong ô input thay đổi
-                                                                                        shippingFeeResultInput.addEventListener('input', congHaiInputVaCapNhatTongGia);
-                                                                                        tongTienHoaDonInput.addEventListener('input', congHaiInputVaCapNhatTongGia);
-
-                                                                                        // Gọi hàm lần đầu để hiển thị kết quả ban đầu
-                                                                                        congHaiInputVaCapNhatTongGia();
-
-
-                                                                                    })
-                                                                                    .catch(error => console.error('Error:', error));
-                                                                            }
-
                                                                         </script>
                                                                     </div>
                                                                     <div class="col-md-6">
@@ -1598,10 +1501,14 @@
                                                                                                 ]
                                                                                             </h6>
                                                                                             <span>Đơn giá:
-                                                                                                <span class="gia">
-                                                                                                    [[${ctsp.giaHienHanh}]]
-                                                                                                    VND</span></span>
-                                                                                            <p>Loại đế:
+<span>Đơn giá:
+    <span class="gia">
+        [[${#numbers.formatDecimal(ctsp.giaHienHanh, 0, 'POINT', 0, 'NONE')}]] VND
+    </span>
+</span>
+
+
+                                                                                            <p>Loại tay áo:
                                                                                                 [[${ctsp.tayAo.ten}]]
                                                                                             </p>
                                                                                         </div>
@@ -1694,11 +1601,13 @@
                                                                                     [[${obj.chiTietSanPham.kichCo.ten}]]
                                                                                     ]
                                                                                 </h6>
-                                                                                <span>Đơn giá: <span
-                                                                                        class="gia">
-                                                                                                [[${obj.donGia}]]
-                                                                                                VND</span></span>
-                                                                                <p>Loại đế:
+                                                                                <span>Đơn giá:
+    <span class="gia">
+        [[${#numbers.formatDecimal(obj.donGia, 0, 'POINT', 0, 'NONE')}]] VND
+    </span>
+</span>
+
+                                                                                <p>Loại tay áo:
                                                                                     [[${obj.chiTietSanPham.tayAo.ten}]]
                                                                                 </p>
                                                                                 <span  th:if="${obj.soLuong>obj.chiTietSanPham.soLuong&&hoaDon.trangThai==0}" style="color: rgb(255, 255, 255); font-weight: bold;background-color: red; padding: 10px 20px;">Số lượng còn: [[${obj.chiTietSanPham.soLuong}]]</span>
@@ -1717,9 +1626,10 @@
                                                                 </td>
                                                                 <td>
                                                                     <div class="price-table">
-                                                                        [[${obj.tongTien()}]] VND
+                                                                        [[${#numbers.formatDecimal(obj.tongTien(), 0, 'POINT', 0, 'NONE')}]] VND
                                                                     </div>
                                                                 </td>
+
 
 
                                                                 <td
@@ -2009,75 +1919,59 @@
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 id="totalAmount" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDon(), 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDon(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
                                                                     </h6>
-                                                                    <input th:value="${hoaDon.tongTienHoaDonDaNhan()}" type="hidden" name="tongTienHoaDon">
                                                                 </div>
                                                             </div>
+
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <h6>Phí vận chuyển:</h6>
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 id="phi-van-chuyen" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.phiShip, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.phiShip, 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
+
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <h6>Tiền giảm:</h6>
-                                                                    <input id="giamGiaInput" type="hidden"
-                                                                           th:value="${hoaDon.tongTien - hoaDon.tongTienKhiGiam}"
-                                                                           name="giamGia">
                                                                 </div>
                                                                 <div class="col">
-                                                                    <h6 th:if="${hoaDon.trangThai!=6}" id="moneyVoucher" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
-                                                                    </h6>
-                                                                    <h6 th:if="${hoaDon.trangThai==6}" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                                                                    <h6 id="moneyVoucher" class="thong-tin-gia">
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tienGiam, 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="ngan-cach"></div>
+
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <h6>Khách đã thanh toán:</h6>
                                                                 </div>
                                                                 <div class="col">
-                                                                    <h6 id="moneyVoucher" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
+                                                                    <h6 id="moneyPaid" class="thong-tin-gia">
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDonDaNhan(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
-                                                            <div th:if="${hoaDon.trangThai==6}" class="row">
-                                                                <div class="col">
-                                                                    <h6>Tổng tiền hoàn trả:</h6>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <h6 th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDonHoanTra() - hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
-                                                                    </h6>
-                                                                    <h6 th:if="${hoaDon.tongTienHoaDonDaNhan()==0}" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDonHoanTra - hoaDon.tienGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
-                                                                    </h6>
-                                                                </div>
-                                                            </div>
+
                                                             <div class="ngan-cach"></div>
+
                                                             <div class="row">
                                                                 <div class="col">
                                                                     <h6>Tổng tiền thanh toán:</h6>
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 class="thong-tin-gia" id="tongGiaH6">
-            <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" id="tongGiaValue">
-                <span th:text="${#numbers.formatDecimal(hoaDon.tongTienKhiGiam, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
-            </span>
-                                                                        <span th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">0 VND</span>
+                                                                        <span th:text="${#numbers.formatDecimal((hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam) - hoaDon.tongTienHoaDonDaNhan(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
                                                                     </h6>
-                                                                    <input th:value="${hoaDon.tongTienHoaDonKhiGiam()}" type="hidden" id="tongAll">
                                                                 </div>
                                                             </div>
+
 
 
                                                         </div>

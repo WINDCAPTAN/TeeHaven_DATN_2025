@@ -467,11 +467,15 @@
                                             </div>
                                             <thead>
                                             <tr>
-                                                <th colspan="4" style="text-align: center">Địa Chỉ Cụ Thể</th>
+                                                <th style="text-align: center">Địa Chỉ Cụ Thể</th>
+                                                <th>Xã</th>
+                                                <th>Huyện</th>
+                                                <th>Thành phố</th>
                                                 <th>Trạng Thái</th>
                                                 <th colspan="2" style="text-align: center">Thao Tác</th>
                                             </tr>
                                             </thead>
+
                                             <tbody>
                                             <tr th:each="diaChi, status : ${listDiaChi}" class="diaChiRow">
                                                 <td th:text="${diaChi.diaChiCuThe}"></td>
