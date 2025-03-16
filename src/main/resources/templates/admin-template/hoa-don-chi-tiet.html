@@ -1192,7 +1192,7 @@
                                                             const shippingFeeResult = document.getElementById('shippingFeeResult');
                                                             shippingFeeResult.value = `${data.data.total}`; // Thay đổi ở đây
                                                             const shippingFeeResult2 = document.getElementById('phi-van-chuyen');
-                                                            shippingFeeResult2.innerHTML = `${data.data.total} VND`;
+                                                            shippingFeeResult2.innerHTML = `${data.data.total} VNĐ`;
                                                             console.log(data)
                                                             const phiShipInput = document.getElementById('shippingFeeResult');
 
@@ -1315,7 +1315,7 @@
                                                             var TongTienHoaDon = Number('[[${hoaDon.tongTienHoaDon()}]]');
                                                             document.getElementById('shippingFeeResult').value = 0;
                                                             document.getElementById('tongAll').value = TongTienHoaDon - gg;
-                                                            document.getElementById('phi-van-chuyen').innerHTML = '0 VND';
+                                                            document.getElementById('phi-van-chuyen').innerHTML = '0 VNĐ';
 
                                                             document.getElementById('tongGiaValue').innerHTML = TongTienHoaDon - gg;
                                                         }
@@ -1723,36 +1723,39 @@
                                         <div class="row mb-3" style="padding: 15px;">
                                             <div class="col-md-3">
                                                 <label class="form-label">Tên sản phẩm:</label>
-                                                <input type="text" class="form-control" id="filterTenSanPham" placeholder="Nhập tên sản phẩm">
+                                                <input type="text" class="form-control" id="filterTenSanPham" placeholder="Nhập tên sản phẩm" onkeypress="return validateInput(event)">
+                                                <span class="text-danger" id="tenSanPhamError" style="font-size: 0.875em;"></span>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Màu sắc:</label>
                                                 <select class="form-select" id="filterMauSac">
                                                     <option value="">Tất cả</option>
-                                                    <option th:each="mau : ${listCtsp}" th:value="${mau.mauSac.ten}" th:text="${mau.mauSac.ten}"></option>
+                                                    <option th:each="mau : ${#lists.sort(#sets.toSet(listCtsp.![mauSac.ten]))}" th:value="${mau}" th:text="${mau}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Kích thước:</label>
                                                 <select class="form-select" id="filterKichThuoc">
                                                     <option value="">Tất cả</option>
-                                                    <option th:each="kich : ${listCtsp}" th:value="${kich.kichCo.ten}" th:text="${kich.kichCo.ten}"></option>
+                                                    <option th:each="kich : ${#lists.sort(#sets.toSet(listCtsp.![kichCo.ten]))}" th:value="${kich}" th:text="${kich}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Tay áo:</label>
                                                 <select class="form-select" id="filterTayAo">
                                                     <option value="">Tất cả</option>
-                                                    <option th:each="tay : ${listCtsp}" th:value="${tay.mauSac.ten}" th:text="${tay.kichCo.ten}"></option>
+                                                    <option th:each="tay : ${#lists.sort(#sets.toSet(listCtsp.![tayAo.ten]))}" th:value="${tay}" th:text="${tay}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Giá từ:</label>
-                                                <input type="number" class="form-control" id="filterGiaTu" placeholder="Nhập giá từ">
+                                                <input type="text" class="form-control" id="filterGiaTu" placeholder="Nhập giá từ" onkeypress="return validateNumber(event)">
+                                                <span class="text-danger" id="giaTuError" style="font-size: 0.875em;"></span>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Giá đến:</label>
-                                                <input type="number" class="form-control" id="filterGiaDen" placeholder="Nhập giá đến">
+                                                <input type="text" class="form-control" id="filterGiaDen" placeholder="Nhập giá đến" onkeypress="return validateNumber(event)">
+                                                <span class="text-danger" id="giaDenError" style="font-size: 0.875em;"></span>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">&nbsp;</label>
@@ -1875,6 +1878,35 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.js'></script>
 <script>
+    // Thêm các hàm validation
+    function validateInput(event) {
+        // Chỉ cho phép chữ cái, số và khoảng trắng
+        var charCode = (event.which) ? event.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && charCode != 32) {
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+    function validateNumber(event) {
+        // Chỉ cho phép số
+        var charCode = (event.which) ? event.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+    // Thêm hàm mới để kiểm tra thứ tự size
+    function isLargerSize(selectedSize, rowSize) {
+        const sizeOrder = ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
+        const selectedIndex = sizeOrder.indexOf(selectedSize);
+        const rowIndex = sizeOrder.indexOf(rowSize);
+        return selectedIndex < rowIndex;
+    }
+
     $(document).ready(function () {
         var table = $('#example').DataTable({
             "language": {
@@ -1884,8 +1916,7 @@
                 "infoEmpty": "Không có dữ liệu để hiển thị"
             },
             "initComplete": function (settings, json) {
-                // CSS changes
-                $('#example_filter').hide(); // Hide the default search box
+                $('#example_filter').hide();
                 $('#example_length label').contents().filter(function () {
                     return this.nodeType === 3;
                 }).first().replaceWith('Hiển thị');
@@ -1897,17 +1928,93 @@
             }
         });
 
-        // Add event listener for the product name filter
-        $('#filterTenSanPham').on('keyup', function() {
-            table.column(1).search(this.value).draw(); // Search in the second column (product name)
+        // Add event listeners for all filter inputs
+        $('#filterTenSanPham, #filterMauSac, #filterKichThuoc, #filterTayAo').on('change keyup', function() {
+            applyFilters();
+        });
+
+        // Modified price input handlers with additional validation
+        $('#filterGiaTu, #filterGiaDen').on('input', function(e) {
+            this.value = this.value.replace(/[^\d]/g, '');
+            validatePriceRange();
+        });
+
+        $('#filterTenSanPham').on('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z0-9\sÀ-ỹ]/g, '');
+        });
+
+        function validatePriceRange() {
+            var giaTu = parseFloat($('#filterGiaTu').val()) || 0;
+            var giaDen = parseFloat($('#filterGiaDen').val());
+            var giaTuError = $('#giaTuError');
+            var giaDenError = $('#giaDenError');
+            var isValid = true;
+
+            giaTuError.text('');
+            giaDenError.text('');
+
+            if (giaTu < 0) {
+                giaTuError.text('Giá không được âm');
+                isValid = false;
+            }
+
+            if (giaDen) {
+                if (giaDen < 0) {
+                    giaDenError.text('Giá không được âm');
+                    isValid = false;
+                } else if (giaDen < giaTu) {
+                    giaDenError.text('Giá đến phải lớn hơn hoặc bằng giá từ');
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                applyFilters();
+            }
+        }
+
+        window.applyFilters = function() {
+            var giaTu = parseFloat($('#filterGiaTu').val()) || 0;
+            var giaDen = parseFloat($('#filterGiaDen').val());
+            
+            if (giaDen && giaDen < giaTu) {
+                return;
+            }
+            
+            table.draw();
+        }
+
+        // Sửa đổi hàm lọc tùy chỉnh
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            var tenSanPham = $('#filterTenSanPham').val().toLowerCase();
+            var mauSac = $('#filterMauSac').val();
+            var kichThuoc = $('#filterKichThuoc').val();
+            var tayAo = $('#filterTayAo').val();
+            var giaTu = parseFloat($('#filterGiaTu').val()) || 0;
+            var giaDen = parseFloat($('#filterGiaDen').val()) || Number.MAX_VALUE;
+
+            if (giaDen && giaDen < giaTu) {
+                return true;
+            }
+
+            var rowData = $(table.row(dataIndex).node());
+            var productName = data[1].toLowerCase();
+            var price = parseFloat(data[3].replace(/[^\d]/g, ''));
+            var productDetails = rowData.find('.info-price').text();
+
+            var matchesName = !tenSanPham || productName.includes(tenSanPham);
+            var matchesMauSac = !mauSac || productDetails.includes(mauSac);
+            var matchesKichThuoc = !kichThuoc || productDetails.includes(kichThuoc);
+            var matchesTayAo = !tayAo || productDetails.includes(tayAo);
+            var matchesPrice = price >= giaTu && price <= giaDen;
+
+            return matchesName && matchesMauSac && matchesKichThuoc && matchesTayAo && matchesPrice;
         });
 
         table.on('draw.dt', function () {
             var pageInfo = table.page.info();
-
             var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
             $('#example_info').html(newInfo);
-
         });
     });
 
@@ -2103,12 +2210,12 @@
     function checkAndDisplayVouchers() {
 
         // Lấy giá trị totalAmount từ #totalAmount
-        var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(' VND', '').trim());
+        var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(' VNĐ', '').trim());
         console.log(totalAmount)
 
         // Lặp qua danh sách voucher và kiểm tra điều kiện
         document.querySelectorAll('.card.mb-3').forEach(function (card) {
-            var voucherGiaTriDonToiThieu = parseFloat(card.querySelector('#donToiThieu').innerText.replace('Đơn Tối Thiểu ', '').replace(' VND', '').trim());
+            var voucherGiaTriDonToiThieu = parseFloat(card.querySelector('#donToiThieu').innerText.replace('Đơn Tối Thiểu ', '').replace(' VNĐ', '').trim());
             var radio = card.querySelector('input[name="voucherRadio"]');
             var thongBao = card.querySelector('#thongBaoThieuTien');
 
