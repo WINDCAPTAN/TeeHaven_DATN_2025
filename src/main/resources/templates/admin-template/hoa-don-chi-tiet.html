@@ -195,7 +195,7 @@
                                      aria-label="Basic outlined example">
                                     <a th:text="${hd.maHoaDon}"
                                        th:href="@{'/ban-hang-tai-quay/hoa-don/' + ${hd.id}}"
-                                       class="btn btn-outline-primary"></a>
+                                       th:class="${hd.id == hoaDon.id ? 'btn btn-outline-primary active' : 'btn btn-outline-primary'}"></a>
                                 </div>
                             </div>
                         </div>
