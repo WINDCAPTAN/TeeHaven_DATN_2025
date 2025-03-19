@@ -196,7 +196,7 @@
                                      aria-label="Basic outlined example">
                                     <a th:text="${hd.maHoaDon}"
                                        th:href="@{'/ban-hang-tai-quay/hoa-don/' + ${hd.id}}"
-                                       class="btn btn-outline-primary"></a>
+                                       th:class="${hd.id == hoaDon.id ? 'btn btn-outline-primary active' : 'btn btn-outline-primary'}"></a>
                                 </div>
                             </div>
                         </div>
@@ -1356,22 +1356,7 @@
                                             </div>
 
 
-                                        </div>
-                                        <div class="row">
-                                            <div class="col">
-                                                <h6>Chờ thanh toán</h6>
-                                            </div>
-                                            <div class="col" style="margin-top: 3%;">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input"
-                                                           type="checkbox" role="switch"
-                                                           name="treo">
 
-                                                </div>
-                                            </div>
-
-
-                                        </div>
                                         <div class="row">
                                             <div class="col">
                                                 <h6>Voucher:</h6>
@@ -1704,13 +1689,13 @@
                                     data-bs-toggle="modal" data-bs-target="#ghiChuThanhToan"
                                     style="float: right;" class="btn btn-success">Từ chối
                                 </button> -->
-<!--                                    <button id="thanhToan" type="button"-->
-<!--                                            data-bs-toggle="modal"-->
-<!--                                            data-bs-target="#ghiChuThanhToan"-->
-<!--                                            style="float: right;" class="btn btn-success">Xác-->
-<!--                                        nhận-->
-<!--                                        trả hàng-->
-<!--                                    </button>-->
+                                    <!--                                    <button id="thanhToan" type="button"-->
+                                    <!--                                            data-bs-toggle="modal"-->
+                                    <!--                                            data-bs-target="#ghiChuThanhToan"-->
+                                    <!--                                            style="float: right;" class="btn btn-success">Xác-->
+                                    <!--                                        nhận-->
+                                    <!--                                        trả hàng-->
+                                    <!--                                    </button>-->
                                 </div>
 
                                 <button id="thanhToan" th:case="4" type="button"
@@ -2067,7 +2052,35 @@
         display: none; /* Ẩn radio button nếu không đủ điều kiện */
     }
 
+
 </style>
+<style>
+    .hoa-don .btn-outline-primary {
+        margin: 5px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .hoa-don .btn-outline-primary.active {
+        background-color: #0d6efd;
+        color: white;
+        box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+    }
+
+    .hoa-don .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
+</style>
+// ... existing code ...
+<div class="hoa-don">
+    <div th:each="hd : ${listHoaDon}" class="btn-group" role="group"
+         aria-label="Basic outlined example">
+        <a th:text="${hd.maHoaDon}"
+           th:href="@{'/ban-hang-tai-quay/hoa-don/' + ${hd.id}}"
+           th:class="${hd.id == hoaDon.id ? 'btn btn-outline-primary active' : 'btn btn-outline-primary'}"></a>
+    </div>
+</div>
 <script>
     function handleRadioVoucher(rowIndex) {
         var index = rowIndex.getAttribute('data-index');
@@ -2119,9 +2132,9 @@
 
         detailVoucher.value = '-' + formatMoney(tongTienGiamTheoPhanTram) + ' VNĐ';
         moneyVoucher.innerText = formatMoney(tongTienGiamTheoPhanTram) + ' VNĐ';
-        
+
         var tongTienSauGiam = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram;
-        
+
         tongTienAndSale.value = tongTienSauGiam;
         totalElementSale.innerHTML = formatMoney(tongTienSauGiam) + ' VNĐ';
         document.getElementById('giamGiaInput').value = tongTienGiamTheoPhanTram.toFixed(0);
