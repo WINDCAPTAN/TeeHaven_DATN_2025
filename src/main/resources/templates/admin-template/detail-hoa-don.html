@@ -314,7 +314,7 @@
                                                                             <span th:case="0">Đã Đặt Hàng</span>
                                                                             <span th:case="1">Đã Xác Nhận</span>
                                                                             <span th:case="2">Đã Giao Cho ĐVVC</span>
-                                                                            <span th:case="3">Đã Nhận Được Hàng</span>
+                                                                            <span th:case="3">Hoàn Thành</span>
                                                                         </span>
                                                                     <span class="status-end"
                                                                           th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -380,8 +380,7 @@
                                                                                 <span th:case="1">Đã Xác Nhận</span>
                                                                                 <span th:case="2">Đã Giao Cho
                                                                                     ĐVVC</span>
-                                                                                <span th:case="3">Đã Nhận Được
-                                                                                    Hàng</span>
+                                                                                <span th:case="3">Hoàn Thành</span>
                                                                             </span>
                                                                         <span class="status-end"
                                                                               th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -406,8 +405,7 @@
                                                                                     <span th:case="1">Đã Xác Nhận</span>
                                                                                     <span th:case="2">Đã Giao Cho
                                                                                         ĐVVC</span>
-                                                                                    <span th:case="3">Đã Nhận Được
-                                                                                        Hàng</span>
+                                                                                    <span th:case="3">Hoàn Thành</span>
 
                                                                                 </span>
                                                                             <span class="status-end"
@@ -425,8 +423,7 @@
                                                                             <span class="status"
                                                                                   th:switch="${lshd.trangThai}">
                                                                                     <span th:case="0">Đã Đặt Hàng</span>
-                                                                                    <span th:case="3">Đã Nhận Được
-                                                                                        Hàng</span>
+                                                                                    <span th:case="3">Hoàn Thành</span>
                                                                                 </span>
                                                                             <span class="status-end"
                                                                                   th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -447,8 +444,7 @@
                                                                             <span class="status"
                                                                                   th:switch="${lshd.trangThai}">
                                                                                     <span th:case="0">Đã Đặt Hàng</span>
-                                                                                    <span th:case="3">Đã Nhận Được
-                                                                                        Hàng</span>
+                                                                                    <span th:case="3">Hoàn Thành</span>
                                                                                 </span>
                                                                             <span class="status-end"
                                                                                   th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
@@ -2130,9 +2126,10 @@
         <div class="col-md-12">
 
             <div class="logo-hoa-don">
-                <img src="../../../static/img/logo_teehaven.png" alt="">
+                <img src="../../../static/img/logo_teehaven.png" alt="" style="width: 100px; height: auto;">
                 <h1>Tee Haven</h1>
             </div>
+
             <div class="border-hoadon"></div>
         </div>
         <div class="col-md-12">
