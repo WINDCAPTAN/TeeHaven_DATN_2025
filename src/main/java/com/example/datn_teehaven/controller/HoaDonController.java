@@ -34,6 +34,7 @@ import java.util.List;
 @RequestMapping("/hoa-don")
 public class HoaDonController {
 
+    // dung123
     @Autowired
     HttpServletRequest request;
     @Autowired
@@ -369,6 +370,8 @@ public class HoaDonController {
                 hoaDonService.saveOrUpdate(hd);
             }
         }
+
+
         List<LichSuHoaDon> lstLshd = lichSuHoaDonService.findByIdhd(id);
         Integer tt = lstLshd.get(0).getTrangThai();
         model.addAttribute("checkRollback", tt);
