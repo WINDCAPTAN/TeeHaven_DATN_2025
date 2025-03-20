@@ -1161,20 +1161,18 @@
 
                                                 // giao hàng nhanh
                                                 function calculateShippingFee() {
-
                                                     var citySelect = document.getElementById('citySelect').value;
                                                     var districtSelect = document.getElementById('districtSelect').value;
                                                     var wardSelect = document.getElementById('wardSelect').value;
                                                     const shippingInfo = {
-                                                        // weight: parseFloat(weight),
                                                         service_type_id: 2,
                                                         from_district_id: 3440,
                                                         to_district_id: Number(districtSelect),
                                                         to_ward_code: wardSelect,
-                                                        height: 10, //cao cm
-                                                        length: 10, //chieu dai cm
-                                                        weight: 500, //can nang (g)
-                                                        width: 10, //rong cm
+                                                        height: 10,
+                                                        length: 10,
+                                                        weight: 500,
+                                                        width: 10,
                                                         insurance_value: 0,
                                                         coupon: null,
                                                         items: [
@@ -1188,61 +1186,50 @@
                                                             }
                                                         ]
                                                     };
-                                                    console.log(shippingInfo)
 
                                                     fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', {
                                                         method: 'POST',
                                                         headers: {
                                                             'Content-Type': 'application/json',
-                                                            'Token': '0c4a5894-7fc8-11ee-96dc-de6f804954c9', // Replace with your GHN API token
-                                                            // 'shop_id': 4689281
+                                                            'Token': '0c4a5894-7fc8-11ee-96dc-de6f804954c9',
                                                         },
                                                         body: JSON.stringify(shippingInfo)
                                                     })
-                                                        .then(response => response.json())
-                                                        .then(data => {
-                                                            const shippingFeeResult = document.getElementById('shippingFeeResult');
-                                                            shippingFeeResult.value = `${data.data.total}`; // Thay đổi ở đây
-                                                            const shippingFeeResult2 = document.getElementById('phi-van-chuyen');
-                                                            shippingFeeResult2.innerHTML = `${data.data.total} VND`;
-                                                            console.log(data)
-                                                            const phiShipInput = document.getElementById('shippingFeeResult');
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                        const shippingFeeResult = document.getElementById('shippingFeeResult');
+                                                        const shippingFeeResult2 = document.getElementById('phi-van-chuyen');
+                                                        const phiShipInput = document.getElementById('shippingFeeResult');
+                                                        const tongGiaElement = document.querySelector('.tong-gia');
+                                                        const shippingFeeResultInput = document.getElementById('shippingFeeResult');
+                                                        const tongTienHoaDonInput = document.querySelector('input[name="tongTienHoaDon"]');
+                                                        const tongGiaValue = document.getElementById('tongGiaValue');
+                                                        const tongAll = document.getElementById('tongAll');
+                                                        const giamGia = document.getElementById('giamGiaInput');
 
-                                                            // Lấy thẻ <h6> có class là tong-gia
-                                                            const tongGiaElement = document.querySelector('.tong-gia');
-                                                            const shippingFeeResultInput = document.getElementById('shippingFeeResult');
-                                                            const tongTienHoaDonInput = document.querySelector('input[name="tongTienHoaDon"]');
-                                                            const tongGiaValue = document.getElementById('tongGiaValue');
-                                                            const tongAll = document.getElementById('tongAll');
-                                                            const giamGia = document.getElementById('giamGiaInput');
+                                                        // Format the shipping fee with thousands separators
+                                                        const formattedShippingFee = data.data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                                        shippingFeeResult.value = data.data.total;
+                                                        shippingFeeResult2.innerHTML = formattedShippingFee + ' VND';
 
-                                                            // Hàm cộng giá trị từ hai ô input và cập nhật nội dung của thẻ <h6>
-                                                            function congHaiInputVaCapNhatTongGia() {
-                                                                const tongTienHoaDon = parseFloat(tongTienHoaDonInput.value);
-                                                                const shippingFee = parseFloat(shippingFeeResultInput.value);
-                                                                const giamGia1 = isNaN(parseFloat(giamGia.value)) ? 0 : parseFloat(giamGia.value);
+                                                        function congHaiInputVaCapNhatTongGia() {
+                                                            const tongTienHoaDon = parseFloat(tongTienHoaDonInput.value);
+                                                            const shippingFee = parseFloat(shippingFeeResultInput.value);
+                                                            const giamGia1 = isNaN(parseFloat(giamGia.value)) ? 0 : parseFloat(giamGia.value);
+                                                            const phiShip = isNaN(shippingFee) ? 0 : shippingFee;
+                                                            const tongGia = tongTienHoaDon + phiShip - giamGia1;
+                                                            
+                                                            // Format the total with thousands separators
+                                                            const formattedTotal = tongGia.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                                                            tongGiaValue.textContent = formattedTotal + ' VND';
+                                                            tongAll.value = tongGia.toFixed(0);
+                                                        }
 
-                                                                // Kiểm tra nếu shippingFee không có giá trị hợp lệ thì gán giá trị mặc định là 0
-                                                                const phiShip = isNaN(shippingFee) ? 0 : shippingFee;
-
-                                                                // Thực hiện phép tính tổng
-                                                                const tongGia = tongTienHoaDon + phiShip - giamGia1;
-
-                                                                // Hiển thị kết quả trong thẻ <h6>
-                                                                tongGiaValue.textContent = tongGia.toFixed(0);
-                                                                tongAll.value = tongGia.toFixed(0);
-                                                            }
-
-                                                            // Gọi hàm khi giá trị trong ô input thay đổi
-                                                            shippingFeeResultInput.addEventListener('input', congHaiInputVaCapNhatTongGia);
-                                                            tongTienHoaDonInput.addEventListener('input', congHaiInputVaCapNhatTongGia);
-
-                                                            // Gọi hàm lần đầu để hiển thị kết quả ban đầu
-                                                            congHaiInputVaCapNhatTongGia();
-
-
-                                                        })
-                                                        .catch(error => console.error('Error:', error));
+                                                        shippingFeeResultInput.addEventListener('input', congHaiInputVaCapNhatTongGia);
+                                                        tongTienHoaDonInput.addEventListener('input', congHaiInputVaCapNhatTongGia);
+                                                        congHaiInputVaCapNhatTongGia();
+                                                    })
+                                                    .catch(error => console.error('Error:', error));
                                                 }
                                             </script>
 
@@ -1722,40 +1709,39 @@
                                         <div class="row mb-3" style="padding: 15px;">
                                             <div class="col-md-3">
                                                 <label class="form-label">Tên sản phẩm:</label>
-                                                <input type="text" class="form-control" id="filterTenSanPham" placeholder="Nhập tên sản phẩm">
+                                                <input type="text" class="form-control" id="filterTenSanPham" placeholder="Nhập tên sản phẩm" onkeypress="return validateInput(event)">
+                                                <span class="text-danger" id="tenSanPhamError" style="font-size: 0.875em;"></span>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Màu sắc:</label>
                                                 <select class="form-select" id="filterMauSac">
                                                     <option value="">Tất cả</option>
-                                                    <option th:each="mau : ${listCtsp}" th:value="${mau.mauSac.ten}" th:text="${mau.mauSac.ten}"></option>
+                                                    <option th:each="mau : ${#lists.sort(#sets.toSet(listCtsp.![mauSac.ten]))}" th:value="${mau}" th:text="${mau}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Kích thước:</label>
                                                 <select class="form-select" id="filterKichThuoc">
                                                     <option value="">Tất cả</option>
-                                                    <option th:each="kich : ${listCtsp}" th:value="${kich.kichCo.ten}" th:text="${kich.kichCo.ten}"></option>
+                                                    <option th:each="kich : ${#lists.sort(#sets.toSet(listCtsp.![kichCo.ten]))}" th:value="${kich}" th:text="${kich}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Tay áo:</label>
                                                 <select class="form-select" id="filterTayAo">
                                                     <option value="">Tất cả</option>
-                                                    <option th:each="tay : ${listCtsp}" th:value="${tay.mauSac.ten}" th:text="${tay.kichCo.ten}"></option>
+                                                    <option th:each="tay : ${#lists.sort(#sets.toSet(listCtsp.![tayAo.ten]))}" th:value="${tay}" th:text="${tay}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Giá từ:</label>
-                                                <input type="number" class="form-control" id="filterGiaTu" placeholder="Nhập giá từ">
+                                                <input type="text" class="form-control" id="filterGiaTu" placeholder="Nhập giá từ" onkeypress="return validateNumber(event)">
+                                                <span class="text-danger" id="giaTuError" style="font-size: 0.875em;"></span>
                                             </div>
                                             <div class="col-md-3">
                                                 <label class="form-label">Giá đến:</label>
-                                                <input type="number" class="form-control" id="filterGiaDen" placeholder="Nhập giá đến">
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label class="form-label">&nbsp;</label>
-                                                <button class="btn btn-primary w-100" onclick="applyFilters()">Lọc</button>
+                                                <input type="text" class="form-control" id="filterGiaDen" placeholder="Nhập giá đến" onkeypress="return validateNumber(event)">
+                                                <span class="text-danger" id="giaDenError" style="font-size: 0.875em;"></span>
                                             </div>
                                         </div>
                                         <table id="example" class="display">
@@ -1878,6 +1864,28 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.js'></script>
 <script>
+    // Thêm các hàm validation
+    function validateInput(event) {
+        // Chỉ cho phép chữ cái, số và khoảng trắng
+        var charCode = (event.which) ? event.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57) && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && charCode != 32) {
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+    function validateNumber(event) {
+        // Chỉ cho phép số
+        var charCode = (event.which) ? event.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+
     $(document).ready(function () {
         var table = $('#example').DataTable({
             "language": {
@@ -1887,8 +1895,7 @@
                 "infoEmpty": "Không có dữ liệu để hiển thị"
             },
             "initComplete": function (settings, json) {
-                // CSS changes
-                $('#example_filter').hide(); // Hide the default search box
+                $('#example_filter').hide();
                 $('#example_length label').contents().filter(function () {
                     return this.nodeType === 3;
                 }).first().replaceWith('Hiển thị');
@@ -1900,17 +1907,93 @@
             }
         });
 
-        // Add event listener for the product name filter
-        $('#filterTenSanPham').on('keyup', function() {
-            table.column(1).search(this.value).draw(); // Search in the second column (product name)
+        // Add event listeners for all filter inputs
+        $('#filterTenSanPham, #filterMauSac, #filterKichThuoc, #filterTayAo').on('change keyup', function() {
+            applyFilters();
+        });
+
+        // Modified price input handlers with additional validation
+        $('#filterGiaTu, #filterGiaDen').on('input', function(e) {
+            this.value = this.value.replace(/[^\d]/g, '');
+            validatePriceRange();
+        });
+
+        $('#filterTenSanPham').on('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z0-9\sÀ-ỹ]/g, '');
+        });
+
+        function validatePriceRange() {
+            var giaTu = parseFloat($('#filterGiaTu').val()) || 0;
+            var giaDen = parseFloat($('#filterGiaDen').val());
+            var giaTuError = $('#giaTuError');
+            var giaDenError = $('#giaDenError');
+            var isValid = true;
+
+            giaTuError.text('');
+            giaDenError.text('');
+
+            if (giaTu < 0) {
+                giaTuError.text('Giá không được âm');
+                isValid = false;
+            }
+
+            if (giaDen) {
+                if (giaDen < 0) {
+                    giaDenError.text('Giá không được âm');
+                    isValid = false;
+                } else if (giaDen < giaTu) {
+                    giaDenError.text('Giá đến phải lớn hơn hoặc bằng giá từ');
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                applyFilters();
+            }
+        }
+
+        window.applyFilters = function() {
+            var giaTu = parseFloat($('#filterGiaTu').val()) || 0;
+            var giaDen = parseFloat($('#filterGiaDen').val());
+
+            if (giaDen && giaDen < giaTu) {
+                return;
+            }
+
+            table.draw();
+        }
+
+        // Sửa đổi hàm lọc tùy chỉnh
+        $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+            var tenSanPham = $('#filterTenSanPham').val().toLowerCase();
+            var mauSac = $('#filterMauSac').val();
+            var kichThuoc = $('#filterKichThuoc').val();
+            var tayAo = $('#filterTayAo').val();
+            var giaTu = parseFloat($('#filterGiaTu').val()) || 0;
+            var giaDen = parseFloat($('#filterGiaDen').val()) || Number.MAX_VALUE;
+
+            if (giaDen && giaDen < giaTu) {
+                return true;
+            }
+
+            var rowData = $(table.row(dataIndex).node());
+            var productName = data[1].toLowerCase();
+            var price = parseFloat(data[3].replace(/[^\d]/g, ''));
+            var productDetails = rowData.find('.info-price').text();
+
+            var matchesName = !tenSanPham || productName.includes(tenSanPham);
+            var matchesMauSac = !mauSac || (new RegExp('\\[\\s*' + mauSac + '\\s*-').test(productDetails));
+            var matchesKichThuoc = !kichThuoc || (new RegExp('-\\s*' + kichThuoc + '\\s*\\]').test(productDetails));
+            var matchesTayAo = !tayAo || (new RegExp('Tay áo:\\s*' + tayAo).test(productDetails));
+            var matchesPrice = price >= giaTu && price <= giaDen;
+
+            return matchesName && matchesMauSac && matchesKichThuoc && matchesTayAo && matchesPrice;
         });
 
         table.on('draw.dt', function () {
             var pageInfo = table.page.info();
-
             var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
             $('#example_info').html(newInfo);
-
         });
     });
 
