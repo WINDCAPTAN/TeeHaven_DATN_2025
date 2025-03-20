@@ -1950,7 +1950,7 @@
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 id="moneyPaid" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDonDaNhan(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
+                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDonKhiGiam(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
@@ -1963,7 +1963,7 @@
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 class="thong-tin-gia" id="tongGiaH6">
-                                                                        <span th:text="${#numbers.formatDecimal((hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam) - hoaDon.tongTienHoaDonDaNhan(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
+                                                                        <span th:text="${#numbers.formatDecimal((hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam) - hoaDon.tongTienHoaDonKhiGiam(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
