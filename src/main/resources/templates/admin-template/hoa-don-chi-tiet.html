@@ -1916,14 +1916,7 @@
         }
         return true;
     }
-
-    // Thêm hàm mới để kiểm tra thứ tự size
-    function isLargerSize(selectedSize, rowSize) {
-        const sizeOrder = ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'];
-        const selectedIndex = sizeOrder.indexOf(selectedSize);
-        const rowIndex = sizeOrder.indexOf(rowSize);
-        return selectedIndex < rowIndex;
-    }
+    
 
     $(document).ready(function () {
         var table = $('#example').DataTable({
@@ -2021,9 +2014,9 @@
             var productDetails = rowData.find('.info-price').text();
 
             var matchesName = !tenSanPham || productName.includes(tenSanPham);
-            var matchesMauSac = !mauSac || productDetails.includes(mauSac);
-            var matchesKichThuoc = !kichThuoc || productDetails.includes(kichThuoc);
-            var matchesTayAo = !tayAo || productDetails.includes(tayAo);
+            var matchesMauSac = !mauSac || (new RegExp('\\[\\s*' + mauSac + '\\s*-').test(productDetails));
+            var matchesKichThuoc = !kichThuoc || (new RegExp('-\\s*' + kichThuoc + '\\s*\\]').test(productDetails));
+            var matchesTayAo = !tayAo || (new RegExp('Tay áo:\\s*' + tayAo).test(productDetails));
             var matchesPrice = price >= giaTu && price <= giaDen;
 
             return matchesName && matchesMauSac && matchesKichThuoc && matchesTayAo && matchesPrice;
