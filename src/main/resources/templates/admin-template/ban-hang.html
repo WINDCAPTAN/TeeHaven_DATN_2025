@@ -48,7 +48,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don" id="ban-hang-nav">
                 <i class="bi bi-shop"></i>
                 <span>Bán Hàng</span>
             </a>
@@ -105,14 +105,14 @@
                 <i class="bi bi-person-vcard"></i><span>Quản Lý Tài Khoản</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="tables-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+            <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/admin/nhan-vien">
                         <i class="bi bi-circle"></i><span>Quản lý nhân viên</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/khach-hang" >
+                    <a href="/admin/khach-hang">
                         <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
                     </a>
                 </li>
@@ -120,7 +120,7 @@
         </li><!-- End Tables Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../admin/voucher">
+            <a class="nav-link collapsed" href="/admin/voucher">
                 <i class="bi bi-ticket-perforated-fill"></i>
                 <span>Quản Lý Voucher</span>
             </a>
@@ -340,6 +340,26 @@
         class="bi bi-arrow-up-short"></i></a>
 
 <div th:replace="~{admin-template/fragment/script :: script}"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const currentPath = window.location.pathname;
+        const hoaDonLink = document.getElementById("ban-hang-nav");
+        const tablesNav = document.getElementById("tables-nav");
+        const tablesNavParent = tablesNav.closest(".nav-item"); // Lấy phần tử cha
+
+        if (currentPath.includes("/ban-hang-tai-quay/hoa-don")) {
+            hoaDonLink.classList.remove("collapsed");
+            hoaDonLink.classList.add("active");
+        }
+
+        // Nếu không phải trang thuộc Quản Lý Tài Khoản, đóng lại phần đó
+        if (!currentPath.includes("/admin/nhan-vien") && !currentPath.includes("/admin/khach-hang")) {
+            tablesNav.classList.remove("show"); // Đóng danh sách con
+            tablesNavParent.querySelector(".nav-link").classList.add("collapsed"); // Thu gọn
+        }
+    });
+
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 
