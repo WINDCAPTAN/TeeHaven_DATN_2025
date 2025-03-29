@@ -5,16 +5,17 @@ package com.example.datn_teehaven.controller.user;
 
 
 import com.example.datn_teehaven.Config.PrincipalCustom;
+import com.example.datn_teehaven.entyti.ChiTietSanPham;
 import com.example.datn_teehaven.entyti.TaiKhoan;
-import com.example.datn_teehaven.service.GioHangChiTietService;
-import com.example.datn_teehaven.service.HoaDonChiTietService;
-import com.example.datn_teehaven.service.KhachHangService;
-import com.example.datn_teehaven.service.TaiKhoanService;
+import com.example.datn_teehaven.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 
 @Controller
@@ -33,6 +34,8 @@ public class CustomersController {
     private HoaDonChiTietService hoaDonChiTietService;
     @Autowired
     private GioHangChiTietService gioHangChiTietService;
+    @Autowired
+    private ChiTietSanPhamSerivce chiTietSanPhamSerivce;
 
     @GetMapping("/home")
     public String home(Model model) {
@@ -61,6 +64,21 @@ public class CustomersController {
         }
 
         return "/customer-template/ban-hang-customer";
+    }
+
+    @GetMapping("/user/shop-single/{id}")
+    public String shopSingle(
+            @PathVariable("id") String id,
+            Model model) {
+        ChiTietSanPham ChiTietSanPham = chiTietSanPhamSerivce.getAllById(Long.valueOf(id)).get(0);
+        List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamSerivce.getAllById(Long.valueOf(id));
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        model.addAttribute("chiTietSp", ChiTietSanPham);
+        model.addAttribute("listChiTietSp", listChiTietSanPham);
+        model.addAttribute("listTop5HDCT", hoaDonChiTietService.finTop5HDCT());
+        return "/customer-template/shop-single";
     }
 
 }
