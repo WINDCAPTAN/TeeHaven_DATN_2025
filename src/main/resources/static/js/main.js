@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
             stagePadding: 15,
             margin: 20,
             nav: true,
-            navText: ['<span class="icon-arrow_back">', '<span class="icon-arrow_forward">'],
+            // navText: ['<span class="icon-arrow_back">', '<span class="icon-arrow_forward">'],
             responsive: {
                 600: {
                     margin: 20,
@@ -24,11 +24,11 @@ jQuery(document).ready(function ($) {
                 },
                 1000: {
                     margin: 20,
-                    items: 3
+                    items: 4
                 },
                 1200: {
                     margin: 20,
-                    items: 3
+                    items: 4
                 }
             }
         });

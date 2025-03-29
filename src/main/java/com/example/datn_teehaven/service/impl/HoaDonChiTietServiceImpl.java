@@ -3,13 +3,14 @@ package com.example.datn_teehaven.service.impl;
 import com.example.datn_teehaven.entyti.HoaDonChiTiet;
 import com.example.datn_teehaven.repository.HoaDonChiTietRepository;
 import com.example.datn_teehaven.repository.HoaDonRepository;
+import com.example.datn_teehaven.repository.ChiTietSanPhamRepository;
 import com.example.datn_teehaven.service.HoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
@@ -21,6 +22,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Autowired
     HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    ChiTietSanPhamRepository chiTietSanPhamRepository;
 
 
     @Override
@@ -53,9 +57,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Override
     public List<HoaDonChiTiet> finTop5HDCT() {
-
-        return hoaDonChiTietRepository.fillAllIdHoaDonTrangThaiHoanThanh(hoaDonRepository.fillAllIdHoaDonTrangThaiHoanThanh());
-
+        return hoaDonChiTietRepository.fillAllIdHoaDonTrangThaiHoanThanh(null);
     }
 
     public List<Object[]> findByTongSoLuongBetween(Date startDate, Date endDate) {
@@ -110,6 +112,14 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         return hoaDonChiTietRepository.thongKeSanPhamTheoNgay(ngayTru30,ngayHienTai);
     }
 
+    @Override
+    public List<HoaDonChiTiet> findTop5BanChay() {
+        return hoaDonChiTietRepository.findTop5BanChay();
+    }
 
+    @Override
+    public List<HoaDonChiTiet> findTop10SanPhamMoi() {
+        return hoaDonChiTietRepository.findTop10SanPhamMoi();
+    }
 
 }
