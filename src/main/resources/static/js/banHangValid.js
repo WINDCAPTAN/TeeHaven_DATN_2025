@@ -273,22 +273,26 @@ function handleButtonClick(idBtn) {
     }, 1500); // Ví dụ: kích hoạt lại sau 3 giây (3000 milliseconds)
 }
 
-const inputElement = document.getElementById('tienKhachTra'); // Thay 'inputId' bằng ID thực của ô input
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('vi-VN').format(amount);
+}
+
+const inputElement = document.getElementById('tienKhachTra'); // Thay 'tienKhachTra' bằng ID thực của ô input
 const tongTien = document.getElementById('tongAll');
 const traLai = document.getElementById('traLai');
+
 inputElement.addEventListener('input', function (event) {
     const newValue = event.target.value;
-    traLai.innerHTML = (newValue - tongTien.value)
-
-    // Thực hiện các hành động khác ngay khi giá trị thay đổi
+    const change = newValue - tongTien.value;
+    traLai.innerHTML = formatCurrency(change);
 });
 
 function resetTienKhachTra() {
     const inputElement = document.getElementById('tienKhachTra'); // Thay 'inputId' bằng ID thực của ô input
     const tongTien = document.getElementById('tongAll');
     const traLai = document.getElementById('traLai');
-    inputElement.value = null
-    traLai.innerHTML = '0'
+    inputElement.value = null;
+    traLai.innerHTML = formatCurrency(0);
 }
 function resetTienKhachTra2() {
     const inputElement2 = document.getElementById('tongAll'); // Thay 'inputId' bằng ID thực của ô input
