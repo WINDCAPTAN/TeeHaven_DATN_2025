@@ -141,4 +141,44 @@ public class CustomersController {
         model.addAttribute("listThuongHieu", thuongHieuService.getAllDangHoatDong());
         return "/customer-template/shop";
     }
+
+    @GetMapping("/chinh-sach")
+    public String chinhSach(
+            Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer-template/chinh-sach";
+    }
+    @GetMapping("/lien-he")
+    public String lienHe(
+            Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer-template/contact";
+    }
+    @GetMapping("/about")
+    public String about(
+            Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer-template/about";
+    }
 }
