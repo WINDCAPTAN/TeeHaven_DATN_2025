@@ -22,14 +22,17 @@ public class FireBaeConfig {
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
-        FileInputStream serviceAccount = new FileInputStream(firebaseConfigPath);
+        if (FirebaseApp.getApps().isEmpty()) {
+            FileInputStream serviceAccount = new FileInputStream(firebaseConfigPath);
 
-        FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .setStorageBucket(bucketName)
-                .build();
+            FirebaseOptions options = new FirebaseOptions.Builder()
+                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                    .setStorageBucket(bucketName)
+                    .build();
 
-        return FirebaseApp.initializeApp(options);
+            return FirebaseApp.initializeApp(options);
+        }
+        return FirebaseApp.getInstance();
     }
 
     @Bean

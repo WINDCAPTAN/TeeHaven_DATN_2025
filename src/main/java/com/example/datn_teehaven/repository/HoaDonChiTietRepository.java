@@ -36,26 +36,17 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
             "\tdon_gia,\n" +
             "\tghi_chu,\n" +
             "\tngay_tao,\n" +
-
-            "\tngay_sua,\n" +
             "\tnguoi_tao,\n" +
-            "\tnguoi_sua,\n" +
-
-            "\tnguoi_tao,\n" +
-//            "\tnguoi_sua,\n" +
-
             "    hoa_don_id,\n" +
             "    chi_tiet_san_pham_id,\n" +
             "    trang_thai\n" +
             "  FROM RankedHoaDonChiTiet\n" +
             "  WHERE RowNum = 1\n" +
             ")\n" +
-            "SELECT TOP 5 *\n" +
+            "SELECT TOP 10 *\n" +
             "FROM FilteredResults\n" +
             "ORDER BY so_luong DESC", nativeQuery = true)
     List<HoaDonChiTiet> fillAllIdHoaDonTrangThaiHoanThanh(@Param("listIdHoaDon") List<Long> listIdHoaDon);
-
-
 
     @Query("select SUM(hd.soLuong) from HoaDonChiTiet hd where hd.trangThai=0 and (hd.hoaDon.trangThai =3 or hd.hoaDon.trangThai = 6) and CAST(hd.hoaDon.ngayTao AS DATE) = :ngayTao")
     Integer sumSanPhamHoaDonNgay(@Param("ngayTao") Date ngayTao);
@@ -115,4 +106,29 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
 
     @Query("SELECT SUM(hd.soLuong) FROM HoaDonChiTiet hd WHERE hd.trangThai=0 and (hd.hoaDon.trangThai =3 or hd.hoaDon.trangThai = 6) and MONTH(hd.hoaDon.ngayTao) = MONTH(:ngayTao)")
     Integer sumSanPhamHoaDonThang(@Param("ngayTao") Date ngayTao);
+
+    @Query(value = "WITH SumSoLuong AS (" +
+            "SELECT hdct.chi_tiet_san_pham_id, SUM(hdct.so_luong) as total_sold " +
+            "FROM hoa_don_chi_tiet hdct " +
+            "JOIN hoa_don hd ON hd.id = hdct.hoa_don_id " +
+            "WHERE hd.trang_thai = 3 " +
+            "GROUP BY hdct.chi_tiet_san_pham_id" +
+            ") " +
+            "SELECT TOP 10 hdct.* " +
+            "FROM hoa_don_chi_tiet hdct " +
+            "JOIN SumSoLuong ss ON hdct.chi_tiet_san_pham_id = ss.chi_tiet_san_pham_id " +
+            "JOIN hoa_don hd ON hd.id = hdct.hoa_don_id " +
+            "WHERE hd.trang_thai = 3 " +
+            "ORDER BY ss.total_sold DESC",
+            nativeQuery = true)
+    List<HoaDonChiTiet> findTop5BanChay();
+
+    @Query(value = "SELECT TOP 10 hdct.* " +
+            "FROM hoa_don_chi_tiet hdct " +
+            "JOIN chi_tiet_san_pham ctsp ON hdct.chi_tiet_san_pham_id = ctsp.id " +
+            "JOIN san_pham sp ON ctsp.san_pham_id = sp.id " +
+            "WHERE hdct.trang_thai = 0 " +
+            "ORDER BY sp.ngay_tao DESC",
+            nativeQuery = true)
+    List<HoaDonChiTiet> findTop10SanPhamMoi();
 }

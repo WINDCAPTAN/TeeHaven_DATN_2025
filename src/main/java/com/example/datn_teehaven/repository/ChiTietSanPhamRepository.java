@@ -150,5 +150,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
     @Query("SELECT COALESCE(SUM(c.soLuong), 0) FROM ChiTietSanPham c WHERE c.sanPham.id = :sanPhamId")
     Integer sumSoLuongTonBySanPhamId(@Param("sanPhamId") Long sanPhamId);
 
+    @Query(value = "SELECT * FROM chi_tiet_san_pham WHERE trang_thai = 0 ORDER BY ngay_tao DESC LIMIT 5", nativeQuery = true)
+    List<ChiTietSanPham> findTop5NewestProducts();
 
 }

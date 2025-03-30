@@ -48,6 +48,8 @@ public interface HoaDonChiTietService {
 
     List<Object[]> thongKeSanPhamTheoNgayMacDinh30Ngay(
     );
+    List<HoaDonChiTiet> findTop5BanChay();
 
+    List<HoaDonChiTiet> findTop10SanPhamMoi();
 
 }
