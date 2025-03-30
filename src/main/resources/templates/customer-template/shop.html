@@ -623,7 +623,7 @@
                     <h3 class="product-title"
                         th:text="${chiTiepSp.sanPham.ten+' ['+chiTiepSp.mauSac.ten+ ' - ' +chiTiepSp.kichCo.ten}+']'"></h3>
                     <strong class="product-price"
-                            th:text="${chiTiepSp.giaHienHanh + ' VNĐ'}"></strong>
+                            th:text="${#numbers.formatDecimal(chiTiepSp.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></strong>
                     <span class="icon-cross">
 							                 <img src="../../static/img/plus-black.png" class="img-fluid">
 						                </span>
@@ -878,7 +878,7 @@
             <img src="../../static/img/hero_1.jpg" alt="Image placeholder"
                  class="img-fluid rounded mb-4"/>
             <h3 class="font-weight-light mb-0">
-              Tìm đôi giày hoàn hảo của bạn
+              Chọn chiếc áo hoàn hảo cho bạn
             </h3>
           </a>
         </div>
