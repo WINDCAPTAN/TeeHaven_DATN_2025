@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>TeeHaven - Thống Kê</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <!-- DataTables CSS -->
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css'>
+    <!-- Favicons -->
+    <div th:replace="~{admin-template/fragment/header :: header}"></div>
+    <!-- Google Charts API -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1.0', {'packages': ['corechart']});
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            var hoaDon0 = [[${countHoaDon0}]];
+            var hoaDon1 = [[${countHoaDon1}]];
+            var hoaDon2 = [[${countHoaDon2}]];
+            var hoaDon3 = [[${countHoaDon3}]];
+            var hoaDon5 = [[${countHoaDon5}]];
+            var hoaDon6 = [[${countHoaDon6}]];
+            // Create columns for the DataTable
+            data.addColumn('string');
+            data.addColumn('number', 'Devices');
+            // Create Rows with data
+            data.addRows([
+                ['Chờ xác nhận', hoaDon0],
+                ['Chờ giao', hoaDon1],
+                ['Đang giao', hoaDon2],
+                ['Hoàn thành', hoaDon3],
+                ['Đã huỷ', hoaDon5],
+                ['Hoàn trả', hoaDon6],
+            ]);
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+        google.setOnLoadCallback(drawChartBetween);
+        function drawChartBetween() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            var hoaDon0 = [[${countHoaDonChoXacNhanBetween}]];
+            var hoaDon1 = [[${countHoaDonChoGiaoBetween}]];
+            var hoaDon2 = [[${countHoaDonDangGiaoBetween}]];
+            var hoaDon3 = [[${countHoaDonHoanThanhBetween}]];
+            var hoaDon5 = [[${countHoaDonDaHuyBetween}]];
+            var hoaDon6 = [[${countHoaDonTraBetween}]];
+            // Create columns for the DataTable
+            data.addColumn('string');
+            data.addColumn('number', 'Devices');
+            // Create Rows with data
+            data.addRows([
+                ['Chờ xác nhận', hoaDon0],
+                ['Chờ giao', hoaDon1],
+                ['Đang giao', hoaDon2],
+                ['Hoàn thành', hoaDon3],
+                ['Đã huỷ', hoaDon5],
+                ['Hoàn trả', hoaDon6],
+            ]);
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div_between'));
+            chart.draw(data, options);
+        }
+
+        google.setOnLoadCallback(drawChartNgay);
+        function drawChartNgay() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            var hoaDon0 = [[${countHoaDonChoXacNhanNgay}]];
+            var hoaDon1 = [[${countHoaDonChoGiaoNgay}]];
+            var hoaDon2 = [[${countHoaDonDangGiaoNgay}]];
+            var hoaDon3 = [[${countHoaDonHoanThanhNgay}]];
+            var hoaDon5 = [[${countHoaDonDaHuyNgay}]];
+            var hoaDon6 = [[${countHoaDonTraNgay}]];
+            // Create columns for the DataTable
+            data.addColumn('string');
+            data.addColumn('number', 'Devices');
+            // Create Rows with data
+            data.addRows([
+                ['Chờ xác nhận', hoaDon0],
+                ['Chờ giao', hoaDon1],
+                ['Đang giao', hoaDon2],
+                ['Hoàn thành', hoaDon3],
+                ['Đã huỷ', hoaDon5],
+                ['Hoàn trả', hoaDon6],
+            ]);
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div_ngay'));
+            chart.draw(data, options);
+        }
+
+        google.setOnLoadCallback(drawChartThang);
+        function drawChartThang() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            var hoaDon0 = [[${countHoaDonChoXacNhanThang}]];
+            var hoaDon1 = [[${countHoaDonChoGiaoThang}]];
+            var hoaDon2 = [[${countHoaDonDangGiaoThang}]];
+            var hoaDon3 = [[${countHoaDonHoanThanhThang}]];
+            var hoaDon5 = [[${countHoaDonDaHuyThang}]];
+            var hoaDon6 = [[${countHoaDonTraThang}]];
+            // Create columns for the DataTable
+            data.addColumn('string');
+            data.addColumn('number', 'Devices');
+            // Create Rows with data
+            data.addRows([
+                ['Chờ xác nhận', hoaDon0],
+                ['Chờ giao', hoaDon1],
+                ['Đang giao', hoaDon2],
+                ['Hoàn thành', hoaDon3],
+                ['Đã huỷ', hoaDon5],
+                ['Hoàn trả', hoaDon6],
+            ]);
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div_thang'));
+            chart.draw(data, options);
+        }
+
+        google.charts.load('current', {'packages': ['bar']});
+        google.charts.setOnLoadCallback(drawChart2);
+
+        function drawChart2() {
+            /*<![CDATA[*/
+            var thongKeData = /*[[${thongKeSP}]]*/ null;
+            var formattedThongKeData;
+            if (thongKeData) {
+                // Chuyển đổi dữ liệu từ Thymeleaf thành mảng JSON
+                formattedThongKeData = thongKeData.map(function (item) {
+                    return [(item[0]), item[1],item[2]];
+                });
+                formattedThongKeData.unshift(['Ngày', 'Số lượng sản phẩm','Số hóa đơn']);
+                // Sử dụng mảng JSON trong JavaScript
+                console.log(formattedThongKeData);
+            } else {
+                // Nếu không có dữ liệu, sử dụng mảng mẫu hoặc mảng rỗng
+                formattedThongKeData = [['Ngày', 'Số lượng sản phẩm','Số hóa đơn']];
+            }
+            /*]]>*/
+            var data = google.visualization.arrayToDataTable(formattedThongKeData);
+            var options = {
+                chart: {
+
+                },
+                colors: ['#4285F4', '#34A853']
+            };
+            var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+
+        google.charts.load('current', {'packages':['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawStuff);
+
+        function drawStuff() {
+            var button = document.getElementById('change-chart');
+            var chartDiv = document.getElementById('chart_div2');
+
+            var thongKeData = /*[[${thongKeSP}]]*/ null;
+            var formattedThongKeData;
+            if (thongKeData) {
+                // Chuyển đổi dữ liệu từ Thymeleaf thành mảng JSON
+                formattedThongKeData = thongKeData.map(function (item) {
+                    return [(item[0]), item[1],item[2],item[3]];
+                });
+                formattedThongKeData.unshift(['Ngày', 'Doanh thu','Số hóa đơn','Số lượng sản phẩm']);
+                // Sử dụng mảng JSON trong JavaScript
+                console.log(formattedThongKeData);
+            } else {
+                // Nếu không có dữ liệu, sử dụng mảng mẫu hoặc mảng rỗng
+                formattedThongKeData = [['Ngày', 'Doanh thu','Số hóa đơn','Số lượng sản phẩm']];
+            }
+            /*]]>*/
+            var data = google.visualization.arrayToDataTable(formattedThongKeData);
+
+            var materialOptions = {
+                width: 1100,
+                series: {
+                    0: { axis: 'distance', color: '#4285F4' }, // Bind series 0 to an axis named 'distance'.
+                    1: { axis: 'brightness', color: '#34A853' }, // Bind series 1 to an axis named 'brightness'.
+                    2: { color: '#FBBC05' }
+                },
+                axes: {
+                    y: {
+                        distance: {label: 'VNĐ'}, // Left y-axis.
+                    }
+                },
+                legend: { position: 'top' },
+                animation: {
+                    startup: true,
+                    duration: 1000,
+                    easing: 'out'
+                }
+            };
+
+            var classicOptions = {
+                width: 900,
+                series: {
+                    0: {targetAxisIndex: 0},
+                    1: {targetAxisIndex: 1},
+                    2: {targetAxisIndex: 2}
+                },
+                title: 'Nearby galaxies - distance on the left, brightness on the right',
+                vAxes: {
+                    // Adds titles to each axis.
+                    0: {title: 'parsecs'},
+                    1: {title: 'apparent magnitude'}
+                }
+            };
+
+            function drawMaterialChart() {
+                var materialChart = new google.charts.Bar(chartDiv);
+                materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+                button.innerText = 'Change to Classic';
+                button.onclick = drawClassicChart;
+            }
+
+            function drawClassicChart() {
+                var classicChart = new google.visualization.ColumnChart(chartDiv);
+                classicChart.draw(data, classicOptions);
+                button.innerText = 'Change to Material';
+                button.onclick = drawMaterialChart;
+            }
+
+            drawMaterialChart();
+        }
+
+        // Thêm biểu đồ đường kẻ
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawLineChart);
+
+        function drawLineChart() {
+            var lineChartData = /*[[${thongKeSP}]]*/ null;
+            var formattedLineChartData;
+            if (lineChartData && lineChartData.length > 0) {
+                formattedLineChartData = lineChartData.map(function (item) {
+                    return [(item[0]), item[1] || 0, item[2] || 0, item[3] || 0]; // Ngày, Doanh thu, Số hóa đơn, Số sản phẩm
+                });
+
+                formattedLineChartData.unshift(['Ngày', 'Doanh thu', 'Số hóa đơn đã hoàn thành', 'Số sản phẩm đã bán']);
+            } else {
+                formattedLineChartData = null; // Không có dữ liệu
+            }
+
+            var chartDiv = document.getElementById('line_chart_div');
+
+            if (!formattedLineChartData) {
+                chartDiv.innerHTML = "<p style='text-align:center; font-size:16px; color:red;'>Không có dữ liệu để hiển thị</p>";
+                return;
+            }
+
+            var data = google.visualization.arrayToDataTable(formattedLineChartData);
+
+            var options = {
+                title: 'THỐNG KÊ ',
+                curveType: 'function', // Làm mịn đường kẻ
+                legend: {
+                    position: 'bottom',
+                    textStyle: {
+                        fontSize: 12,
+                        bold: true
+                    }
+                },
+                width: 1100,
+                height: 500,
+                chartArea: {
+                    width: '80%',
+                    height: '70%'
+                },
+                hAxis: {
+                    title: 'Ngày',
+                    titleTextStyle: {
+                        color: '#333',
+                        bold: true,
+                        fontSize: 14
+                    },
+                    textStyle: {
+                        fontSize: 11
+                    },
+                    slantedText: true,
+                    slantedTextAngle: 45
+                },
+                vAxis: {
+                    title: 'Giá trị',
+                    minValue: 0,
+                    titleTextStyle: {
+                        color: '#333',
+                        bold: true,
+                        fontSize: 14
+                    },
+                    gridlines: {
+                        color: '#e0e0e0',
+                        count: 10
+                    },
+                    viewWindow: {
+                        min: 0
+                    },
+                    scaleType: 'linear'
+                },
+                series: {
+                    0: { targetAxisIndex: 0, color: '#4285F4', lineWidth: 3 }, // Doanh thu - Xanh nước biển
+                    1: {
+                        targetAxisIndex: 1,
+                        color: '#34A853',
+                        lineWidth: 2.5,
+                        lineDashStyle: [1, 0],
+                        pointSize: 6,
+                        pointShape: 'circle'
+                    }, // Số hóa đơn - trục phụ
+                    2: { targetAxisIndex: 1, color: '#FBBC05', lineWidth: 2 }  // Số sản phẩm - Vàng
+                }
+                ,
+                    vAxes: {
+                        0: { title: 'Doanh thu (VNĐ)', format: 'short', textStyle: {bold: true} },
+                        1: {
+                            title: 'Số lượng',
+                            format: 'decimal',
+                            textStyle: {bold: true},
+                            minValue: 0,
+                            viewWindow: {
+                                min: 0
+                            },
+                            gridlines: {
+                                count: 8
+                            }
+                        }
+                    },
+
+                pointSize: 5,
+                pointShape: 'circle',
+                animation: {
+                    startup: true,
+                    duration: 1000,
+                    easing: 'out'
+                },
+                annotations: {
+                    textStyle: {
+                        fontSize: 12,
+                        bold: true
+                    }
+                },
+                crosshair: {
+                    trigger: 'both',
+                    orientation: 'vertical',
+                    color: 'gray',
+                    opacity: 0.2
+                },
+                explorer: {
+                    actions: ['dragToZoom', 'rightClickToReset'],
+                    axis: 'horizontal',
+                    keepInBounds: true,
+                    maxZoomIn: 4.0
+                },
+                tooltip: {
+                    isHtml: true,
+                    showColorCode: true,
+                    trigger: 'both'
+                },
+                focusTarget: 'category',
+                interpolateNulls: true
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('line_chart_div'));
+
+            google.visualization.events.addListener(chart, 'ready', function() {
+                console.log('Chart is ready and properly scaled');
+            });
+
+            chart.draw(data, options);
+        }
+
+    </script>
+    <style>
+        /* Áp dụng kiểu cho div chứa thông tin thống kê */
+        .rowThongKe {
+            display: flex;
+            justify-content: space-around; /* Các cột sẽ được căn giữa và cách nhau ở giữa màn hình */
+            margin: 20px 0; /* Khoảng cách ngoài cùng */
+            flex-wrap: wrap;
+        }
+
+        /* Áp dụng kiểu cho mỗi cột thông tin thống kê */
+        .columnThongKe {
+            flex: 1; /* Cột sẽ chiếm phần bằng nhau của không gian chứa */
+            text-align: center; /* Căn giữa nội dung trong cột */
+            padding: 15px; /* Khoảng cách nội dung từ biên trong cột */
+            border: 1px solid #ddd; /* Đường viền cho cột */
+            border-radius: 8px; /* Góc cong cho cột */
+            background-color: #f8f8f8; /* Màu nền của cột */
+            margin-right: 10px; /* Khoảng cách giữa các cột */
+            margin-bottom: 15px; /* Khoảng cách dưới mỗi cột */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Thêm bóng đổ nhẹ */
+            transition: all 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+        }
+
+        .columnThongKe:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Áp dụng kiểu cho tiêu đề trong mỗi cột */
+        .columnThongKe h3 {
+            color: #333; /* Màu chữ cho tiêu đề */
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        /* Áp dụng kiểu cho số liệu trong mỗi cột */
+        .columnThongKe span {
+            font-size: 18px; /* Kích thước chữ số liệu */
+            font-weight: bold; /* Chữ số liệu đậm */
+            color: #007bff; /* Màu chữ số liệu */
+            display: inline-block;
+        }
+
+        /* Loại bỏ khoảng cách cuối cùng của cột cuối cùng */
+        .columnThongKe:last-child {
+            margin-right: 0;
+        }
+
+        /* Nút chuyển đổi thời gian */
+        .time-filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .time-filter-button {
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: none;
+            background-color: #f0f0f0;
+            color: #333;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .time-filter-button:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .clickbutton {
+            background-color: #0D6BF8; /* Màu nền khi nút được chọn */
+            color: white;
+        }
+
+        /* Styles cho biểu đồ đường kẻ */
+        .chart-container {
+            margin: 30px 0;
+            padding: 25px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            background-color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .date-range-selector {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Styling for tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table thead th {
+            background-color: #0D6BF8;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table tbody tr {
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        table tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        table tbody td {
+            padding: 12px;
+        }
+
+        /* Form styling */
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #0D6BF8;
+            box-shadow: 0 0 0 0.25rem rgba(13, 107, 248, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #0D6BF8;
+            border-color: #0D6BF8;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Section titles */
+        h1, h2 {
+            color: #333;
+            margin: 30px 0 20px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h1:after, h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #0D6BF8;
+        }
+
+        /* DataTables styling */
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+            margin-left: 10px;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 6px 10px;
+            margin: 0 5px;
+        }
+
+        /* Error messages */
+        #error-message, #error-message-start, #line-chart-error-message {
+            display: block;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
+
+            <span class="d-none d-lg-block">TeeHaven</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${tenNhanVien}"></span>
+                </a><!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6 th:text="${tenNhanVien}"></h6>
+                        <span>Nhân Viên</span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Đăng Xuất</span>
+                        </a>
+                    </li>
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+        </ul>
+    </nav><!-- End Icons Navigation -->
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link " href="/admin/thong-ke">
+                <i class="bi bi-graph-up-arrow"></i>
+                <span>Thống Kê</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
+                <i class="bi bi-shop"></i>
+                <span>Bán Hàng</span>
+            </a>
+        </li><!-- End Bán Hàng Tại Quầy Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Quản Lý Sản Phẩm</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/san-pham-chi-tiet">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm Chi Tiết</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/san-pham">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/thuong-hieu">
+                        <i class="bi bi-circle"></i><span>Thương Hiệu</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/tay-ao">
+                        <i class="bi bi-circle"></i><span>Tay áo</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/mau-sac">
+                        <i class="bi bi-circle"></i><span>Màu Sắc</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/kich-co">
+                        <i class="bi bi-circle"></i><span>Kích Cỡ</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+                <i class="bi bi-receipt-cutoff"></i>
+                <span>Quản Lý Hóa Đơn</span>
+            </a>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person-vcard"></i><span>Quản Lý Tài Khoản</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/nhan-vien">
+                        <i class="bi bi-circle"></i><span>Quản lý nhân viên</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/khach-hang">
+                        <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/voucher">
+                <i class="bi bi-ticket-perforated-fill"></i>
+                <span>Quản Lý Voucher</span>
+            </a>
+        </li>
+        <!-- End Charts Nav -->
+    </ul>
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Thống Kê</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-pane fade show active" id="list" role="tabpanel"
+                             aria-labelledby="list-tab">
+                            <br>
+                            <!-- Improved button styling with consistent design -->
+                            <div class="time-filter-buttons">
+                                <button id="btnBetween" class="time-filter-button" onclick="showHoaDonBetween()">
+                                    <i class="bi bi-calendar-range"></i> Khoảng thời gian
+                                </button>
+                                <button id="btnNgay" class="time-filter-button" onclick="showHoaDonNgay()">
+                                    <i class="bi bi-calendar-day"></i> Hôm nay
+                                </button>
+                                <button id="btnThang" class="time-filter-button" onclick="showHoaDonThang()">
+                                    <i class="bi bi-calendar-month"></i> Tháng này
+                                </button>
+                            </div>
+                            <br>
+                            <div id="inputSearch">
+                                <form th:action="@{/admin/thong-ke/count-between}" th:method="post" id="form1"
+                                      class="row g-3" onsubmit="return validateDate()">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Từ ngày:</label>
+                                        <input type="date" name="startDate" class="form-control"
+                                               id="startDate"
+                                               th:value="${#dates.format(startDate, 'yyyy-MM-dd')}"
+                                               required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Đến ngày:</label>
+                                        <input type="date" name="endDate" class="form-control"
+                                               id="endDate"
+                                               th:value="${#dates.format(endDate, 'yyyy-MM-dd')}"
+                                               required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" style="margin-top: 11.5%" class="btn btn-primary">
+                                            <i class="bi bi-search"></i> Tìm kiếm
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <span id="error-message" style="color: red;font-size: 14px;font-weight: bold;"></span>
+                            <div class="rowThongKe">
+                                <div class="row">
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDonBetween">
+                                        <div class="columnThongKe">
+                                            <h3>Hàng bán được </h3>
+                                            <span th:text="${sumSanPham != null ? sumSanPham + ' sản phẩm' : '0 sản phẩm'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="doanhThuBetween">
+                                        <div class="columnThongKe" >
+                                            <h3>Doanh số </h3>
+                                            <span th:text="${countHoaDon != null ? countHoaDon + ' đơn hàng /' : '0 đơn hàng /'}"></span>
+                                            <span th:text="${sumHoaDon != null ? #numbers.formatDecimal(sumHoaDon, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDonNgay">
+                                        <div class="columnThongKe">
+                                            <h3>Hàng bán được hôm nay</h3>
+                                            <span th:text="${sumSanPhamHoaDonDay != null ? sumSanPhamHoaDonDay + ' sản phẩm' : '0 sản phẩm'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="doanhThuNgay">
+                                        <div class="columnThongKe" >
+                                            <h3>Doanh số hôm nay</h3>
+                                            <span th:text="${countHoaDonDay != null ? countHoaDonDay + ' đơn hàng /' : '0 đơn hàng /'}"></span>
+                                            <span th:text="${sumHoaDonDay != null ? #numbers.formatDecimal(sumHoaDonDay, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDonThang">
+                                        <div class="columnThongKe">
+                                            <h3>Hàng bán được tháng này</h3>
+                                            <span th:text="${sumSanPhamHoaDonMonth != null ? sumSanPhamHoaDonMonth + ' sản phẩm' : '0 sản phẩm'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="doanhThuThang">
+                                        <div class="columnThongKe" >
+                                            <h3>Doanh số tháng này</h3>
+                                            <span th:text="${countHoaDonMonth != null ? countHoaDonMonth + ' đơn hàng /' : '0 đơn hàng /'}"></span>
+                                            <span th:text="${sumHoaDonMonth != null ? #numbers.formatDecimal(sumHoaDonMonth, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon0Between">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn chờ xác nhận </h3>
+                                            <span th:text="${countHoaDonChoXacNhanBetween != null ? countHoaDonChoXacNhanBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon1Between">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn chờ giao </h3>
+                                            <span th:text="${countHoaDonChoGiaoBetween != null ? countHoaDonChoGiaoBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon2Between">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn đang giao </h3>
+                                            <span th:text="${countHoaDonDangGiaoBetween != null ? countHoaDonDangGiaoBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon3Between">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn hoàn thành </h3>
+                                            <span th:text="${countHoaDonHoanThanhBetween != null ? countHoaDonHoanThanhBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon5Between">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn hủy </h3>
+                                            <span th:text="${countHoaDonDaHuyBetween != null ? countHoaDonDaHuyBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon6Between">
+                                        <!-- Placeholder for future content -->
+                                    </div>
+
+                                    <!-- Order status boxes for today -->
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon0Ngay">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn chờ xác nhận </h3>
+                                            <span th:text="${countHoaDonChoXacNhanNgay != null ? countHoaDonChoXacNhanNgay + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon1Ngay">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn chờ giao </h3>
+                                            <span th:text="${countHoaDonChoGiaoNgay!= null ? countHoaDonChoGiaoNgay + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon2Ngay">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn đang giao </h3>
+                                            <span th:text="${countHoaDonDangGiaoNgay != null ? countHoaDonDangGiaoNgay + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon3Ngay">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn hoàn thành </h3>
+                                            <span th:text="${countHoaDonHoanThanhNgay != null ? countHoaDonHoanThanhNgay + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon5Ngay">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn hủy </h3>
+                                            <span th:text="${countHoaDonDaHuyNgay != null ? countHoaDonDaHuyNgay + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon6Ngay">
+                                        <!-- Placeholder for future content -->
+                                    </div>
+
+                                    <!-- Order status boxes for this month -->
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon0Thang">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn chờ xác nhận </h3>
+                                            <span th:text="${countHoaDonChoXacNhanThang != null ? countHoaDonChoXacNhanThang + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon1Thang">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn chờ giao </h3>
+                                            <span th:text="${countHoaDonChoGiaoThang != null ? countHoaDonChoGiaoThang + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon2Thang">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn đang giao </h3>
+                                            <span th:text="${countHoaDonDangGiaoThang != null ? countHoaDonDangGiaoThang + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon3Thang">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn hoàn thành </h3>
+                                            <span th:text="${countHoaDonHoanThanhThang != null ? countHoaDonHoanThanhThang + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon5Thang">
+                                        <div class="columnThongKe">
+                                            <h3>Hóa đơn hủy </h3>
+                                            <span th:text="${countHoaDonDaHuyThang != null ? countHoaDonDaHuyThang + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon6Thang">
+                                        <!-- Placeholder for future content -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Pie charts for order status -->
+                            <div id="chart_div_between" style="margin-left: 22%"></div>
+                            <div id="chart_div_ngay" style="margin-left: 22%"></div>
+                            <div id="chart_div_thang" style="margin-left: 22%"></div>
+
+                            <!-- Top selling products tables -->
+                            <div id="top5Ngay">
+                                <h2>Top sản phẩm bán chạy hôm nay</h2>
+                                <table border="1" id="topSanPhamNgay">
+                                    <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Số Lượng bán</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="row,iterStat : ${top5Ngay}">
+                                        <td th:text="${iterStat.index+1}"></td>
+                                        <td th:text="${row[0]}"></td>
+                                        <td th:text="${row[1]}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="top5Thang">
+                                <h2>Top sản phẩm bán chạy tháng này</h2>
+                                <table border="1" id="topSanPhamThang">
+                                    <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Số Lượng bán</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="row,iterStat : ${top5Thang}">
+                                        <td th:text="${iterStat.index+1}"></td>
+                                        <td th:text="${row[0]}"></td>
+                                        <td th:text="${row[1]}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="top5Between">
+                                <h2>Top sản phẩm bán chạy</h2>
+                                <table border="1" id="ex" style="margin-bottom: 5%">
+                                    <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Số Lượng bán</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="row,iterStat : ${thongKeBetween}">
+                                        <td th:text="${iterStat.index+1}"></td>
+                                        <td th:text="${row[0]}"></td>
+                                        <td th:text="${row[1]}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr>
+                            <h2 style="margin-top: 5%">Biểu đồ tình hình kinh doanh</h2>
+                            <form th:action="@{/admin/thong-ke/count-range}" th:method="post" id="form2"
+                                  class="row g-3" onsubmit="return validateDateRange()">
+                                <div class="col-md-3">
+                                    <label class="form-label">Từ ngày:</label>
+                                    <input type="date" name="startDateChart" class="form-control"
+                                           th:value="${#dates.format(startDateChart, 'yyyy-MM-dd') }"
+                                           id="tuNgay"
+                                           required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Đến ngày:</label>
+                                    <input type="date" name="endDateChart" class="form-control"
+                                           th:value="${#dates.format(endDateChart, 'yyyy-MM-dd') }"
+                                           id="denNgay"
+                                           required>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" style="margin-top: 11.5%" class="btn btn-primary">
+                                        <i class="bi bi-search"></i> Tìm kiếm
+                                    </button>
+                                </div>
+                            </form>
+                            <span id="error-message-start" style="color: red;font-size: 14px;font-weight: bold;"></span>
+                            <br><br>
+                            <div id="chart_div2" style="width: 800px; height: 500px;"></div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Biểu đồ đường kẻ -->
+                        <div class="chart-container">
+                            <h2 class="chart-title">Biểu đồ tình hình kinh doanh</h2>
+
+                            <!-- Date Range Selector -->
+                            <div class="date-range-selector">
+                                <form th:action="@{/admin/thong-ke/count-range}" th:method="post" id="lineChartForm"
+                                      class="row g-3" onsubmit="return validateLineChartDateRange()">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Từ ngày:</label>
+                                        <input type="date" name="startDateChart" class="form-control"
+                                               th:value="${#dates.format(startDateChart, 'yyyy-MM-dd')}"
+                                               id="lineChartStartDate"
+                                               required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Đến ngày:</label>
+                                        <input type="date" name="endDateChart" class="form-control"
+                                               th:value="${#dates.format(endDateChart, 'yyyy-MM-dd')}"
+                                               id="lineChartEndDate"
+                                               required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" style="margin-top: 11.5%" class="btn btn-primary">
+                                            <i class="bi bi-graph-up"></i> Xem thống kê
+                                        </button>
+                                    </div>
+                                </form>
+                                <span id="line-chart-error-message" style="color: red;font-size: 14px;font-weight: bold;"></span>
+                            </div>
+
+                            <!-- Line Chart -->
+                            <div id="line_chart_div" style="width: 100%; height: 500px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+<!--Thông báo thành công-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <script th:if="${checkThongBao=='thanhCong'}">
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
+            liveToast.show();
+        });
+    </script>
+    <div id="liveToastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+         style="background-color: rgba(62, 189, 97,0.2);border:2px solid #3ebd61;border-radius:1rem;">
+        <div class="toast-body">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <img src="../../../static/img/successful_notification.png" alt="" style="margin: auto">
+                </div>
+                <div class="col-md-8" style="margin-top:6.3%">
+                        <span style="text-align: center;font-size: 1rem;font-weight: bold;color: #3ebd61;">
+                            Thành công
+                        </span>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                            style="font-size: 1.5rem;margin: auto"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Thông báo thành công end-->
+
+<!--Thông báo thất bại-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <script th:if="${checkThongBao=='thaiBai'}">
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+            liveToast.show();
+        });
+    </script>
+    <div id="liveToastDanger" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+         style="background-color: rgb(252,134,134);border:2px solid #ff2020;border-radius:1rem;">
+        <div class="toast-body">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <img src="../../../static/img/successful_danger.png" alt="" style="margin: auto">
+                </div>
+                <div class="col-md-8" style="margin-top:6.3%">
+                        <span style="text-align: center;font-size: 1rem;font-weight: bold;color: white;">
+                            Lỗi
+                        </span>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                            style="font-size: 1.5rem;margin: auto"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Thông báo thất bại end-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        <!-- &copy; Copyright <strong><span>TeeHaven</span></strong>. All Rights Reserved -->
+    </div>
+    <div class="credits">
+        Website bán áo TeeHaven
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<div th:replace="~{admin-template/fragment/script :: script}"></div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.js'></script>
+<script th:inline="javascript">
+    function showHoaDonNgay() {
+        document.getElementById('btnBetween').classList.remove('clickbutton');
+        document.getElementById('btnNgay').classList.add('clickbutton');
+        document.getElementById('btnThang').classList.remove('clickbutton');
+        document.getElementById('hoaDonThang').style.display = 'none';
+        document.getElementById('hoaDonNgay').style.display = 'block';
+        document.getElementById('doanhThuNgay').style.display = 'block';
+        document.getElementById('doanhThuThang').style.display = 'none';
+        document.getElementById('top5Ngay').style.display = 'block';
+        document.getElementById('top5Thang').style.display = 'none';
+        document.getElementById('inputSearch').style.display = 'none';
+        document.getElementById('hoaDonBetween').style.display = 'none';
+        document.getElementById('doanhThuBetween').style.display = 'none';
+        document.getElementById('top5Between').style.display = 'none';
+        document.getElementById('hoaDon0Between').style.display = 'none';
+        document.getElementById('hoaDon1Between').style.display = 'none';
+        document.getElementById('hoaDon2Between').style.display = 'none';
+        document.getElementById('hoaDon3Between').style.display = 'none';
+        document.getElementById('hoaDon5Between').style.display = 'none';
+        document.getElementById('hoaDon6Between').style.display = 'none';
+        document.getElementById('hoaDon0Ngay').style.display = 'block';
+        document.getElementById('hoaDon1Ngay').style.display = 'block';
+        document.getElementById('hoaDon2Ngay').style.display = 'block';
+        document.getElementById('hoaDon3Ngay').style.display = 'block';
+        document.getElementById('hoaDon5Ngay').style.display = 'block';
+        document.getElementById('hoaDon6Ngay').style.display = 'block';
+        document.getElementById('hoaDon0Thang').style.display = 'none';
+        document.getElementById('hoaDon1Thang').style.display = 'none';
+        document.getElementById('hoaDon2Thang').style.display = 'none';
+        document.getElementById('hoaDon3Thang').style.display = 'none';
+        document.getElementById('hoaDon5Thang').style.display = 'none';
+        document.getElementById('hoaDon6Thang').style.display = 'none';
+        document.getElementById('chart_div_between').style.display = 'none';
+        document.getElementById('chart_div_ngay').style.display = 'block';
+        document.getElementById('chart_div_thang').style.display = 'none';
+    }
+
+    function showHoaDonThang() {
+        document.getElementById('btnBetween').classList.remove('clickbutton');
+        document.getElementById('btnNgay').classList.remove('clickbutton');
+        document.getElementById('btnThang').classList.add('clickbutton');
+        document.getElementById('hoaDonThang').style.display = 'block';
+        document.getElementById('hoaDonNgay').style.display = 'none';
+        document.getElementById('doanhThuThang').style.display = 'block';
+        document.getElementById('doanhThuNgay').style.display = 'none';
+        document.getElementById('top5Thang').style.display = 'block';
+        document.getElementById('top5Ngay').style.display = 'none';
+        document.getElementById('inputSearch').style.display = 'none';
+        document.getElementById('hoaDonBetween').style.display = 'none';
+        document.getElementById('doanhThuBetween').style.display = 'none';
+        document.getElementById('top5Between').style.display = 'none';
+        document.getElementById('hoaDon0Between').style.display = 'none';
+        document.getElementById('hoaDon1Between').style.display = 'none';
+        document.getElementById('hoaDon2Between').style.display = 'none';
+        document.getElementById('hoaDon3Between').style.display = 'none';
+        document.getElementById('hoaDon5Between').style.display = 'none';
+        document.getElementById('hoaDon6Between').style.display = 'none';
+        document.getElementById('hoaDon0Ngay').style.display = 'none';
+        document.getElementById('hoaDon1Ngay').style.display = 'none';
+        document.getElementById('hoaDon2Ngay').style.display = 'none';
+        document.getElementById('hoaDon3Ngay').style.display = 'none';
+        document.getElementById('hoaDon5Ngay').style.display = 'none';
+        document.getElementById('hoaDon6Ngay').style.display = 'none';
+        document.getElementById('hoaDon0Thang').style.display = 'block';
+        document.getElementById('hoaDon1Thang').style.display = 'block';
+        document.getElementById('hoaDon2Thang').style.display = 'block';
+        document.getElementById('hoaDon3Thang').style.display = 'block';
+        document.getElementById('hoaDon5Thang').style.display = 'block';
+        document.getElementById('hoaDon6Thang').style.display = 'block';
+        document.getElementById('chart_div_between').style.display = 'none';
+        document.getElementById('chart_div_ngay').style.display = 'none';
+        document.getElementById('chart_div_thang').style.display = 'block';
+    }
+
+    function showHoaDonBetween() {
+        document.getElementById('btnNgay').classList.remove('clickbutton');
+        document.getElementById('btnThang').classList.remove('clickbutton');
+        document.getElementById('btnBetween').classList.add('clickbutton');
+        document.getElementById('hoaDonThang').style.display = 'none';
+        document.getElementById('hoaDonNgay').style.display = 'none';
+        document.getElementById('doanhThuThang').style.display = 'none';
+        document.getElementById('doanhThuNgay').style.display = 'none';
+        document.getElementById('top5Thang').style.display = 'none';
+        document.getElementById('top5Ngay').style.display = 'none';
+        document.getElementById('top5Between').style.display = 'block';
+        document.getElementById('inputSearch').style.display = 'block';
+        document.getElementById('hoaDonBetween').style.display = 'block';
+        document.getElementById('doanhThuBetween').style.display = 'block';
+        document.getElementById('hoaDon0Between').style.display = 'block';
+        document.getElementById('hoaDon1Between').style.display = 'block';
+        document.getElementById('hoaDon2Between').style.display = 'block';
+        document.getElementById('hoaDon3Between').style.display = 'block';
+        document.getElementById('hoaDon5Between').style.display = 'block';
+        document.getElementById('hoaDon6Between').style.display = 'block';
+        document.getElementById('hoaDon0Ngay').style.display = 'none';
+        document.getElementById('hoaDon1Ngay').style.display = 'none';
+        document.getElementById('hoaDon2Ngay').style.display = 'none';
+        document.getElementById('hoaDon3Ngay').style.display = 'none';
+        document.getElementById('hoaDon5Ngay').style.display = 'none';
+        document.getElementById('hoaDon6Ngay').style.display = 'none';
+        document.getElementById('hoaDon0Thang').style.display = 'none';
+        document.getElementById('hoaDon1Thang').style.display = 'none';
+        document.getElementById('hoaDon2Thang').style.display = 'none';
+        document.getElementById('hoaDon3Thang').style.display = 'none';
+        document.getElementById('hoaDon5Thang').style.display = 'none';
+        document.getElementById('hoaDon6Thang').style.display = 'none';
+        document.getElementById('chart_div_between').style.display = 'block';
+        document.getElementById('chart_div_ngay').style.display = 'none';
+        document.getElementById('chart_div_thang').style.display = 'none';
+    }
+
+    window.onload = function () {
+        showHoaDonBetween();
+    };
+
+    $(document).ready(function () {
+        var table = $('#example').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#example_filter input[type="search"]').addClass('form-control');
+                $('#example_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#example_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+
+                $('#example_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#example_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#example_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#example_info').html(newInfo);
+        });
+    });
+
+    $(document).ready(function () {
+        var table = $('#ex').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#ex_filter input[type="search"]').addClass('form-control');
+                $('#ex_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#ex_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+                $('#ex_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#ex_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#ex_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#ex_info').html(newInfo);
+        });
+    });
+
+    $(document).ready(function () {
+        var table = $('#topSanPhamNgay').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#topSanPhamNgay_filter input[type="search"]').addClass('form-control');
+                $('#topSanPhamNgay_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#topSanPhamNgay_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+                $('#topSanPhamNgay_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#topSanPhamNgay_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#topSanPhamNgay_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#topSanPhamNgay_info').html(newInfo);
+        });
+    });
+
+    $(document).ready(function () {
+        var table = $('#topSanPhamThang').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#topSanPhamThang_filter input[type="search"]').addClass('form-control');
+                $('#topSanPhamThang_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#topSanPhamThang_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+                $('#topSanPhamThang_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#topSanPhamThang_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#topSanPhamThang_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#topSanPhamThang_info').html(newInfo);
+        });
+    });
+
+    function validateDateRange() {
+        var startDate = new Date(document.getElementById("tuNgay").value);
+        var endDate = new Date(document.getElementById("denNgay").value);
+        var errorMessage = document.getElementById('error-message-start');
+        var currentDate = new Date();
+        // Tính toán số ngày giữa hai ngày
+        var timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+        var dayDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+        // Kiểm tra nếu khoảng cách lớn hơn 30 ngày
+        if (dayDifference > 30) {
+            errorMessage.innerHTML = 'Thời gian không được quá 30 ngày';
+            return false; // Ngăn chặn việc gửi biểu mẫu nếu điều kiện không đáp ứng
+        } else if (endDate < startDate) {
+            errorMessage.innerHTML = 'Ngày kết thúc không được nhỏ hơn ngày bắt đầu';
+            return false;
+        } else if (endDate > currentDate || startDate > currentDate) {
+            errorMessage.innerHTML = 'Ngày bắt đầu hoặc ngày kết thúc không được lớn hơn ngày hiện tại';
+            return false;
+        }
+        return true; // Cho phép gửi biểu mẫu nếu điều kiện đáp ứng
+    }
+
+    function validateDate() {
+        var startDate = new Date(document.getElementById("startDate").value);
+        var endDate = new Date(document.getElementById("endDate").value);
+        var errorMessage = document.getElementById('error-message');
+        var currentDate = new Date();
+
+        // Kiểm tra nếu khoảng cách lớn hơn 30 ngày
+        if (endDate < startDate) {
+            errorMessage.innerHTML = 'Ngày kết thúc không được nhỏ hơn ngày bắt đầu';
+            return false;
+        } else if (endDate > currentDate || startDate > currentDate) {
+            errorMessage.innerHTML = 'Ngày bắt đầu hoặc ngày kết thúc không được lớn hơn ngày hiện tại';
+            return false;
+        }
+        return true; // Cho phép gửi biểu mẫu nếu điều kiện đáp ứng
+    }
+
+    function validateLineChartDateRange() {
+        var startDate = new Date(document.getElementById("lineChartStartDate").value);
+        var endDate = new Date(document.getElementById("lineChartEndDate").value);
+        var errorMessage = document.getElementById('line-chart-error-message');
+        var currentDate = new Date();
+
+        // Tính toán số ngày giữa hai ngày
+        var timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+        var dayDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+        // Kiểm tra nếu khoảng cách lớn hơn 30 ngày
+        if (dayDifference > 30) {
+            errorMessage.innerHTML = 'Thời gian không được quá 30 ngày';
+            return false;
+        } else if (endDate < startDate) {
+            errorMessage.innerHTML = 'Ngày kết thúc không được nhỏ hơn ngày bắt đầu';
+            return false;
+        } else if (endDate > currentDate || startDate > currentDate) {
+            errorMessage.innerHTML = 'Ngày bắt đầu hoặc ngày kết thúc không được lớn hơn ngày hiện tại';
+            return false;
+        }
+        return true;
+    }
+</script>
+<style>
+    /*input tìm kiếm*/
+    #example_filter input[type="search"],
+    #ex_filter input[type="search"],
+    #below_filter input[type="search"],
+    #topSanPhamNgay_filter input[type="search"],
+    #topSanPhamThang_filter input[type="search"] {
+        width: 180%;
+        margin-left: -80%;
+        margin-bottom: 10%;
+    }
+
+    /*select hiển thị mục*/
+    .dataTables_length label {
+        white-space: nowrap; /* Ngăn các phần tử xuống dòng */
+        display: flex; /* Hiển thị label và select trên cùng một dòng */
+        align-items: center; /* Canh chỉnh label và select theo chiều dọc */
+    }
+
+    .dataTables_length select {
+        margin-left: 5px; /* Tạo khoảng cách giữa label và select */
+    }
+
+    .dataTables_length label:after {
+        /* Sử dụng pseudo-element :after để ẩn văn bản cuối cùng */
+        content: ''; /* Xóa nội dung */
+    }
+</style>
+</body>
+</html>
