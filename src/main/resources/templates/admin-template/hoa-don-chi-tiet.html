@@ -1218,7 +1218,7 @@
                                                             const giamGia1 = isNaN(parseFloat(giamGia.value)) ? 0 : parseFloat(giamGia.value);
                                                             const phiShip = isNaN(shippingFee) ? 0 : shippingFee;
                                                             const tongGia = tongTienHoaDon + phiShip - giamGia1;
-                                                            
+
                                                             // Format the total with thousands separators
                                                             const formattedTotal = tongGia.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                                                             tongGiaValue.textContent = formattedTotal + ' VND';
