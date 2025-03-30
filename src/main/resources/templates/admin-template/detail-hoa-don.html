@@ -524,6 +524,33 @@
                                                                       rows="3"></textarea>
                                                             <small style="color: red;" id="errorGhiChu"></small>
                                                         </div>
+                                                        <script>
+                                                            // Auto-populate status transition note
+                                                            document.addEventListener('DOMContentLoaded', function() {
+                                                                const modal = document.getElementById('ghiChuChuyenNhanhModal');
+                                                                modal.addEventListener('show.bs.modal', function() {
+                                                                    const currentStatus = document.querySelector('.info-value-trang-thai').textContent.trim();
+                                                                    let newStatus = '';
+
+                                                                    if (currentStatus === 'Chờ xác nhận') {
+                                                                        newStatus = 'Đã xác nhận';
+                                                                    } else if (currentStatus === 'Đã xác nhận') {
+                                                                        newStatus = 'Đang giao';
+                                                                    } else if (currentStatus === 'Đang giao') {
+                                                                        newStatus = 'Hoàn thành';
+                                                                    }
+
+                                                                    const now = new Date();
+                                                                    const timeString = now.getHours().toString().padStart(2, '0') + ':' +
+                                                                        now.getMinutes().toString().padStart(2, '0') + ' ' +
+                                                                        now.getDate().toString().padStart(2, '0') + '/' +
+                                                                        (now.getMonth() + 1).toString().padStart(2, '0') + '/' +
+                                                                        now.getFullYear();
+
+                                                                    document.getElementById('ghiChu').value = `Chuyển từ trạng thái "${currentStatus}" sang "${newStatus}" vào lúc ${timeString}`;
+                                                                });
+                                                            });
+                                                        </script>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -2162,8 +2189,8 @@
                     <th th:text="${state.index+1}"></th>
                     <td th:text="${obj.chiTietSanPham.sanPham.ten}" colspan="2"></td>
                     <td th:text="${obj.soLuong}"></td>
-                    <td th:text="${obj.chiTietSanPham.giaHienHanh}"></td>
-                    <td th:text="${obj.soLuong*obj.chiTietSanPham.giaHienHanh}"></td>
+                    <td th:text="${#numbers.formatDecimal(obj.chiTietSanPham.giaHienHanh, 0, 'POINT', 0, 'NONE')} + ' đ'"></td>
+                    <td th:text="${#numbers.formatDecimal(obj.soLuong * obj.chiTietSanPham.giaHienHanh, 0, 'POINT', 0, 'NONE')} + ' đ'"></td>
                     <td th:if="${hoaDon.trangThai==6}" th:text="${obj.trangThai==0?'Đã nhận':'Hoàn trả'}"></td>
                 </tr>
 
@@ -2174,44 +2201,61 @@
         <div class="col-md-12">
             <div class="border-hoadon-duoi"></div>
             <div>
-                <p><span class="info-label">Tổng tiền hàng:</span> <span
-                        class="info-value">[[${hoaDon.tongTienHoaDon()}]] VND</span>
+                <p><span class="info-label">Tổng tiền hàng:</span>
+                    <span class="info-value">[[${#numbers.formatDecimal(hoaDon.tongTienHoaDon(), 0, 'POINT', 0, 'NONE')}]] VND</span>
                 </p>
 
-                <p><span class="info-label">Phí vận chuyển:</span> <span class="info-value"><span
-                        id="phiVanChuyenIn">[[${hoaDon.phiShip}]]
-                            </span> VND</span>
-                </p>
-                <p><span class="info-label">Tiền giảm:</span> <span class="info-value"><span
-                        th:if="${hoaDon.trangThai!=6}" id="giamGiaIn">
-                                [[${hoaDon.tienGiam}]]
-                            </span>
-                            <span th:if="${hoaDon.trangThai==6}">[[${hoaDon.tienGiam}]]
-                            </span>
-                            VND</span>
+                <p><span class="info-label">Phí vận chuyển:</span>
+                    <span class="info-value">
+                <span id="phiVanChuyenIn">[[${#numbers.formatDecimal(hoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]]</span> VND
+            </span>
                 </p>
 
-                <p><span class="info-label">Khách đã thanh toán:</span> <span class="info-value">
-                    <span>[[${hoaDon.tongTienHoaDon()+hoaDon.phiShip-hoaDon.tienGiam}]]
-
-                    </span>
-                    VND</span>
+                <p><span class="info-label">Tiền giảm:</span>
+                    <span class="info-value">
+                <span th:if="${hoaDon.trangThai!=6}" id="giamGiaIn">
+                    [[${#numbers.formatDecimal(hoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]]
+                </span>
+                <span th:if="${hoaDon.trangThai==6}">
+                    [[${#numbers.formatDecimal(hoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]]
+                </span> VND
+            </span>
                 </p>
-                <p th:if="${hoaDon.trangThai==6}"><span class="info-label">Tổng tiền hoàn trả:</span> <span class="info-value">
-                            <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" >[[${hoaDon.tongTienHoaDonHoanTra()-hoaDon.tienGiam}]]</span>
-                            <span th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">[[${hoaDon.tongTienHoaDonHoanTra()-hoaDon.tienGiam}]]</span>
-                            VND</span></p>
 
-                <p><span class="info-label">Tổng tiền thanh toán:</span> <span class="info-value">
-                                <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" id="thanhTienIn">[[${hoaDon.tongTien+hoaDon.phiShip}]]</span>
-                                <span th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">0</span>
-                                VND</span></p>
+                <p><span class="info-label">Khách đã thanh toán:</span>
+                    <span class="info-value">
+                <span>
+                    [[${#numbers.formatDecimal(hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]]
+                </span> VND
+            </span>
+                </p>
+
+                <p th:if="${hoaDon.trangThai==6}">
+                    <span class="info-label">Tổng tiền hoàn trả:</span>
+                    <span class="info-value">
+                <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}">
+                    [[${#numbers.formatDecimal(hoaDon.tongTienHoaDonHoanTra() - hoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]]
+                </span>
+                <span th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">
+                    [[${#numbers.formatDecimal(hoaDon.tongTienHoaDonHoanTra() - hoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]]
+                </span> VND
+            </span>
+                </p>
+
+                <p><span class="info-label">Tổng tiền thanh toán:</span>
+                    <span class="info-value">
+                <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" id="thanhTienIn">
+                    [[${#numbers.formatDecimal(hoaDon.tongTien + hoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]]
+                </span>
+                <span th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">0</span> VND
+            </span>
+                </p>
             </div>
         </div>
+
         <div class="col-md-12">
             <div class="border-hoadon-duoi"></div>
-
-            <div class="">
+            <div>
                 <h5>KHÁCH HÀNG:</h5>
                 <h6>Tên Khách hàng: [[${hoaDon.nguoiNhan}]]</h6>
                 <h6>Số điện thoại: [[${hoaDon.sdtNguoiNhan}]]</h6>
@@ -2223,14 +2267,15 @@
                 </h6>
             </div>
         </div>
+
         <div class="col-md-12">
             <div class="border-hoadon-duoi"></div>
-
             <div class="bottom-hoadon">
-                <h3>Xin cảm ơn quý khách !</h3>
+                <h3>Xin cảm ơn quý khách!</h3>
                 <h6>Nhân viên: Tên NV</h6>
             </div>
         </div>
+
         <style>
             .inHoaDon .table {
                 margin-top: 3%;

@@ -5,6 +5,7 @@ package com.example.datn_teehaven.controller.user;
 
 
 import com.example.datn_teehaven.Config.PrincipalCustom;
+import com.example.datn_teehaven.entyti.ChiTietSanPham;
 import com.example.datn_teehaven.entyti.TaiKhoan;
 import com.example.datn_teehaven.entyti.TayAo;
 import com.example.datn_teehaven.service.ChiTietSanPhamSerivce;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -81,6 +83,20 @@ public class CustomersController {
 
         return "/customer-template/ban-hang-customer";
     }
+    @GetMapping("/user/shop-single/{id}")
+    public String shopSingle(
+            @PathVariable("id") String id,
+            Model model) {
+        ChiTietSanPham ChiTietSanPham = chiTietSanPhamSerivce.getAllById(Long.valueOf(id)).get(0);
+        List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamSerivce.getAllById(Long.valueOf(id));
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        model.addAttribute("chiTietSp", ChiTietSanPham);
+        model.addAttribute("listChiTietSp", listChiTietSanPham);
+        model.addAttribute("listTop5HDCT", hoaDonChiTietService.finTop5HDCT());
+        return "/customer-template/shop-single";
+    }
 
     @GetMapping("/shop")
     // @ResponseBody
@@ -140,5 +156,45 @@ public class CustomersController {
         model.addAttribute("listTayAo", tayAoService.findAll());
         model.addAttribute("listThuongHieu", thuongHieuService.getAllDangHoatDong());
         return "/customer-template/shop";
+    }
+
+    @GetMapping("/chinh-sach")
+    public String chinhSach(
+            Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer-template/chinh-sach";
+    }
+    @GetMapping("/lien-he")
+    public String lienHe(
+            Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer-template/contact";
+    }
+    @GetMapping("/about")
+    public String about(
+            Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer-template/about";
     }
 }
