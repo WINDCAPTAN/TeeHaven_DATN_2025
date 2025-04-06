@@ -9,6 +9,7 @@ import com.example.datn_teehaven.entyti.TaiKhoan;
 import java.util.List;
 
 public interface GioHangChiTietService {
+    GioHangChiTiet fillByIdCTSP(Long idCTSP);
 
     List<GioHangChiTiet> findAll();
 

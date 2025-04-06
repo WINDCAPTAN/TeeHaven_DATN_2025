@@ -23,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
@@ -388,6 +385,37 @@ public class CustomersController {
         diaChiService.update(diaChi);
 
         return "redirect:/user/cart";
+    }
+
+    @GetMapping("/user/shop-single/get-so-luong")
+    @ResponseBody
+    public Integer getSoLuongGHCT() {
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        Integer soLuong = gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId());
+        return soLuong;
+    }
+
+    @GetMapping("/user/shop-single/check-so-luong/{idCTSP}")
+    @ResponseBody
+    public Integer checkSoLuongSpEndGHCT(
+            @PathVariable String idCTSP) {
+        Integer soLuongCheck;
+        GioHangChiTiet gioHangChiTiet = gioHangChiTietService.fillByIdCTSP(Long.valueOf(idCTSP));
+        if (gioHangChiTiet != null) {
+            soLuongCheck = gioHangChiTiet.getSoLuong();
+        } else {
+            soLuongCheck = 0;
+        }
+        return soLuongCheck;
+    }
+    @GetMapping("/user/chi-tiet-san-pham/{idSanPham}/{idMauSac}")
+    @ResponseBody
+    public List<ChiTietSanPham> getAllbyIdSPAndIdMS(
+            @PathVariable String idSanPham,
+            @PathVariable String idMauSac) {
+        List<ChiTietSanPham> listChiTietSanPham1 = chiTietSanPhamSerivce.getAllbyIdSPAndIdMS(Long.valueOf(idSanPham),
+                Long.valueOf(idMauSac));
+        return listChiTietSanPham1;
     }
 }
 //huynh1
