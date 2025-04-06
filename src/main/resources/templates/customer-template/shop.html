@@ -623,7 +623,7 @@
                     <h3 class="product-title"
                         th:text="${chiTiepSp.sanPham.ten+' ['+chiTiepSp.mauSac.ten+ ' - ' +chiTiepSp.kichCo.ten}+']'"></h3>
                     <strong class="product-price"
-                            th:text="${chiTiepSp.giaHienHanh + ' VNĐ'}"></strong>
+                            th:text="${#numbers.formatDecimal(chiTiepSp.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></strong>
                     <span class="icon-cross">
 							                 <img src="../../static/img/plus-black.png" class="img-fluid">
 						                </span>

@@ -9,10 +9,10 @@
     <link href="../../static/img/logo_teehaven.png" rel="icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
-
-    <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
 
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
@@ -23,8 +23,6 @@
     <link rel="stylesheet" href="../../static/css/aos.css"/>
 
     <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
-
-
 </head>
 
 <body>
@@ -35,7 +33,8 @@
                 <div class="row align-items-center">
                     <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
                         <form action="" class="site-block-top-search">
-                            <span class="icon icon-search2"></span>
+                            <!-- Updated search icon -->
+                            <span class="fa-solid fa-magnifying-glass"></span>
                             <input type="text" class="form-control border-0" id="timKiemAll"
                                    placeholder="Tìm kiếm theo tên sản phẩm"/>
                             <script>
@@ -102,7 +101,10 @@
                             <ul class="nav nav-pills" style="margin-left: 54%">
                                 <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
                                             Tôi</a>
@@ -113,19 +115,19 @@
                                 </li>
                                 <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
-
                                     </ul>
                                 </li>
 
-                                <!--                                <li class="nav-item" style="margin-left: -15%">-->
-                                <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
-                                <!--                                </li>-->
                                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
                                     <a class="site-cart" href="/user/cart">
-                                        <span class="icon icon-shopping_cart"></span>
+                                        <!-- Updated shopping cart icon -->
+                                        <i class="fa-solid fa-cart-shopping"></i>
                                         <span class="count" th:if="${checkDangNhap=='true'}"
                                               th:text="${soLuongSPGioHangCT}"></span>
                                     </a>
@@ -141,28 +143,7 @@
                 <ul class="site-menu js-clone-nav d-none d-md-block">
                     <li>
                         <a href="/home">Trang chủ</a>
-                        <!-- <ul class="dropdown">
-                      <li><a href="#">Menu One</a></li>
-                      <li><a href="#">Menu Two</a></li>
-                      <li><a href="#">Menu Three</a></li>
-                      <li class="has-children">
-                        <a href="#">Sub Menu</a>
-                        <ul class="dropdown">
-                          <li><a href="#">Menu One</a></li>
-                          <li><a href="#">Menu Two</a></li>
-                          <li><a href="#">Menu Three</a></li>
-                        </ul>
-                      </li>
-                    </ul> -->
                     </li>
-                    <!-- <li>
-                  <a href="about.html">Về chúng tôi</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Menu One</a></li>
-                    <li><a href="#">Menu Two</a></li>
-                    <li><a href="#">Menu Three</a></li>
-                  </ul>
-                </li> -->
                     <li><a href="/shop">Sản phẩm</a></li>
                     <li><a href="/about">Về chúng tôi</a></li>
                     <li><a href="/lien-he">Liên hệ</a></li>
@@ -189,9 +170,9 @@
                 </a>
             </div>
 
-            <!-- Nút điều hướng -->
-            <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
-            <a class="next" onclick="changeSlide(1)">&#10095;</a>
+            <!-- Updated navigation buttons -->
+            <a class="prev" onclick="changeSlide(-1)"><i class="fa-solid fa-chevron-left"></i></a>
+            <a class="next" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></a>
 
             <!-- Dots/circles -->
             <div class="dots-container">
@@ -205,41 +186,29 @@
             <div class="row">
                 <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="">
                     <div class="icon mr-4 align-self-start">
-                        <span class="icon-truck"></span>
+                        <!-- Updated truck icon -->
+                        <i class="fa-solid fa-truck"></i>
                     </div>
                     <div class="text">
                         <h2 class="text-uppercase">Giao hàng nhanh</h2>
-                        <!-- <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Phasellus at iaculis quam. Integer accumsan tincidunt
-                      fringilla.
-                    </p> -->
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="100">
                     <div class="icon mr-4 align-self-start">
-                        <span class="icon-refresh2"></span>
+                        <!-- Updated refresh icon -->
+                        <i class="fa-solid fa-rotate"></i>
                     </div>
                     <div class="text">
                         <h2 class="text-uppercase">Trả hàng miễn phí</h2>
-                        <!-- <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Phasellus at iaculis quam. Integer accumsan tincidunt
-                      fringilla.
-                    </p> -->
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="icon mr-4 align-self-start">
-                        <span class="icon-help"></span>
+                        <!-- Updated help icon -->
+                        <i class="fa-solid fa-circle-question"></i>
                     </div>
                     <div class="text">
                         <h2 class="text-uppercase">Hỗ trợ 24/7</h2>
-                        <!-- <p>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Phasellus at iaculis quam. Integer accumsan tincidunt
-                      fringilla.
-                    </p> -->
                     </div>
                 </div>
             </div>
@@ -270,8 +239,6 @@
                                             <div class="pf-card" style="margin-top: -30%">
                                                 <a class="product-item"
                                                    th:href="@{/user/shop-single/{id}(id=${hoaDonCT.chiTietSanPham.sanPham.id})}">
-                                                    <!--                                            <input type="hidden" th:value="${chiTiepSp.sanPham.ten}">-->
-                                                    <!--                                            <input type="hidden" th:value="${chiTiepSp.sanPham.id}">-->
                                                     <div class="product-thumbnail-container">
                                                         <div th:each="url : ${#strings.listSplit(hoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
                                                             <img th:src="${url}"
@@ -463,12 +430,17 @@
                         <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
                         <ul class="list-unstyled">
                             <li class="address">
+                                <i class="fa-solid fa-location-dot mr-2"></i>
                                 13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
                             </li>
                             <li class="phone">
+                                <i class="fa-solid fa-phone mr-2"></i>
                                 <a href="tel://23923929210">+84 999 999 999</a>
                             </li>
-                            <li class="email">Tee Havenshopshoes@gmail.com</li>
+                            <li class="email">
+                                <i class="fa-solid fa-envelope mr-2"></i>
+                                Tee Havenshopshoes@gmail.com
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -862,7 +834,9 @@
 <script src="../../static/js/script.js"></script>
 <script src="../../static/js/main.js"></script>
 <!-- Thêm nút "Lên đầu" trước thẻ đóng body -->
-<button onclick="scrollToTop()" id="scrollToTopBtn" title="Lên đầu">Lên đầu</button>
+<button onclick="scrollToTop()" id="scrollToTopBtn" title="Lên đầu">
+    <i class="fa-solid fa-arrow-up"></i> Lên đầu
+</button>
 
 <style>
     /* CSS cho nút */
