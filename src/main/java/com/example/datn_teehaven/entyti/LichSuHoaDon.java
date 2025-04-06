@@ -63,7 +63,7 @@ public class LichSuHoaDon {
             case 2:
                 return "Đã giao cho đơn vị vận chuyển";
             case 3:
-                return "Đã nhận được hàng";
+                return "Hoàn Thành";
             case 4:
                 return "Đổi hàng thành công";
             case 5:
@@ -85,7 +85,7 @@ public class LichSuHoaDon {
             case 22:
                 return "Đã bàn giao cho đơn vị vận chuyển";
             case 23:
-                return "Đã nhận được hàng";
+                return "Hoàn Thành";
             case 24:
                 return "Đặt hàng thành công";
             case 25:

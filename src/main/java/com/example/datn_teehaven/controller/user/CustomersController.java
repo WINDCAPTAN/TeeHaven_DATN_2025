@@ -7,6 +7,18 @@ package com.example.datn_teehaven.controller.user;
 import com.example.datn_teehaven.Config.PrincipalCustom;
 import com.example.datn_teehaven.entyti.*;
 import com.example.datn_teehaven.service.*;
+import com.example.datn_teehaven.entyti.ChiTietSanPham;
+import com.example.datn_teehaven.entyti.TaiKhoan;
+import com.example.datn_teehaven.entyti.TayAo;
+import com.example.datn_teehaven.service.ChiTietSanPhamSerivce;
+import com.example.datn_teehaven.service.GioHangChiTietService;
+import com.example.datn_teehaven.service.HoaDonChiTietService;
+import com.example.datn_teehaven.service.KhachHangService;
+import com.example.datn_teehaven.service.KichCoService;
+import com.example.datn_teehaven.service.MauSacService;
+import com.example.datn_teehaven.service.TaiKhoanService;
+import com.example.datn_teehaven.service.TayAoService;
+import com.example.datn_teehaven.service.ThuongHieuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -195,6 +207,7 @@ public class CustomersController {
         }
         return "/customer-template/about";
     }
+
     @GetMapping("/user/cart")
     public String cart(
             Model model) {
@@ -377,3 +390,4 @@ public class CustomersController {
         return "redirect:/user/cart";
     }
 }
+//huynh
