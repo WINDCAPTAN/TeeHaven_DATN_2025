@@ -235,8 +235,7 @@
                         <!--                            <span class="review">(47 Review)</span>-->
                         <!--                        </div>-->
                         <div class="product-price">
-                                <span class="offer-price" id="giaHienThi"
-                                      th:text="${chiTietSp.giaHienHanh}+' VND'"></span>
+                            <span class="offer-price" id="giaHienThi" th:text="${#numbers.formatDecimal(chiTietSp.giaHienHanh, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'"></span>
                         </div>
 
                         <div class="product-details">
@@ -300,6 +299,15 @@
                                 xhr.send();
                             }
 
+                            // Thêm hàm format giá tiền
+                            function formatCurrency(amount) {
+                                return new Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND',
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0
+                                }).format(amount).replace('₫', 'VNĐ');
+                            }
 
                             function displaylistChiTietSpByMauSac(listChiTietSpByMauSac) {
                                 // Hiển thị danh sách kích cỡ trên trang web
@@ -310,7 +318,6 @@
                                 kichCoContainer.innerHTML = ''; // Xóa nội dung cũ
 
                                 listChiTietSpByMauSac.forEach(function (chiTietSp, index) {
-
                                     var kichCoElement = document.createElement('div');
                                     console.log(chiTietSp)
                                     // Tạo phần tử input
@@ -321,10 +328,19 @@
                                     input.value = chiTietSp.kichCo.ten; // Đặt giá trị tên kích cỡ vào value
                                     input.id = index; // Đặt giá trị id từ mauSac.id
 
+                                    // Kiểm tra số lượng tồn kho
+                                    if (chiTietSp.soLuong <= 0) {
+                                        input.disabled = true;
+                                    }
+
                                     // Tạo phần tử label
                                     var label = document.createElement('label');
                                     label.htmlFor = index; // Sử dụng mauSac.id làm htmlFor
                                     label.className = 'size';
+                                    if (chiTietSp.soLuong <= 0) {
+                                        label.classList.add('out-of-stock');
+                                        label.title = 'Hết hàng';
+                                    }
                                     label.innerText = chiTietSp.kichCo.ten; // Hiển thị tên kích cỡ
 
                                     // Thêm input và label vào phần tử div
@@ -335,9 +351,6 @@
 
                                     // Sự kiện change cho input
                                     input.addEventListener('change', function () {
-                                        // Điều này xảy ra khi người dùng chọn một kích cỡ
-                                        // Lấy số lượng từ listChiTietSpByMauSac
-
                                         var soLuongHienThi = chiTietSp.soLuong;
                                         var giaHienThi = chiTietSp.giaHienHanh;
                                         var idCTSP = chiTietSp.id;
@@ -347,21 +360,19 @@
                                         var inputSoLuong = document.getElementById('soLuong');
                                         var spanGia = document.getElementById('giaHienThi');
 
-                                        // Hiển thị thông tin (ở đây là cần thay thế số lượng trên trang web)
-                                        spanGia.innerText = giaHienThi + ' VND';
+                                        // Format giá tiền trước khi hiển thị
+                                        spanGia.innerText = formatCurrency(giaHienThi);
 
                                         rqIdChiTietSp.value = idCTSP;
 
                                         inputSoLuong.value = 1;
-                                        inputSoLuong.max = soLuongHienThi
+                                        inputSoLuong.max = soLuongHienThi;
 
                                         divSoLuongCon.style.display = 'block';
-                                        divSoLuongCon.innerText = soLuongHienThi + ' sản phẩm có sẵn';
-                                        divSoLuongCon.style = 'color: red';
+                                        divSoLuongCon.className = 'stock-quantity';
+                                        divSoLuongCon.innerText = '✓ ' + soLuongHienThi + ' sản phẩm có sẵn';
                                     });
-
                                 });
-
                             }
 
                             function limitInput(inputElement) {
@@ -644,6 +655,22 @@
 
                                 #heartIcon2 {
                                     color: red;
+                                }
+
+                                .product-size .size-layout .size.out-of-stock {
+                                    background-color: #f5f5f5;
+                                    color: #999;
+                                    cursor: not-allowed;
+                                    text-decoration: line-through;
+                                    opacity: 0.7;
+                                }
+
+                                .product-size .size-layout input[type="radio"]:disabled + .size {
+                                    background-color: #f5f5f5;
+                                    color: #999;
+                                    cursor: not-allowed;
+                                    text-decoration: line-through;
+                                    opacity: 0.7;
                                 }
 
                             </style>
@@ -1082,6 +1109,42 @@
                 padding: 20px;
             }
 
+        }
+
+        .stock-info {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 4px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            font-size: 14px;
+            margin: 10px 0;
+            border: 1px solid #a5d6a7;
+        }
+
+        .stock-info i {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .stock-info.out-of-stock {
+            background-color: #ffebee;
+            color: #c62828;
+            border-color: #ef9a9a;
+        }
+
+        .stock-quantity {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 4px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            font-weight: 500;
+            font-size: 14px;
+            margin: 10px 0;
+            border: 1px solid #a5d6a7;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
     </style>
 
