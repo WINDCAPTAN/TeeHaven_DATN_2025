@@ -1,5 +1,7 @@
 package com.example.datn_teehaven.controller;
 
+import com.example.datn_teehaven.Config.PrincipalCustom;
+import com.example.datn_teehaven.Config.UserInfoUserDetails;
 import com.example.datn_teehaven.entyti.ChiTietSanPham;
 import com.example.datn_teehaven.entyti.DiaChi;
 import com.example.datn_teehaven.entyti.HoaDon;
@@ -63,9 +65,16 @@ public class HoaDonController {
 
     @Autowired
     private SanPhamService sanPhamService;
+    private PrincipalCustom principalCustom = new PrincipalCustom();
 
     @GetMapping("/quan-ly")
     public String quanLyHoaDon(Model model) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         List<HoaDon> lstHdctAll = hoaDonService.findAllHoaDon();
         List<HoaDon> lstHdChoXacNhan = hoaDonService.find5ByTrangThai(0);
         List<HoaDon> lstHdChoGiao = hoaDonService.find5ByTrangThai(1);
@@ -338,6 +347,44 @@ public class HoaDonController {
         System.out.println(ghiChu + "ghiChu");
 
         return "redirect:/hoa-don/quan-ly";
+    }
+    void updateSoLuongRollBack(Long idhdc) {
+        HoaDon hd = hoaDonService.findById(idhdc);
+        List<ChiTietSanPham> lstCtsp = chiTietSanPhamSerivce.getAll();
+        for (HoaDonChiTiet hoaDonChiTiet : hd.getLstHoaDonChiTiet()) {
+            for (ChiTietSanPham ctsp : lstCtsp) {
+                if (hoaDonChiTiet.getChiTietSanPham().getId() == ctsp.getId()) {
+                    ctsp.setSoLuong(ctsp.getSoLuong() + hoaDonChiTiet.getSoLuong());
+                    chiTietSanPhamSerivce.update(ctsp);
+                }
+            }
+        }
+
+        if (hd.getVoucher() != null) {
+            Voucher v = hd.getVoucher();
+            v.setSoLuong(v.getSoLuong().add(new BigDecimal(1)));
+            voucherService.save(v);
+        }
+
+    }
+    @PostMapping("/delete/{id}")
+    public String delete(RedirectAttributes redirectAttributes, @PathVariable Long id, @RequestParam String ghiChu) {
+        HoaDon hd = hoaDonService.findById(id);
+        if (hd.getTrangThai() == 1) {
+            updateSoLuongRollBack(id);
+        }
+        hd.setTrangThai(5);
+
+
+
+        hoaDonService.saveOrUpdate(hd);
+        addLichSuHoaDon(id, ghiChu, 5);
+        thongBao(redirectAttributes, "Thành công", 1);
+        if (hd.getTrangThai() == -1) {
+            return "redirect:/hoa-don/" + id;
+        } else {
+            return "redirect:/hoa-don/detail/" + id;
+        }
     }
     @GetMapping("/detail/{id}")
     public String detailHoaDon(@PathVariable Long id, Model model) {

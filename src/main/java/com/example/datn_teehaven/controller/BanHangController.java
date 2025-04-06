@@ -1,5 +1,7 @@
 package com.example.datn_teehaven.controller;
 
+import com.example.datn_teehaven.Config.PrincipalCustom;
+import com.example.datn_teehaven.Config.UserInfoUserDetails;
 import com.example.datn_teehaven.entyti.*;
 import com.example.datn_teehaven.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,9 +44,16 @@ public class BanHangController {
     private DiaChiService diaChiService;
 
     private final HoaDonService hoaDonService;
+    private PrincipalCustom principalCustom = new PrincipalCustom();
 
     @GetMapping("/hoa-don")
-    public String home() {
+    public String home(Model model) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         request.setAttribute("lstHoaDon", hoaDonService.find5ByTrangThai(-1));
         return "/admin-template/ban-hang";
     }
@@ -83,6 +92,12 @@ public class BanHangController {
 
     @GetMapping("/hoa-don/{id}")
     public String hoaDon(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         chiTietSanPhamSerivce.checkSoLuongBang0();
 
         TaiKhoan tk = new TaiKhoan();
@@ -616,6 +631,7 @@ public class BanHangController {
     }
     @GetMapping("/hoa-don/quan-ly")
     public String quanLyHoaDon(Model model) {
+
         List<HoaDon> lstHdctAll = hoaDonService.findAllHoaDon();
         List<HoaDon> lstHdChoXacNhan = hoaDonService.find5ByTrangThai(0);
         List<HoaDon> lstHdChoGiao = hoaDonService.find5ByTrangThai(1);
