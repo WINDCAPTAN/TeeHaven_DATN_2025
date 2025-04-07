@@ -1,6 +1,8 @@
 package com.example.datn_teehaven.controller;
 
 
+import com.example.datn_teehaven.Config.PrincipalCustom;
+import com.example.datn_teehaven.Config.UserInfoUserDetails;
 import com.example.datn_teehaven.entyti.ThuongHieu;
 import com.example.datn_teehaven.service.ThuongHieuService;
 import jakarta.validation.Valid;
@@ -18,11 +20,18 @@ import java.util.Date;
 public class ThuongHieuController {
     @Autowired
     private ThuongHieuService thuongHieuService;
+    private PrincipalCustom principalCustom = new PrincipalCustom();
 
     @GetMapping("")
     public String hienThi(
             Model model
     ) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
 
         model.addAttribute("listThuongHieu", thuongHieuService.getAll());
         model.addAttribute("thuongHieu", new ThuongHieu());

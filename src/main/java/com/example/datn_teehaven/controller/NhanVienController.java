@@ -1,5 +1,7 @@
 package com.example.datn_teehaven.controller;
 
+import com.example.datn_teehaven.Config.PrincipalCustom;
+import com.example.datn_teehaven.Config.UserInfoUserDetails;
 import com.example.datn_teehaven.entyti.TaiKhoan;
 import com.example.datn_teehaven.entyti.VaiTro;
 import com.example.datn_teehaven.service.NhanVienService;
@@ -32,8 +34,16 @@ public class NhanVienController {
 
     TaiKhoan userInfo = new TaiKhoan();
 
+    private PrincipalCustom principalCustom = new PrincipalCustom();
+
     @GetMapping()
     public String hienThi(Model model) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listTaiKhoan", nhanVienService.getAll());
         model.addAttribute("nhanVien",new TaiKhoan());
         return "admin-template/nhan_vien/nhan-vien";

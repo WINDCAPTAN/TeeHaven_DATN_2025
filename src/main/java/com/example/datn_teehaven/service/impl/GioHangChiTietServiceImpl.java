@@ -30,6 +30,11 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
     private LichSuHoaDonService lichSuHoaDonService;
 
     @Override
+    public GioHangChiTiet fillByIdCTSP(Long idCTSP) {
+        return repository.fillByIdCTSP(idCTSP);
+    }
+
+    @Override
     public List<GioHangChiTiet> findAll() {
         return null;
     }
@@ -180,10 +185,5 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         return null;
 
     }
-    @Override
-    public GioHangChiTiet fillByIdCTSP(Long idCTSP) {
 
-        return repository.fillByIdCTSP(idCTSP);
-
-    }
 }

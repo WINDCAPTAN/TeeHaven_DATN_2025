@@ -33,7 +33,7 @@ import java.util.List;
 
 @Controller
 public class CustomersController {
-//huynh1
+//huynh1 //6/4
     private Long idTaiKhoan;
 
     @Autowired
@@ -61,6 +61,11 @@ public class CustomersController {
     private DiaChiService diaChiService;
     @Autowired
     private VoucherService voucherService;
+
+    @Autowired
+    private LichSuHoaDonService lichSuHoaDonService;
+    @Autowired
+    private HoaDonService hoaDonService;
 
     @GetMapping("/home")
     public String home(Model model) {
@@ -426,5 +431,70 @@ public class CustomersController {
                 gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer-template/thong-tin-khach-hang";
     }
+
+    @GetMapping("/user/don-mua")
+    public String donMua(
+            Model model) {
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT((khachHang.getGioHang() != null ? khachHang.getGioHang().getId() : null)));
+        model.addAttribute("listAllHoaDon", hoaDonService.getAllHoaDonByTaiKhoanOrderByNgaySua(idTaiKhoan));
+        model.addAttribute("listHDChoXacNhan", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 0));
+        model.addAttribute("listHDChoGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 1));
+        model.addAttribute("listHDDangGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 2));
+        model.addAttribute("listHDHoanThanh", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 3));
+        model.addAttribute("listHDDaHuy", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 5));
+        model.addAttribute("listHDTraHang", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 6));
+        return "customer-template/don-mua";
+    }
+
+    @PostMapping("/user/don-mua/mua-lai")
+    public String muaLaiDonMua(
+            @RequestParam String options) {
+        String[] optionArray = options.split(",");
+        List<String> listIdString = Arrays.asList(optionArray);
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        gioHangChiTietService.save((khachHang.getGioHang() != null ? khachHang.getGioHang().getId() : null), listIdString, 1);
+        return "redirect:/user/cart";
+    }
+
+    @GetMapping("/user/huy-don/{idHoaDon}")
+    public String huyDon(
+            @PathVariable("idHoaDon") Long idHoaDon,
+            @RequestParam("ghiChu") String ghiChu,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT((khachHang.getGioHang() != null ? khachHang.getGioHang().getId() : null)));
+        HoaDon hoaDon = hoaDonService.findById(idHoaDon);
+        hoaDon.setNgayTao(new Date());
+        hoaDon.setTrangThai(5);
+
+        lichSuHoaDonService.saveOrUpdate(LichSuHoaDon.builder()
+                .ghiChu(ghiChu)
+                .ngayTao(new Date())
+                .ngaySua(new Date())
+                .trangThai(5)
+                .hoaDon(hoaDon)
+                .build());
+
+        hoaDonService.saveOrUpdate(hoaDon);
+        return "redirect:/user/don-mua";
+    }
+
+    @GetMapping("/user/don-mua/{idHoaDon}")
+    public String donMuaChiTiet(
+            @PathVariable("idHoaDon") Long idHoaDon,
+            Model model) {
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT((khachHang.getGioHang() != null ? khachHang.getGioHang().getId() : null)));
+        model.addAttribute("byHoaDon", hoaDonService.findById(idHoaDon));
+        model.addAttribute("listLichSuHoaDon", lichSuHoaDonService.findByIdhdNgaySuaAsc(idHoaDon));
+        System.out.println(lichSuHoaDonService.findById(idHoaDon));
+        return "/customer-template/don-mua-chi-tiet";
+    }
+
 }
-//huynh
+//huynh1
