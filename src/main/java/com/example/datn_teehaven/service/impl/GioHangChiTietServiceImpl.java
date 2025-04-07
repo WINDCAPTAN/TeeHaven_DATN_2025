@@ -180,4 +180,10 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         return null;
 
     }
+    @Override
+    public GioHangChiTiet fillByIdCTSP(Long idCTSP) {
+
+        return repository.fillByIdCTSP(idCTSP);
+
+    }
 }

@@ -167,6 +167,7 @@
             <div class="row">
                 <div class="col-md-12 mb-0">
                     <a href="/home">Home</a> <span class="mx-2 mb-0">/</span>
+                    <strong class="text-black">Giày Adidas</strong>
                 </div>
             </div>
         </div>
@@ -177,103 +178,475 @@
             <div class="row">
                 <div class="col-6">
                     <div class="product-image">
-                        <div class="product-image-main">
-                            <div th:each="url : ${#strings.listSplit(chiTietSp.sanPham.hinhAnh, ',')[0]}">
-                                <img th:if="${not #lists.isEmpty(chiTietSp.sanPham.hinhAnh)}"
-                                     th:src="${url}"
-                                     alt="" id="product-main-image"/>
+                        <div th:each="url : ${#strings.listSplit(chiTietSp.sanPham.hinhAnh, ',')[0]}">
+                        <div class="product-image-main" style="background-color: white">
+
+                            <img th:src="${url}" alt="" id="product-main-image"/>
                             </div>
-                            <button class="slider-btn prev-btn" onclick="prevImage()">
-                                <i class='bx bx-chevron-left'></i>
-                            </button>
-                            <button class="slider-btn next-btn" onclick="nextImage()">
-                                <i class='bx bx-chevron-right'></i>
-                            </button>
                         </div>
                         <div class="product-image-slider">
                             <div th:each="url : ${#strings.listSplit(chiTietSp.sanPham.hinhAnh, ',')}">
-                                <img th:src="${url}"alt="" class="image-list"
-                                />
+                            <img th:src="${url}" alt="" class="image-list"/>
                             </div>
                         </div>
                     </div>
                     <script>
-                        let currentImageIndex = 0;
-                        const images = document.querySelectorAll('.product-image-slider img');
-                        const mainImage = document.getElementById('product-main-image');
+                        const sliderMainImage = document.getElementById("product-main-image");
+                        const sliderImageList = document.getElementsByClassName("image-list");
+                        console.log(sliderImageList);
 
-                        function updateMainImage(index) {
-                            if (images[index]) {
-                                mainImage.src = images[index].src;
-                                currentImageIndex = index;
-                            }
-                        }
+                        sliderImageList[0].onclick = function () {
+                            sliderMainImage.src = sliderImageList[0].src;
+                            console.log(sliderMainImage.src);
+                        };
 
-                        function nextImage() {
-                            const nextIndex = (currentImageIndex + 1) % images.length;
-                            updateMainImage(nextIndex);
-                        }
+                        sliderImageList[1].onclick = function () {
+                            sliderMainImage.src = sliderImageList[1].src;
+                            console.log(sliderMainImage.src);
+                        };
 
-                        function prevImage() {
-                            const prevIndex = (currentImageIndex - 1 + images.length) % images.length;
-                            updateMainImage(prevIndex);
-                        }
+                        sliderImageList[2].onclick = function () {
+                            sliderMainImage.src = sliderImageList[2].src;
+                            console.log(sliderMainImage.src);
+                        };
 
-                        // Add click events to thumbnail images
-                        images.forEach((img, index) => {
-                            img.addEventListener('click', () => {
-                                updateMainImage(index);
-                            });
-                        });
-
-                        // Add keyboard navigation
-                        document.addEventListener('keydown', (e) => {
-                            if (e.key === 'ArrowRight') {
-                                nextImage();
-                            } else if (e.key === 'ArrowLeft') {
-                                prevImage();
-                            }
-                        });
+                        sliderImageList[3].onclick = function () {
+                            sliderMainImage.src = sliderImageList[3].src;
+                            console.log(sliderMainImage.src);
+                        };
+                        sliderImageList[4].onclick = function () {
+                            sliderMainImage.src = sliderImageList[4].src;
+                            console.log(sliderMainImage.src);
+                        };
                     </script>
                 </div>
                 <div class="col-6">
-                    <div class="product-info">
+                    <div class="product">
                         <div class="product-title">
                             <h2 th:text="${chiTietSp.sanPham.ten}"></h2>
                             <input hidden id="idSanPhamAn" th:value="${chiTietSp.sanPham.id}">
                         </div>
+                        <!--                        <div class="product-rating">-->
+                        <!--                            <span><i class="bx bxs-star"></i></span>-->
+                        <!--                            <span><i class="bx bxs-star"></i></span>-->
+                        <!--                            <span><i class="bx bxs-star"></i></span>-->
+                        <!--                            <span><i class="bx bxs-star"></i></span>-->
+                        <!--                            <span><i class="bx bxs-star"></i></span>-->
+                        <!--                            <span class="review">(47 Review)</span>-->
+                        <!--                        </div>-->
                         <div class="product-price">
-                            <span class="offer-price" id="giaHienThi" th:text="${chiTietSp.giaHienHanh}"></span>
+                                <span class="offer-price" id="giaHienThi"
+                                      th:text="${chiTietSp.giaHienHanh}+' VND'"></span>
                         </div>
+
                         <div class="product-details">
-                            <h3>Mô tả sản phẩm</h3>
+                            <h3>Mô tả</h3>
                             <p th:text="${chiTietSp.sanPham.moTa}"></p>
                         </div>
-                        <div class="product-options">
-                            <h4>Màu sắc</h4>
+                        <div th:each="chiTietSPs,iterStat : ${listChiTietSp}">
+
+                        </div>
+                        <div class="product-size">
+                            <h4>Màu Sắc</h4>
                             <div class="size-layout" th:each="chiTietSPs,iterStat : ${listChiTietSp}">
                                 <input type="radio" name="mauSac" th:value="${chiTietSPs.mauSac.id}"
                                        th:id="${iterStat.index}+6" class="size-input">
                                 <label th:for="${iterStat.index}+6" class="size"
                                        th:text="${chiTietSPs.mauSac.ten}"></label>
                             </div>
-                            <h4 id="labelKichThuoc" style="display: none">Kích thước</h4>
-                            <div id="kichCoContainer"></div>
+                            <h4 id="labelKichThuoc" style="display: none">Kích Thước</h4>
                         </div>
-                        <div class="quantity-input">
+
+                        <!-- Thêm thẻ script trước khi sử dụng Axios -->
+                        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+                        <script>
+                            document.querySelectorAll('input[name="mauSac"]').forEach(function (input) {
+                                input.addEventListener('change', function () {
+                                    var idMauSac = this.value; // Lấy giá trị idMauSac khi màu sắc được chọn
+                                    var idSanPhamAn = document.getElementById("idSanPhamAn");
+                                    idSanPham = idSanPhamAn.value;
+                                    console.log(idSanPham + 'id sản phẩm');
+                                    console.log(idMauSac + 'id màu sắc');
+                                    document.getElementById('so-luong-ton').style.display = 'none';
+                                    getAllbyIdSPAndIdMS(idSanPham, idMauSac); // Gọi hàm để lấy danh sách kích cỡ
+
+                                    var soLuong = document.getElementById('soLuong');
+                                    soLuong.value = '';
+                                    var rqIdChiTietSp = document.getElementById('idChiTietSp');
+                                    rqIdChiTietSp.value = '';
+
+                                });
+                            });
+
+                            // Định nghĩa hàm để lấy danh sách kích cỡ bằng idMauSac
+                            function getAllbyIdSPAndIdMS(idSanPham, idMauSac) {
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('GET', '/user/chi-tiet-san-pham/' + idSanPham + '/' + idMauSac, true);
+                                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                                xhr.onreadystatechange = function () {
+                                    if (xhr.readyState === 4) {
+                                        if (xhr.status === 200) {
+                                            var listChiTietSpByMauSac = JSON.parse(xhr.responseText); // Chuyển từ JSON thành danh sách
+                                            console.log(listChiTietSpByMauSac);
+                                            displaylistChiTietSpByMauSac(listChiTietSpByMauSac);
+                                        } else {
+                                            console.error('Lỗi trong quá trình lấy danh sách kích cỡ.');
+                                        }
+                                    }
+                                };
+
+                                xhr.send();
+                            }
+
+
+                            function displaylistChiTietSpByMauSac(listChiTietSpByMauSac) {
+                                // Hiển thị danh sách kích cỡ trên trang web
+                                var kichCoContainer = document.getElementById('kichCoContainer');
+                                var labelKichThuoc = document.getElementById('labelKichThuoc');
+                                labelKichThuoc.style.display = 'block';
+                                kichCoContainer.className = 'product-size';
+                                kichCoContainer.innerHTML = ''; // Xóa nội dung cũ
+
+                                listChiTietSpByMauSac.forEach(function (chiTietSp, index) {
+
+                                    var kichCoElement = document.createElement('div');
+                                    console.log(chiTietSp)
+                                    // Tạo phần tử input
+                                    var input = document.createElement('input');
+                                    input.type = 'radio';
+                                    input.name = 'size';
+                                    input.className = 'size-input';
+                                    input.value = chiTietSp.kichCo.ten; // Đặt giá trị tên kích cỡ vào value
+                                    input.id = index; // Đặt giá trị id từ mauSac.id
+
+                                    // Tạo phần tử label
+                                    var label = document.createElement('label');
+                                    label.htmlFor = index; // Sử dụng mauSac.id làm htmlFor
+                                    label.className = 'size';
+                                    label.innerText = chiTietSp.kichCo.ten; // Hiển thị tên kích cỡ
+
+                                    // Thêm input và label vào phần tử div
+                                    kichCoElement.className = 'size-layout'
+                                    kichCoElement.appendChild(input);
+                                    kichCoElement.appendChild(label);
+                                    kichCoContainer.appendChild(kichCoElement);
+
+                                    // Sự kiện change cho input
+                                    input.addEventListener('change', function () {
+                                        // Điều này xảy ra khi người dùng chọn một kích cỡ
+                                        // Lấy số lượng từ listChiTietSpByMauSac
+
+                                        var soLuongHienThi = chiTietSp.soLuong;
+                                        var giaHienThi = chiTietSp.giaHienHanh;
+                                        var idCTSP = chiTietSp.id;
+
+                                        var divSoLuongCon = document.getElementById('so-luong-ton');
+                                        var rqIdChiTietSp = document.getElementById('idChiTietSp');
+                                        var inputSoLuong = document.getElementById('soLuong');
+                                        var spanGia = document.getElementById('giaHienThi');
+
+                                        // Hiển thị thông tin (ở đây là cần thay thế số lượng trên trang web)
+                                        spanGia.innerText = giaHienThi + ' VND';
+
+                                        rqIdChiTietSp.value = idCTSP;
+
+                                        inputSoLuong.value = 1;
+                                        inputSoLuong.max = soLuongHienThi
+
+                                        divSoLuongCon.style.display = 'block';
+                                        divSoLuongCon.innerText = soLuongHienThi + ' sản phẩm có sẵn';
+                                        divSoLuongCon.style = 'color: red';
+                                    });
+
+                                });
+
+                            }
+
+                            function limitInput(inputElement) {
+                                var minValue = parseInt(inputElement.min, 10);
+                                var maxValue = parseInt(inputElement.max, 10);
+                                var stepValue = parseInt(inputElement.step, 10);
+
+                                // Chuyển giá trị nhập vào thành số nguyên
+                                var enteredValue = parseInt(inputElement.value, 10);
+
+                                // Kiểm tra giá trị nhập vào
+                                if (isNaN(enteredValue)) {
+                                    // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất
+                                    inputElement.value = minValue;
+                                } else if (enteredValue < minValue) {
+                                    // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất
+                                    inputElement.value = minValue;
+                                } else if (enteredValue > maxValue) {
+                                    // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất
+                                    inputElement.value = maxValue;
+                                } else if (enteredValue % stepValue !== 0) {
+                                    // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước
+                                    inputElement.value = Math.round(enteredValue / stepValue) * stepValue;
+                                }
+                            }
+
+
+                            function themVaoGioHang() {
+
+                                var fillErro = document.getElementById('so-luong-ton');
+
+                                var mauSacInputs = document.getElementsByName('mauSac');
+
+                                var isMauSacSelected = false;
+
+                                for (var i = 0; i < mauSacInputs.length; i++) {
+                                    if (mauSacInputs[i].checked) {
+                                        isMauSacSelected = true;
+                                        break; // Ngừng lặp nếu đã có kích thước được chọn
+                                    }
+                                }
+
+                                if (!isMauSacSelected) {
+                                    console.log("Vui lòng chọn một màu sắc.");
+                                    fillErro.innerHTML = '';
+                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                    fillErro.style = 'color: red'
+                                    return false;
+                                }
+
+                                var sizeInputs = document.getElementsByName('size');
+
+                                var isSizeSelected = false;
+
+                                for (var i = 0; i < sizeInputs.length; i++) {
+                                    if (sizeInputs[i].checked) {
+                                        isSizeSelected = true;
+                                        break; // Ngừng lặp nếu đã có kích thước được chọn
+                                    }
+                                }
+
+                                if (!isSizeSelected) {
+                                    console.log("Vui lòng chọn một màu sắc.");
+                                    fillErro.innerHTML = '';
+                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                    fillErro.style = 'color: red';
+                                    return false;
+                                }
+
+                                var soLuong = document.getElementById('soLuong');
+                                var soLuongAdd = soLuong.value;
+
+                                var rqIdChiTietSp = document.getElementById('idChiTietSp');
+
+                                var rqIdChiTietSp = rqIdChiTietSp.value;
+                                var soLuongTruoc = 0;
+                                var soLuongCheck = 0;
+
+                                //check số lượng trong giỏ hàng chi tiết
+                                fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        soLuongTruoc = data;
+                                        var soLuongTonInt = parseInt(fillErro.innerText);
+                                        soLuongCheck = parseInt(soLuong.value) + soLuongTruoc
+
+                                        if (soLuongCheck > soLuongTonInt) {
+
+                                            console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")
+                                            //thông báo lỗi
+                                            $('#checkSoLuongGHCT').modal('show')
+                                            return false;
+                                        } else {
+                                            // Lấy URL cần gửi phương thức POST
+                                            var url = '/user/gio-hang-chi-tiet/add/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
+                                            // Thực hiện phương thức POST
+                                            fetch(url, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                }
+                                            })
+                                                .then(response => {
+                                                    if (response.ok) {
+                                                        //thông báo
+                                                        var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
+                                                        toast.show();
+                                                        console.log('Đã thêm vào giỏ hàng');
+
+                                                        //update số lượng
+                                                        fetch('/user/shop-single/get-so-luong')
+                                                            .then(response => response.json())
+                                                            .then(data => {
+                                                                soLuongTruoc = data;
+                                                                var soLuongGHCT = document.getElementById("soLuongGHCT")
+                                                                soLuongGHCT.innerHTML = ''
+                                                                soLuongGHCT.innerText = soLuongTruoc
+                                                                console.log("Sô lượng GHCT trong giỏ: " + soLuongTruoc)
+                                                            })
+                                                            .catch(error => {
+                                                                console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
+                                                            });
+
+                                                    } else {
+                                                        throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.error(error);
+                                                });
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
+                                    });
+
+
+                            }
+
+                            function themVaoGioHangNhanh() {
+
+                                var fillErro = document.getElementById('so-luong-ton');
+
+                                var mauSacInputs = document.getElementsByName('mauSac');
+
+                                var isMauSacSelected = false;
+
+                                for (var i = 0; i < mauSacInputs.length; i++) {
+                                    if (mauSacInputs[i].checked) {
+                                        isMauSacSelected = true;
+                                        break; // Ngừng lặp nếu đã có kích thước được chọn
+                                    }
+                                }
+
+                                if (!isMauSacSelected) {
+                                    console.log("Vui lòng chọn một màu sắc.");
+                                    fillErro.innerHTML = '';
+                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                    fillErro.style = 'color: red'
+                                    return false;
+                                }
+
+                                var sizeInputs = document.getElementsByName('size');
+
+                                var isSizeSelected = false;
+
+                                for (var i = 0; i < sizeInputs.length; i++) {
+                                    if (sizeInputs[i].checked) {
+                                        isSizeSelected = true;
+                                        break; // Ngừng lặp nếu đã có kích thước được chọn
+                                    }
+                                }
+
+                                if (!isSizeSelected) {
+                                    console.log("Vui lòng chọn một màu sắc.");
+                                    fillErro.innerHTML = '';
+                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                    fillErro.style = 'color: red';
+                                    return false;
+                                }
+
+                                var soLuong = document.getElementById('soLuong');
+                                var soLuongAdd = soLuong.value;
+
+                                var rqIdChiTietSp = document.getElementById('idChiTietSp');
+                                var rqIdChiTietSp = rqIdChiTietSp.value;
+                                var soLuongTruoc = 0;
+                                var soLuongCheck = 0;
+
+                                //check số lượng trong giỏ hàng chi tiết
+                                fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        soLuongTruoc = data;
+                                        var soLuongTonInt = parseInt(fillErro.innerText);
+                                        soLuongCheck = parseInt(soLuong.value) + soLuongTruoc
+                                        if (soLuongCheck > soLuongTonInt) {
+
+                                            console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")
+                                            //thông báo lỗi
+                                            $('#checkSoLuongGHCT').modal('show')
+                                            return false;
+                                        } else {
+                                            // Lấy URL cần gửi phương thức POST
+                                            var url = '/user/gio-hang-chi-tiet/add-fast/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
+
+                                            // Thực hiện phương thức POST
+                                            fetch(url, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                }
+                                            })
+                                                .then(response => {
+                                                    if (response.ok) {
+                                                        // Xử lý kết quả nếu cần
+                                                        console.log('Đã thêm vào giỏ hàng');
+                                                        window.location.href = '/user/cart?checkGHCT=true1';
+                                                    } else {
+                                                        throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.error(error);
+                                                });
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
+                                    });
+
+                            }
+
+
+                        </script>
+                        <!-- Thêm một phần tử để hiển thị danh sách kích cỡ -->
+                        <div id="kichCoContainer">
+                        </div>
+                        <div class="product-size">
                             <h4>Số lượng</h4>
                             <input type="number" name="soLuong" id="soLuong" class="form-control" min="1" step="1"
                                    oninput="limitInput(this)">
                             <input type="hidden" name="idChiTietSp" id="idChiTietSp">
-                            <span id="so-luong-ton" class="stock-info"></span>
+                            <span id="so-luong-ton"></span>
                         </div>
+
+                        <span class="divider"></span>
+
                         <div class="product-btn-group">
-                            <button onclick="themVaoGioHangNhanh()" class="button buy-now">
-                                <i class='bx bxs-zap'></i>Mua Ngay
+                            <button onclick="themVaoGioHangNhanh()" class="button buy-now"><i class='bx bxs-zap'></i>Mua
+                                Ngay
                             </button>
                             <button onclick="return themVaoGioHang()" id="buttonAddCart" class="button add-cart">
                                 <i class='bx bxs-cart'></i> Thêm vào giỏ
                             </button>
+                            <!--                            <button id="favoriteButton" class="button heart">-->
+                            <!--                                <i id="heartIcon" class='bx bxs-heart'></i>Thích-->
+                            <!--                            </button>-->
+                            <!--                            <button class="button heart">-->
+                            <!--                                <i id="heartIcon2" class='bx bxs-heart'></i>Thích-->
+                            <!--                            </button>-->
+                            <style>
+                                .button.heart {
+                                    background-color: transparent;
+                                    border: none;
+                                    cursor: pointer;
+                                }
+
+                                .button.heart:focus {
+                                    outline: none;
+                                }
+
+                                .bxs-heart {
+                                    color: #f3a7a7; /* Màu trái tim không được chọn */
+                                }
+
+                                .bxs-heart.favorited {
+                                    color: #ff0000; /* Màu trái tim khi được chọn */
+                                }
+
+                                #heartIcon2 {
+                                    color: red;
+                                }
+
+                            </style>
                         </div>
                     </div>
                 </div>
@@ -325,8 +698,10 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        /** Poppins Font **/
 
-        * {
+
+        * gobal layout * {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
@@ -337,33 +712,56 @@
             --primary-color: #5344db;
             --accent-color: #5344db;
             --grey: #484848;
-            --bg-grey: #f8f9fa;
-            --shadow: rgba(0,0,0,0.1);
-            --border-color: #e9ecef;
+            --bg-grey: #efefef;
+            --shadow: #949494;
         }
 
         .single-product {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .product-image {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px var(--shadow);
-            overflow: hidden;
-        }
-
-        .product-image-main {
+            width: 1080px;
             position: relative;
-            height: 500px;
+        }
+
+        /** Breadcrumb **/
+
+        .single-product .breadcrumb {
+            background: #48484810;
+            padding: 8px 4px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .breadcrumb span {
+            display: inline-flex;
+            flex-direction: row;
+            gap: 8px;
+            margin-left: 8px;
+        }
+
+        .breadcrumb span:not(:last-child)::after {
+            content: '/';
+        }
+
+        .breadcrumb span a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        /** product image **/
+
+        .single-product .product-image {
+            width: 100%;
+        }
+
+        .product-image .product-image-main {
+            position: relative;
+            display: block;
+            height: 480px;
             background: var(--bg-grey);
-            padding: 1rem;
+            padding: 10px;
         }
 
         .product-image-main img {
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -371,370 +769,325 @@
 
         .product-image-slider {
             display: flex;
-            gap: 1rem;
-            padding: 1rem;
-            background: #fff;
-            border-top: 1px solid var(--border-color);
+            gap: 10px;
+            margin: 10px 0;
         }
 
         .product-image-slider img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 4px;
+            width: 90px;
+            height: 90px;
+            background: var(--bg-grey);
+            padding: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
         }
 
-        .product-image-slider img:hover {
-            border-color: var(--primary-color);
-        }
+        /** product title **/
 
-        .product-info {
-            padding: 2rem;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px var(--shadow);
+        .product-title {
+            margin-top: 20px;
+
         }
 
         .product-title h2 {
-            font-size: 2rem;
+            font-size: 32px;
+            line-height: 2.4rem;
             font-weight: 700;
-            color: var(--grey);
-            margin-bottom: 1rem;
+            letter-spacing: -0.02rem;
         }
 
+        /** product rating **/
+        .product-rating {
+            display: flex;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .product-rating span:not(:last-child) {
+            color: #ffc600;
+        }
+
+        .product-rating .review {
+            color: var(--grey);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /** Product price **/
         .product-price {
-            margin: 1.5rem 0;
+            display: flex;
+            position: relative;
+            margin: 10px 0;
+            align-items: center;
         }
 
         .product-price .offer-price {
-            font-size: 2rem;
+            font-size: 48px;
             font-weight: 700;
-            color: var(--primary-color);
         }
 
-        .product-price strong.product-price {
-            font-size: 1.5rem !important;
-            font-weight: 700;
-            color: var(--primary-color);
+        .product-price .sale-price {
+            font-size: 22px;
+            font-weight: 500;
+            text-decoration: line-through;
+            color: var(--grey);
+            margin-left: 12px;
         }
 
+        /** Product Details **/
         .product-details {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: var(--bg-grey);
-            border-radius: 8px;
+            margin: 10px 0;
         }
 
         .product-details h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--grey);
+            font-size: 18px;
+            font-weight: 500;
         }
 
         .product-details p {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #666;
+            margin: 5px 0;
+            font-size: 14px;
+            line-height: 1.2rem;
         }
 
-        .product-options {
-            margin: 2rem 0;
+        /** Product size **/
+        .product-size {
+            margin: 10px 0;
         }
 
-        .product-options h4 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--grey);
+        .product-size h4 {
+            font-size: 16px;
+            font-weight: 500;
         }
 
-        .size-layout {
+        .product-size .size-layout {
+            margin: 5px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .product-size .size-layout .size-input {
+            display: none;
+        }
+
+        .product-size .size-layout .size {
+            background: var(--bg-grey);
+            padding: 10px 18px;
+            border: 1px solid var(--bg-grey);
+            border-radius: 4px;
+            margin-left: 0px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .product-size .size-layout .size:hover {
+            border: 1px solid var(--grey);
+        }
+
+        .product-size .size-layout input[type="radio"]:checked + .size {
+            background-color: rgb(0, 0, 0);
+            border: 1px solid var(--grey);
+            color: var(--bg-grey);
+            box-shadow: 0 3px 6px var(--shadow);
+
+        }
+
+
+        /** Product Color **/
+        .product-color {
+            margin: 10px 0;
+            justify-content: center;
+        }
+
+        .product-color h4 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .product-color .color-layout {
+            margin: 5px 0;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            gap: 10px;
         }
 
-        .size-layout .size {
-            padding: 0.5rem 1rem;
-            border: 1px solid var(--border-color);
+        .product-color .color-layout label {
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            background: #fff;
+            content: '';
+            width: 40px;
+            height: 40px;
+            display: inline-block;
         }
 
-        .size-layout .size:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+        .product-color .color-layout .black {
+
+            background-color: black;
         }
 
-        .size-layout input[type="radio"]:checked + .size {
-            background: var(--primary-color);
-            color: #fff;
-            border-color: var(--primary-color);
+        .product-color .color-layout .red {
+            background-color: red;
         }
 
-        .quantity-input {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1.5rem 0;
+        .product-color .color-layout .blue {
+            background-color: blue;
         }
 
-        .quantity-input input {
-            width: 80px;
-            padding: 0.5rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            text-align: center;
+        .product-color .color-layout input[type="radio"]:checked + label {
+            box-shadow: 0 3px 6px var(--shadow);
         }
+
+        .product-color .color-layout .color-input {
+            display: none;
+        }
+
+
+        /** divider **/
+        .divider {
+            display: block;
+            height: 1px;
+            width: 100%;
+            background: #48484830;
+            margin: 20px 0;
+        }
+
+        /** product Button Group **/
 
         .product-btn-group {
             display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
+            gap: 15px;
         }
 
-        .button {
-            padding: 0.8rem 2rem;
-            border-radius: 4px;
-            font-weight: 500;
+        .product-btn-group .button {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
+            justify-content: center;
+            gap: 4px;
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .product-btn-group .buy-now {
+            background-color: var(--accent-color);
+            color: #fff;
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
             cursor: pointer;
         }
 
-        .button.buy-now {
-            background: var(--primary-color);
-            color: #fff;
-            border: none;
+        .product-btn-group .buy-now i {
+            font-size: 20px;
         }
 
-        .button.buy-now:hover {
-            background: #4336b3;
-            transform: translateY(-2px);
+        .product-btn-group .buy-now:hover {
+            box-shadow: 0 3px 6px var(--shadow);
         }
 
-        .button.add-cart {
-            background: #fff;
+        .product-btn-group .add-cart {
+
+            background-color: var(--bg-grey);
             color: var(--grey);
-            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            cursor: pointer;
         }
 
-        .button.add-cart:hover {
-            background: var(--bg-grey);
-            border-color: var(--primary-color);
-            color: var(--primary-color);
+        .product-btn-group .add-cart i {
+            font-size: 20px;
         }
 
-        .stock-info {
-            color: #dc3545;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+        .product-btn-group .add-cart:hover {
+            box-shadow: 0 3px 6px var(--shadow);
+            background: var(--grey);
+            color: #fff;
         }
 
-        @media (max-width: 768px) {
+        .product-btn-group .heart {
+            color: var(--grey);
+            cursor: pointer;
+        }
+
+        .product-btn-group .heart i {
+            font-size: 20px;
+        }
+
+        .product-btn-group .heart:hover {
+            color: var(--accent-color);
+        }
+
+
+        /** Responsive Mobile **/
+        @media screen and (max-width: 520px) {
+            .container {
+                padding: 20px;
+                height: auto;
+            }
+
+            .row {
+                display: block;
+            }
+
+            .col-6 {
+                width: 100%;
+                display: block;
+            }
+
             .single-product {
-                padding: 1rem;
+                width: 100%;
+                position: relative;
             }
 
-            .product-image-main {
-                height: 300px;
+            .product-image .product-image-main {
+                width: 100%;
+                height: 280px;
             }
 
-            .product-info {
-                padding: 1rem;
+            .product-image-slider {
+                gap: 5px;
             }
 
             .product-title h2 {
-                font-size: 1.5rem;
+                font-size: 24px;
+                line-height: 1.6rem;
+            }
+
+            .product-size {
+                display: block;
+            }
+
+            .product-size .size-layout {
+                display: block;
+                margin: 10px 0;
+
+            }
+
+            .product-size .size-layout .size {
+                padding: 6px 10px;
             }
 
             .product-btn-group {
+                display: flex;
                 flex-direction: column;
-            }
-
-            .button {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .slider-btn {
-                width: 35px;
-                height: 35px;
-            }
-
-            .slider-btn i {
-                font-size: 20px;
-            }
-
-            .prev-btn {
-                left: 10px;
-            }
-
-            .next-btn {
-                right: 10px;
+                gap: 10px;
             }
         }
 
-        .slider-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .slider-btn:hover {
-            background: #fff;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .slider-btn i {
-            font-size: 24px;
-            color: var(--grey);
-        }
-
-        .prev-btn {
-            left: 20px;
-        }
-
-        .next-btn {
-            right: 20px;
-        }
-
-        .featured-products-container {
-            position: relative;
-            padding: 0 40px;
-        }
-
-        .carousel-nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #e5e5e5;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            z-index: 10;
-        }
-
-        .carousel-nav-btn:hover {
-            background: #fff;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            border-color: var(--primary-color);
-        }
-
-        .carousel-nav-btn i {
-            font-size: 24px;
-            color: var(--grey);
-            transition: all 0.3s ease;
-        }
-
-        .carousel-nav-btn:hover i {
-            color: var(--primary-color);
-        }
-
-        .prev-featured {
-            left: 0;
-        }
-
-        .next-featured {
-            right: 0;
-        }
-
-        @media (max-width: 768px) {
-            .featured-products-container {
-                padding: 0 30px;
+        /** Responsive Tablet **/
+        @media (min-width: 520px) and (max-width: 1080px) {
+            .container {
+                display: block;
+                height: auto;
+                padding: 20px;
             }
 
-            .carousel-nav-btn {
-                width: 35px;
-                height: 35px;
-            }
-
-            .carousel-nav-btn i {
-                font-size: 20px;
-            }
-        }
-
-        /* Hide Owl Carousel default text */
-        .owl-nav button span {
-            display: none !important;
-        }
-
-        .owl-prev, .owl-next {
-            font-size: 0 !important;
-        }
-
-        .size-input-group {
-            position: relative;
-            display: inline-block;
-        }
-
-        .size-input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .size {
-            display: inline-block;
-            padding: 8px 16px;
-            margin: 4px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #fff;
-        }
-
-        .size-input:checked + .size {
-            background: var(--primary-color);
-            color: #fff;
-            border-color: var(--primary-color);
-        }
-
-        .size:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .stock-info {
-            display: block;
-            margin-top: 8px;
-            color: #666;
-            font-size: 0.9rem;
         }
     </style>
 
     <div class="container">
-        <div class="site-section block-3 site-blocks-2">
-            <div class="container">
+        <div class="site-section block-3 site-blocks-2 ">
+            <div class="container ">
                 <div class="row justify-content-center">
                     <div class="col-md-7 site-section-heading text-center pt-4">
                         <h2>Sản phẩm nổi bật</h2>
@@ -742,49 +1095,42 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="featured-products-container">
-                            <button class="carousel-nav-btn prev-featured" onclick="prevFeatured()">
-                                <i class='bx bx-chevron-left'></i>
-                            </button>
-                            <div class="nonloop-block-3 owl-carousel">
-                                <div class="item" th:each="hoaDonCT : ${listTop5HDCT}">
-                                    <div>
-                                        <div class="product-section">
-                                            <div class="container" style="width: 90%">
-                                                <div class="pf-card">
-                                                    <a class="product-item"
-                                                       th:href="@{/user/shop-single/{id}(id=${hoaDonCT.chiTietSanPham.sanPham.id})}">
-                                                        <div class="product-thumbnail-container">
-                                                            <div th:each="url : ${#strings.listSplit(hoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
-                                                                <img th:src="${url}"
-                                                                     th:data-segment="${hoaDonCT.chiTietSanPham.mauSac.ten}"
-                                                                     th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
-                                                                     th:data-power="${hoaDonCT.chiTietSanPham.tayAo.ten}"
-                                                                     class="img-fluid product-thumbnail">
-                                                            </div>
+                        <div class="nonloop-block-3 owl-carousel">
+                            <div class="item" th:each="hoaDonCT : ${listTop5HDCT}" style=";height: 420px;">
+                                <div>
+                                    <div class="product-section">
+                                        <div class="container" style="width: 90%">
+                                            <div class="pf-card" style="margin-top: -30%">
+                                                <a class="product-item"
+                                                   th:href="@{/user/shop-single/{id}(id=${hoaDonCT.chiTietSanPham.sanPham.id})}">
+                                                    <!--                                            <input type="hidden" th:value="${chiTiepSp.sanPham.ten}">-->
+                                                    <!--                                            <input type="hidden" th:value="${chiTiepSp.sanPham.id}">-->
+                                                    <div class="product-thumbnail-container">
+                                                        <div th:each="url : ${#strings.listSplit(hoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
+                                                        <img th:src="${url}"
+                                                             th:data-segment="${hoaDonCT.chiTietSanPham.mauSac.ten}"
+                                                             th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
+                                                             th:data-power="${hoaDonCT.chiTietSanPham.tayAo.ten}"
+                                                             class="img-fluid product-thumbnail">
                                                         </div>
-                                                        <div class="product-info-container">
-                                                            <h3 class="product-title"
-                                                                th:text="${hoaDonCT.chiTietSanPham.sanPham.ten+' ['+hoaDonCT.chiTietSanPham.mauSac.ten+ ' - ' +hoaDonCT.chiTietSanPham.kichCo.ten}+']'"></h3>
-                                                            <strong class="product-price"
-                                                                    style="display: block;margin: 0 auto;"
-                                                                    th:text="${#numbers.formatDecimal(hoaDonCT.chiTietSanPham.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"
-                                                            ></strong>
-                                                            <span class="icon-cross">
-                                                                <img src="../../static/img/plus-black.png"
-                                                                     class="img-fluid">
-                                                            </span>
-                                                        </div>
-                                                    </a>
-                                                </div>
+                                                    </div>
+                                                    <div class="product-info-container">
+                                                        <h3 class="product-title"
+                                                            th:text="${hoaDonCT.chiTietSanPham.sanPham.ten+' ['+hoaDonCT.chiTietSanPham.mauSac.ten+ ' - ' +hoaDonCT.chiTietSanPham.kichCo.ten}+']'"></h3>
+                                                        <strong class="product-price"
+                                                                style="display: block;margin: 0 auto;"
+                                                                th:text="${hoaDonCT.chiTietSanPham.giaHienHanh + ' VNĐ'}"></strong>
+                                                        <span class="icon-cross">
+							                                 <img src="../../static/img/plus-black.png"
+                                                                  class="img-fluid">
+                                                        </span>
+                                                    </div>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="carousel-nav-btn next-featured" onclick="nextFeatured()">
-                                <i class='bx bx-chevron-right'></i>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -829,7 +1175,7 @@
                         <img src="../../static/img/hero_1.jpg" alt="Image placeholder"
                              class="img-fluid rounded mb-4"/>
                         <h3 class="font-weight-light mb-0">
-                            Tìm áo hoàn hảo của bạn
+                            Tìm đôi giày hoàn hảo của bạn
                         </h3>
                     </a>
                 </div>
@@ -863,167 +1209,6 @@
 <script src="../../static/js/aos.js"></script>
 <script src="../../static/js/main.js"></script>
 <script src="../../static/js/script.js"></script>
-<script>
-    function formatPrice(price) {
-        const formattedPrice = new Intl.NumberFormat('vi-VN', {
-            style: 'decimal',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-        }).format(price) + ' VNĐ';
-        return formattedPrice;
-    }
-
-    // Format initial price
-    document.addEventListener('DOMContentLoaded', function() {
-        const priceElement = document.getElementById('giaHienThi');
-        if (priceElement) {
-            const price = parseInt(priceElement.textContent.replace(/[^\d]/g, ''));
-            priceElement.textContent = formatPrice(price);
-            priceElement.style.fontSize = '2rem';  // Đảm bảo kích thước font chữ
-        }
-
-        // Format prices in featured products
-        const productPrices = document.querySelectorAll('.product-price strong');
-        productPrices.forEach(priceElement => {
-            const priceText = priceElement.textContent;
-            const price = parseInt(priceText.replace(/[^\d]/g, ''));
-            if (!isNaN(price)) {
-                priceElement.textContent = formatPrice(price);
-                priceElement.style.fontSize = '1.5rem';  // Kích thước font cho sản phẩm nổi bật
-            }
-        });
-    });
-
-    // Update price when size is selected
-    function updatePrice(price) {
-        const priceElement = document.getElementById('giaHienThi');
-        if (priceElement) {
-            priceElement.textContent = formatPrice(price);
-            priceElement.style.fontSize = '2rem';  // Đảm bảo kích thước font chữ khi cập nhật
-        }
-    }
-
-    function prevFeatured() {
-        $('.nonloop-block-3').trigger('prev.owl.carousel');
-    }
-
-    function nextFeatured() {
-        $('.nonloop-block-3').trigger('next.owl.carousel');
-    }
-
-    $(document).ready(function(){
-        $('.nonloop-block-3').owlCarousel({
-            center: true,
-            items: 2,
-            loop: true,
-            margin: 10,
-            autoplay: true,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive:{
-                0:{
-                    items: 1
-                },
-                600:{
-                    items: 2
-                },
-                1000:{
-                    items: 3
-                }
-            }
-        });
-    });
-
-    // Xử lý sự kiện khi chọn màu sắc
-    document.addEventListener('DOMContentLoaded', function() {
-        const mauSacInputs = document.querySelectorAll('input[name="mauSac"]');
-        const labelKichThuoc = document.getElementById('labelKichThuoc');
-        const kichCoContainer = document.getElementById('kichCoContainer');
-        const soLuongInput = document.getElementById('soLuong');
-        const soLuongTonSpan = document.getElementById('so-luong-ton');
-        const idChiTietSpInput = document.getElementById('idChiTietSp');
-        const giaHienThiElement = document.getElementById('giaHienThi');
-
-        // Lấy giá ban đầu của sản phẩm
-        const initialPrice = parseInt(giaHienThiElement.textContent.replace(/[^\d]/g, ''));
-
-        mauSacInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                const selectedMauSacId = parseInt(this.value);
-                console.log('Selected Mau Sac ID:', selectedMauSacId);
-
-                // Hiển thị label kích thước
-                labelKichThuoc.style.display = 'block';
-
-                // Xóa các kích thước cũ
-                kichCoContainer.innerHTML = '';
-
-                // Tạo div chứa các kích thước
-                const sizeLayout = document.createElement('div');
-                sizeLayout.className = 'size-layout';
-
-                // Thêm các kích thước cố định (có thể điều chỉnh theo nhu cầu)
-                const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
-                sizes.forEach((size, index) => {
-                    const inputGroup = document.createElement('div');
-                    inputGroup.className = 'size-input-group';
-
-                    const input = document.createElement('input');
-                    input.type = 'radio';
-                    input.name = 'kichCo';
-                    input.value = index + 1; // ID từ 1-5
-                    input.id = 'size_' + index;
-                    input.className = 'size-input';
-
-                    const label = document.createElement('label');
-                    label.htmlFor = 'size_' + index;
-                    label.className = 'size';
-                    label.textContent = size;
-
-                    input.addEventListener('change', function() {
-                        // Sử dụng giá ban đầu của sản phẩm
-                        const productDetails = {
-                            id: this.value + '_' + selectedMauSacId,
-                            soLuongTon: 10,
-                            giaHienHanh: initialPrice // Sử dụng giá ban đầu
-                        };
-
-                        // Cập nhật thông tin sản phẩm
-                        soLuongTonSpan.textContent = `Còn ${productDetails.soLuongTon} sản phẩm`;
-                        idChiTietSpInput.value = productDetails.id;
-                        soLuongInput.value = '1';
-                        soLuongInput.max = productDetails.soLuongTon;
-                        updatePrice(productDetails.giaHienHanh);
-                    });
-
-                    inputGroup.appendChild(input);
-                    inputGroup.appendChild(label);
-                    sizeLayout.appendChild(inputGroup);
-                });
-
-                kichCoContainer.appendChild(sizeLayout);
-
-                // Reset các trường liên quan
-                soLuongInput.value = '';
-                soLuongTonSpan.textContent = '';
-                idChiTietSpInput.value = '';
-            });
-        });
-    });
-
-    // Hàm giới hạn số lượng nhập vào
-    function limitInput(input) {
-        const max = parseInt(input.max);
-        const value = parseInt(input.value);
-
-        if (value > max) {
-            input.value = max;
-        }
-        if (value < 1) {
-            input.value = 1;
-        }
-    }
-</script>
 </body>
 
 </html>

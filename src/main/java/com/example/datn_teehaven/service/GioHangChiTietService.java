@@ -30,4 +30,5 @@ public interface GioHangChiTietService {
                             String hoVaTen, String soDienThoai, String tienShip, String tienGiam, String email,
                             String voucher, String diaChiCuThe, String ghiChu, TaiKhoan taiKhoan,
                             String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang);
+    GioHangChiTiet fillByIdCTSP(Long idCTSP);
 }
