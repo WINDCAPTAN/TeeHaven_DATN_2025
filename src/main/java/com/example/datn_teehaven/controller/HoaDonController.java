@@ -375,8 +375,6 @@ public class HoaDonController {
         }
         hd.setTrangThai(5);
 
-
-
         hoaDonService.saveOrUpdate(hd);
         addLichSuHoaDon(id, ghiChu, 5);
         thongBao(redirectAttributes, "Thành công", 1);
