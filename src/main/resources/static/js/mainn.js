@@ -95,7 +95,7 @@ $(document).ready(function () {
         checkbox.each(function () {
             if (this.checked) {
                 var row = $(this).closest('tr');
-                var giaSanPham = parseFloat(row.find('td:eq(5)').text());
+                var giaSanPham = parseFloat(row.find('td:eq(5)').text().replace(/[^\d]/g, ''));
                 tongGia += giaSanPham;
             }
         });
@@ -104,7 +104,16 @@ $(document).ready(function () {
         console.log("Tổng Giá: " + tongGia);
         var tongThanhToan = document.getElementById("tongTienCart");
         tongThanhToan.innerHTML = '';
-        tongThanhToan.innerText = tongGia + ' VND';
+        tongThanhToan.innerText = formatCurrency(tongGia);
+    }
+
+    // Hàm format tiền tệ theo chuẩn Việt Nam
+    function formatCurrency(number) {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'decimal',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(number) + ' VNĐ';
     }
 
 });

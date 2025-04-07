@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
 <html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
   <title>Tee Haven</title>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <link href="../../static/img/logo_teehaven.png" rel="icon">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
-  <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700" />
+  <link rel="stylesheet" href="../../static/fonts/icomoon/style.css" />
 
-  <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
-  <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
-  <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
-  <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+  <link rel="stylesheet" href="../../static/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../static/css/magnific-popup.css" />
+  <link rel="stylesheet" href="../../static/css/jquery-ui.css" />
+  <link rel="stylesheet" href="../../static/css/owl.carousel.min.css" />
+  <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css" />
 
-  <link rel="stylesheet" href="../../static/css/aos.css"/>
+  <link rel="stylesheet" href="../../static/css/aos.css" />
 
-  <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+  <link rel="stylesheet" href="../../static/css/style-customer-template.css" />
 </head>
 
 <body>
@@ -81,8 +81,7 @@
 
                   return url;
                 }
-              </script>
-            </form>
+              </script>                        </form>
           </div>
 
           <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
@@ -94,7 +93,7 @@
           <div class="col-6 col-md-4 order-3 order-md-3 text-right">
             <div class="site-top-icons">
               <ul class="nav nav-pills" style="margin-left: 54%">
-                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
+                <li class="nav-item dropdown" >
                   <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
                      role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
                   <ul class="dropdown-menu">
@@ -104,14 +103,6 @@
                     <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
                   </ul>
                 </li>
-                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
-                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                     role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
-
-                  </ul>
-                </li>
 
                 <!--                                <li class="nav-item" style="margin-left: -15%">-->
                 <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
@@ -119,7 +110,7 @@
                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
                   <a class="site-cart" href="/user/cart">
                     <span class="icon icon-shopping_cart"></span>
-                    <span class="count" th:if="${checkDangNhap=='true'}" th:text="${soLuongSPGioHangCT}"></span>
+                    <span class="count" th:text="${soLuongSPGioHangCT}"></span>
                   </a>
                 </li>
               </ul>
@@ -134,32 +125,31 @@
           <li>
             <a href="/home">Trang chủ</a>
             <!-- <ul class="dropdown">
-        <li><a href="#">Menu One</a></li>
-        <li><a href="#">Menu Two</a></li>
-        <li><a href="#">Menu Three</a></li>
-        <li class="has-children">
-          <a href="#">Sub Menu</a>
-          <ul class="dropdown">
-            <li><a href="#">Menu One</a></li>
-            <li><a href="#">Menu Two</a></li>
-            <li><a href="#">Menu Three</a></li>
-          </ul>
-        </li>
-      </ul> -->
-          </li>
-
-
-          <!-- <ul class="dropdown">
       <li><a href="#">Menu One</a></li>
       <li><a href="#">Menu Two</a></li>
       <li><a href="#">Menu Three</a></li>
+      <li class="has-children">
+        <a href="#">Sub Menu</a>
+        <ul class="dropdown">
+          <li><a href="#">Menu One</a></li>
+          <li><a href="#">Menu Two</a></li>
+          <li><a href="#">Menu Three</a></li>
+        </ul>
+      </li>
     </ul> -->
-
+          </li>
+          <!-- <li>
+        <a href="about.html">Về chúng tôi</a>
+        <ul class="dropdown">
+      <li><a href="#">Menu One</a></li>
+      <li><a href="#">Menu Two</a></li>
+      <li><a href="#">Menu Three</a></li>
+    </ul>
+      </li> -->
           <li><a href="/shop">Sản phẩm</a></li>
           <li><a href="/about">Về chúng tôi</a></li>
           <li><a href="/lien-he">Liên hệ</a></li>
           <li><a href="/chinh-sach">Chính Sách</a></li>
-<!--          <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>-->
         </ul>
       </div>
     </nav>
@@ -170,124 +160,26 @@
       <div class="row">
         <div class="col-md-12 mb-0">
           <a href="/home">Home</a> <span class="mx-2 mb-0">/</span>
-          <strong class="text-black">About</strong>
+          <strong class="text-black">Contact</strong>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="site-section border-bottom" data-aos="fade">
+  <div class="site-section">
     <div class="container">
-      <div class="row justify-content-center mb-5">
-        <div class="col-md-7 site-section-heading text-center pt-4">
-          <h2>Đội ngũ</h2>
-        </div>
-      </div>
-<!--      <div class="row">-->
-<!--        <div class="col-md-6">-->
-<!--          <div class="block-38 text-center">-->
-<!--            <div class="block-38-img">-->
-<!--              <div class="block-38-header">-->
-<!--                <img src="../../static/img/ImgShoe/adidas10_NMD_R1.jpg" alt="Image placeholder" class="mb-4"/>-->
-<!--                <h3 class="block-38-heading h4">Chat GPT</h3>-->
-<!--                <p class="block-38-subheading">Thành Viên Tay To Nhất Team</p>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-        <div class="col-md-6">
-          <div class="block-38 text-center">
-            <div class="block-38-img">
-              <div class="block-38-header">
-                <img src="../../static/img/" alt="Image placeholder" class="mb-4"/>
-                <h3 class="block-38-heading h4">Nguyễn Quang Dương</h3>
-                <p class="block-38-subheading">Thành Viên</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="block-38 text-center">
-            <div class="block-38-img"style="margin-top: 15%">
-              <div class="block-38-header">
-                <img src="../../static/img/" alt="Image placeholder" class="mb-4"/>
-                <h3 class="block-38-heading h4">Bạch Công Dũng</h3>
-                <p class="block-38-subheading">Thành Viên</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="block-38 text-center">
-            <div class="block-38-img" style="margin-top: 15%">
-              <div class="block-38-header">
-                <img src="../../static/img/" alt="Image placeholder" class="mb-4"/>
-                <h3 class="block-38-heading h4">Đỗ Viết Lưu Huỳnh</h3>
-                <p class="block-38-subheading">Thành Viên</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12">
-          <div class="block-38 text-center">
-            <div class="block-38-img" style="margin-top: -30%">
-              <div class="block-38-header">
-                <img src="../../static/img/" alt="Image placeholder" class="mb-4"/>
-                <h3 class="block-38-heading h4">Nguyễn Hồng Phong</h3>
-                <p class="block-38-subheading">Trưởng nhóm</p>
-              </div>
-            </div>
-          </div>
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <span class="icon-check_circle display-3 text-success"></span>
+          <h2 class="display-3 text-black">Cảm ơn!</h2>
+          <p class="lead mb-5">Đơn hàng của bạn đã được hoàn tất thành công</p>
+          <p>
+            <a href="/shop" class="btn btn-sm btn-primary">Quay trở lại cửa hàng</a>
+          </p>
         </div>
       </div>
     </div>
   </div>
-
-  <!--    <div class="site-section site-section-sm site-blocks-1 border-0" data-aos="fade">-->
-  <!--        <div class="container">-->
-  <!--            <div class="row">-->
-  <!--                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="">-->
-  <!--                    <div class="icon mr-4 align-self-start">-->
-  <!--                        <span class="icon-truck"></span>-->
-  <!--                    </div>-->
-  <!--                    <div class="text">-->
-  <!--                        <h2 class="text-uppercase">Free Shipping</h2>-->
-  <!--                        <p>-->
-  <!--                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.-->
-  <!--                            Phasellus at iaculis quam. Integer accumsan tincidunt-->
-  <!--                            fringilla.-->
-  <!--                        </p>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="100">-->
-  <!--                    <div class="icon mr-4 align-self-start">-->
-  <!--                        <span class="icon-refresh2"></span>-->
-  <!--                    </div>-->
-  <!--                    <div class="text">-->
-  <!--                        <h2 class="text-uppercase">Free Returns</h2>-->
-  <!--                        <p>-->
-  <!--                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.-->
-  <!--                            Phasellus at iaculis quam. Integer accumsan tincidunt-->
-  <!--                            fringilla.-->
-  <!--                        </p>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="200">-->
-  <!--                    <div class="icon mr-4 align-self-start">-->
-  <!--                        <span class="icon-help"></span>-->
-  <!--                    </div>-->
-  <!--                    <div class="text">-->
-  <!--                        <h2 class="text-uppercase">Customer Support</h2>-->
-  <!--                        <p>-->
-  <!--                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.-->
-  <!--                            Phasellus at iaculis quam. Integer accumsan tincidunt-->
-  <!--                            fringilla.-->
-  <!--                        </p>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--            </div>-->
-  <!--        </div>-->
-  <!--    </div>-->
 
   <footer class="site-footer border-top">
     <div class="container">
@@ -307,7 +199,6 @@
             <div class="col-md-6 col-lg-4">
               <ul class="list-unstyled">
                 <li><a href="/about">Đội ngũ</a></li>
-
                 <li><a href="#">Bảo mật</a></li>
               </ul>
             </div>
@@ -365,5 +256,7 @@
 
 <script src="../../static/js/main.js"></script>
 </body>
+
+</html>
 
 </html>
