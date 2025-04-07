@@ -28,5 +28,4 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet,L
     @Query(value = "SELECT * FROM gio_hang_chi_tiet where chi_tiet_san_pham_id = :idCTSP",nativeQuery = true)
     GioHangChiTiet fillByIdCTSP(@Param("idCTSP")Long idCTSP);
 
-
 }

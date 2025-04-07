@@ -422,6 +422,16 @@ public class CustomersController {
                 Long.valueOf(idMauSac));
         return listChiTietSanPham1;
     }
+    @GetMapping("/user/thong-tin-khach-hang")
+    public String info(
+            Model model) {
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        model.addAttribute("khachHang", khachHang);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        return "/customer-template/thong-tin-khach-hang";
+    }
+
     @GetMapping("/user/don-mua")
     public String donMua(
             Model model) {

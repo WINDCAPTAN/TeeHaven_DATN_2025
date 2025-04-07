@@ -166,6 +166,7 @@
             <div class="row">
                 <div class="col-md-12 mb-0">
                     <a href="/home">Home</a> <span class="mx-2 mb-0">/</span>
+                    <strong class="text-black">Giày Adidas</strong>
                     <strong class="text-black">Áo </strong>
                 </div>
             </div>
@@ -178,14 +179,13 @@
                 <div class="col-6">
                     <div class="product-image">
                         <div th:each="url : ${#strings.listSplit(chiTietSp.sanPham.hinhAnh, ',')[0]}">
-                            <div class="product-image-main" style="background-color: white">
-
-                                <img th:src="${url}" alt="" id="product-main-image"/>
+                        <div class="product-image-main" style="background-color: white">
+                            <img th:src="${url}" alt="" id="product-main-image"/>
                             </div>
                         </div>
                         <div class="product-image-slider">
                             <div th:each="url : ${#strings.listSplit(chiTietSp.sanPham.hinhAnh, ',')}">
-                                <img th:src="${url}" alt="" class="image-list"/>
+                            <img th:src="${url}" alt="" class="image-list"/>
                             </div>
                         </div>
                     </div>
@@ -326,7 +326,6 @@
                                     input.className = 'size-input';
                                     input.value = chiTietSp.kichCo.ten; // Đặt giá trị tên kích cỡ vào value
                                     input.id = index; // Đặt giá trị id từ mauSac.id
-
                                     // Kiểm tra số lượng tồn kho
                                     if (chiTietSp.soLuong <= 0) {
                                         input.disabled = true;
@@ -350,6 +349,8 @@
 
                                     // Sự kiện change cho input
                                     input.addEventListener('change', function () {
+                                        // Điều này xảy ra khi người dùng chọn một kích cỡ
+                                        // Lấy số lượng từ listChiTietSpByMauSac
                                         var soLuongHienThi = chiTietSp.soLuong;
                                         var giaHienThi = chiTietSp.giaHienHanh;
                                         var idCTSP = chiTietSp.id;
@@ -359,19 +360,23 @@
                                         var inputSoLuong = document.getElementById('soLuong');
                                         var spanGia = document.getElementById('giaHienThi');
 
+                                        // Hiển thị thông tin (ở đây là cần thay thế số lượng trên trang web)
+                                        spanGia.innerText = giaHienThi + ' VND';
                                         // Format giá tiền trước khi hiển thị
                                         spanGia.innerText = formatCurrency(giaHienThi);
 
                                         rqIdChiTietSp.value = idCTSP;
 
                                         inputSoLuong.value = 1;
-                                        inputSoLuong.max = soLuongHienThi;
+                                        inputSoLuong.max = soLuongHienThi
 
                                         divSoLuongCon.style.display = 'block';
-                                        divSoLuongCon.className = 'stock-quantity';
-                                        divSoLuongCon.innerText = '✓ ' + soLuongHienThi + ' sản phẩm có sẵn';
+                                        divSoLuongCon.innerText = soLuongHienThi + ' sản phẩm có sẵn';
+                                        divSoLuongCon.style = 'color: red';
                                     });
+
                                 });
+
                             }
 
                             function limitInput(inputElement) {
@@ -655,7 +660,6 @@
                                 #heartIcon2 {
                                     color: red;
                                 }
-
                                 .product-size .size-layout .size.out-of-stock {
                                     background-color: #f5f5f5;
                                     color: #999;
@@ -671,7 +675,6 @@
                                     text-decoration: line-through;
                                     opacity: 0.7;
                                 }
-
                             </style>
                         </div>
                     </div>
@@ -1107,7 +1110,6 @@
                 height: auto;
                 padding: 20px;
             }
-
         }
 
         .stock-info {
@@ -1169,11 +1171,11 @@
                                                     <!--                                            <input type="hidden" th:value="${chiTiepSp.sanPham.id}">-->
                                                     <div class="product-thumbnail-container">
                                                         <div th:each="url : ${#strings.listSplit(hoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
-                                                            <img th:src="${url}"
-                                                                 th:data-segment="${hoaDonCT.chiTietSanPham.mauSac.ten}"
-                                                                 th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
-                                                                 th:data-power="${hoaDonCT.chiTietSanPham.tayAo.ten}"
-                                                                 class="img-fluid product-thumbnail">
+                                                        <img th:src="${url}"
+                                                             th:data-segment="${hoaDonCT.chiTietSanPham.mauSac.ten}"
+                                                             th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
+                                                             th:data-power="${hoaDonCT.chiTietSanPham.tayAo.ten}"
+                                                             class="img-fluid product-thumbnail">
                                                         </div>
                                                     </div>
                                                     <div class="product-info-container">
@@ -1181,7 +1183,7 @@
                                                             th:text="${hoaDonCT.chiTietSanPham.sanPham.ten+' ['+hoaDonCT.chiTietSanPham.mauSac.ten+ ' - ' +hoaDonCT.chiTietSanPham.kichCo.ten}+']'"></h3>
                                                         <strong class="product-price"
                                                                 style="display: block;margin: 0 auto;"
-                                                                th:text="${hoaDonCT.chiTietSanPham.giaHienHanh + ' VNĐ'}"></strong>
+                                                                th:text="${#numbers.formatDecimal(hoaDonCT.chiTietSanPham.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></strong>
                                                         <span class="icon-cross">
 							                                 <img src="../../static/img/plus-black.png"
                                                                   class="img-fluid">
