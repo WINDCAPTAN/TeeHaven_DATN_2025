@@ -1185,26 +1185,18 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" checked>
-                                    <label class="form-check-label" for="cod">
-                                        Thanh toán khi nhận hàng (COD)
-                                    </label>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="paymentMethodCOD" name="paymentMethod" value="COD" class="custom-control-input" checked>
+                                    <label class="custom-control-label" for="paymentMethodCOD">Thanh toán khi nhận hàng (COD)</label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" id="vnpay" value="VNPAY">
-                                    <label class="form-check-label" for="vnpay">
-                                        Thanh toán qua VNPay
-                                    </label>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" id="paymentMethodVNPAY" name="paymentMethod" value="VNPAY" class="custom-control-input">
+                                    <label class="custom-control-label" for="paymentMethodVNPAY">Thanh toán qua VNPay</label>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <button th:if="${checkDiaChi=='DiaChi'}" id="orderButton"
-                                        class="btn btn-primary btn-lg py-3 btn-block"
-                                        onclick="return checkFormDatHang()">
-                                    Đặt hàng
-                                </button>
+
                                 <button th:if="${checkDiaChi=='DiaChiNull'}" id="orderButton"
                                         class="btn btn-primary btn-lg py-3 btn-block"
                                         onclick="return checkFormDatHang()">
@@ -2304,7 +2296,7 @@
 
 <div class="row mb-5">
     <div class="col-md-12">
-        <button type="submit" class="btn btn-primary btn-lg py-3 btn-block" id="submitOrderBtn">Place Order</button>
+        <button type="submit" class="btn btn-primary btn-lg py-3 btn-block" id="submitOrderBtn">ĐẶT HÀNG</button>
     </div>
 </div>
 
@@ -2316,9 +2308,9 @@ document.addEventListener('DOMContentLoaded', function() {
     paymentMethodRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'VNPAY') {
-                submitOrderBtn.textContent = 'Proceed to Payment';
+                submitOrderBtn.textContent = 'THANH TOÁN QUA VNPAY';
             } else {
-                submitOrderBtn.textContent = 'Place Order';
+                submitOrderBtn.textContent = 'ĐẶT HÀNG';
             }
         });
     });
