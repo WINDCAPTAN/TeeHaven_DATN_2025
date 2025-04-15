@@ -1,6 +1,8 @@
 package com.example.datn_teehaven.controller;
 
 
+import com.example.datn_teehaven.Config.PrincipalCustom;
+import com.example.datn_teehaven.Config.UserInfoUserDetails;
 import com.example.datn_teehaven.entyti.ChiTietSanPham;
 import com.example.datn_teehaven.entyti.SanPham;
 import com.example.datn_teehaven.repository.*;
@@ -58,9 +60,8 @@ public class ChiTietSanPhamController {
     @Autowired
     private KichCoRepository kichThuocRepository;
 
-    @Autowired
-    private TayAoRepository tayAoRepository;
 
+    private PrincipalCustom principalCustom = new PrincipalCustom();
 
     private Model getString(Model model) {
         model.addAttribute("listKichCo", kichCoService.getAllDangHoatDong());
@@ -75,6 +76,12 @@ public class ChiTietSanPhamController {
     public String hienThi(
             Model model) {
 
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listChiTietSP", chiTietSanPhamSerivce.getAllCtspOneSanPham());
         getString(model);
         model.addAttribute("sanPham", new SanPham());

@@ -20,12 +20,244 @@
 
 
 </head>
+<style>
+    /* Optimized Sidebar Styles */
+    .sidebar {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        bottom: 0;
+        width: 300px;
+        z-index: 996;
+        transition: all 0.3s;
+        padding: 20px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #aab7cf transparent;
+        box-shadow: 0 0 20px rgba(1, 41, 112, 0.1);
+        background-color: #fff;
+    }
 
+    .sidebar::-webkit-scrollbar {
+        width: 5px;
+        height: 8px;
+        background-color: #fff;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background-color: #aab7cf;
+        border-radius: 10px;
+    }
+
+    .sidebar-nav {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .sidebar-nav li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .sidebar-nav .nav-item {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-nav .nav-link {
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+        font-weight: 500;
+        color: #012970;
+        background: #f6f9ff;
+        padding: 12px 15px;
+        border-radius: 8px;
+        transition: all 0.3s;
+        text-decoration: none; /* Remove underline */
+    }
+
+    .sidebar-nav .nav-link i {
+        font-size: 16px;
+        margin-right: 12px;
+        color: #4154f1;
+        transition: 0.3s;
+    }
+
+    .sidebar-nav .nav-link:hover {
+        color: #4154f1;
+        background: #e0e7ff;
+    }
+
+    .sidebar-nav .nav-link:hover i {
+        color: #4154f1;
+    }
+
+    .sidebar-nav .nav-link.collapsed {
+        color: #012970;
+        background: #f6f9ff;
+    }
+
+    .sidebar-nav .nav-link.collapsed i {
+        color: #899bbd;
+    }
+
+    .sidebar-nav .nav-link:not(.collapsed) {
+        color: #4154f1;
+        background: #e0e7ff;
+        font-weight: 600;
+    }
+
+    .sidebar-nav .nav-link:not(.collapsed) i {
+        color: #4154f1;
+    }
+
+    .sidebar-nav .nav-content {
+        padding: 5px 0 0 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .sidebar-nav .nav-content a {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: #012970;
+        padding: 10px 0 10px 40px;
+        transition: 0.3s;
+        text-decoration: none; /* Remove underline */
+    }
+
+    .sidebar-nav .nav-content a i {
+        font-size: 10px;
+        margin-right: 8px;
+        line-height: 0;
+        border-radius: 50%;
+    }
+
+    .sidebar-nav .nav-content a:hover,
+    .sidebar-nav .nav-content a.active {
+        color: #4154f1;
+    }
+
+    .sidebar-nav .nav-content a.active i {
+        background-color: #4154f1;
+        color: #fff;
+    }
+
+    /* Optimized Header Styles */
+    .header {
+        transition: all 0.3s;
+        z-index: 997;
+        height: 60px;
+        box-shadow: 0 2px 20px rgba(1, 41, 112, 0.1);
+        background-color: #fff;
+        padding-left: 20px;
+    }
+
+    .header .toggle-sidebar-btn {
+        font-size: 24px;
+        padding-left: 10px;
+        cursor: pointer;
+        color: #012970;
+        transition: 0.3s;
+    }
+
+    .header .toggle-sidebar-btn:hover {
+        color: #4154f1;
+        transform: scale(1.1);
+    }
+
+    .logo {
+        line-height: 1;
+        text-decoration: none; /* Remove underline */
+    }
+
+    .logo img {
+        max-height: 35px;
+        margin-right: 10px;
+    }
+
+    .logo span {
+        font-size: 20px;
+        font-weight: 700;
+        color: #012970;
+        font-family: "Nunito", sans-serif;
+    }
+
+    /* Remove underline from all links in the sidebar and header */
+    #sidebar a, #header a {
+        text-decoration: none;
+    }
+
+    /* Main Content Adjustments */
+    #main {
+        margin-top: 60px;
+        padding: 20px 30px;
+        transition: all 0.3s;
+    }
+
+    @media (max-width: 1199px) {
+        .sidebar {
+            left: -300px;
+        }
+
+        .toggle-sidebar .sidebar {
+            left: 0;
+        }
+
+        #main {
+            margin-left: 0;
+        }
+
+        .toggle-sidebar #main {
+            margin-left: 0;
+        }
+    }
+
+    /* Active menu item styles */
+    .sidebar-nav .nav-content a.active {
+        background-color: #e0e7ff;
+        border-radius: 5px;
+        padding-left: 38px;
+        border-left: 2px solid #4154f1;
+        font-weight: 500;
+    }
+
+    /* Responsive adjustments */
+    @media (min-width: 1200px) {
+        .logo {
+            width: 280px;
+        }
+
+        #main {
+            margin-left: 300px;
+        }
+    }
+
+    /* Table styles */
+    .trangthaidkd {
+        color: #2ecc71;
+        font-weight: 600;
+    }
+
+    .trangthainkd {
+        color: #e74c3c;
+        font-weight: 600;
+    }
+
+    /* Toast notification improvements */
+    .toast {
+        border-radius: 10px !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+</style>
 <body>
 
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
-
     <div class="d-flex align-items-center justify-content-between">
         <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
             <img src="../../../static/img/logo_teehaven.png" alt="">
@@ -33,8 +265,31 @@
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${tenNhanVien}"></span>
+                </a><!-- End Profile Iamge Icon -->
 
-
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6 th:text="${tenNhanVien}"></h6>
+                        <span>Nhân Viên</span>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Đăng Xuất</span>
+                        </a>
+                    </li>
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+        </ul>
+    </nav><!-- End Icons Navigation -->
 </header><!-- End Header -->
 
 <!-- ======= Sidebar ======= -->
@@ -49,7 +304,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don" id="ban-hang-nav">
                 <i class="bi bi-shop"></i>
                 <span>Bán Hàng</span>
             </a>
@@ -113,7 +368,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/admin/khach-hang" class="active">
+                    <a href="/admin/khach-hang" >
                         <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
                     </a>
                 </li>
@@ -2167,6 +2422,27 @@
            th:class="${hd.id == hoaDon.id ? 'btn btn-outline-primary active' : 'btn btn-outline-primary'}"></a>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const currentPath = window.location.pathname;
+        const hoaDonLink = document.getElementById("ban-hang-nav");
+        const tablesNav = document.getElementById("tables-nav");
+        const tablesNavParent = tablesNav.closest(".nav-item"); // Lấy phần tử cha
+
+        if (currentPath.includes("/ban-hang-tai-quay/hoa-don")) {
+            hoaDonLink.classList.remove("collapsed");
+            hoaDonLink.classList.add("active");
+        }
+
+        // Nếu không phải trang thuộc Quản Lý Tài Khoản, đóng lại phần đó
+        if (!currentPath.includes("/admin/nhan-vien") && !currentPath.includes("/admin/khach-hang")) {
+            tablesNav.classList.remove("show"); // Đóng danh sách con
+            tablesNavParent.querySelector(".nav-link").classList.add("collapsed"); // Thu gọn
+        }
+    });
+
+</script>
 <script>
     function handleRadioVoucher(rowIndex) {
         var index = rowIndex.getAttribute('data-index');
