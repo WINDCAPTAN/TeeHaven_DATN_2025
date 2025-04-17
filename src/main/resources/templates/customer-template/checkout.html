@@ -197,8 +197,8 @@
                                 <td class="product-thumbnail">
                                     <input type="hidden" name="allIDGioHangCT" th:value="${gioHangCT.id}">
                                     <div th:each="url : ${#strings.listSplit(gioHangCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
-                                    <img th:src="${url}"
-                                         alt="Image" class="img-fluid"/>
+                                        <img th:src="${url}"
+                                             alt="Image" class="img-fluid"/>
                                     </div>
                                 </td>
                                 <td class="product-name">
@@ -1184,25 +1184,6 @@
                                           class="form-control" placeholder="Viết ghi chú của bạn ở đây..."></textarea>
                             </div>
 
-                            <div class="form-group">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="paymentMethodCOD" name="paymentMethod" value="COD" class="custom-control-input" checked>
-                                    <label class="custom-control-label" for="paymentMethodCOD">Thanh toán khi nhận hàng (COD)</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="paymentMethodVNPAY" name="paymentMethod" value="VNPAY" class="custom-control-input">
-                                    <label class="custom-control-label" for="paymentMethodVNPAY">Thanh toán qua VNPay</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-
-                                <button th:if="${checkDiaChi=='DiaChiNull'}" id="orderButton"
-                                        class="btn btn-primary btn-lg py-3 btn-block"
-                                        onclick="return checkFormDatHang()">
-                                    Đặt hàng
-                                </button>
-                            </div>
                         </form>
                     </div>
                     <div th:if="${checkDiaChi=='DiaChiNull'}">
@@ -1723,7 +1704,7 @@
                                     </tr>
                                     <script>
                                         function formatMoney(amount) {
-                                            return new Intl.NumberFormat('vi-VN', { 
+                                            return new Intl.NumberFormat('vi-VN', {
                                                 style: 'decimal',
                                                 minimumFractionDigits: 0,
                                                 maximumFractionDigits: 0
@@ -1780,250 +1761,250 @@
                                     </tbody>
                                 </table>
                                 <div class="form-group">
-                                    <button th:if="${checkDiaChi=='DiaChi'}" id="orderButton"
+                                    <button th:if="${checkDiaChi=='DiaChi'}"
                                             class="btn btn-primary btn-lg py-3 btn-block"
                                             onclick="return checkFormDatHang()">
                                         Đặt hàng
                                     </button>
-                                    <button th:if="${checkDiaChi=='DiaChiNull'}" id="orderButton"
+                                    <button th:if="${checkDiaChi=='DiaChiNull'}"
                                             class="btn btn-primary btn-lg py-3 btn-block"
-                                            onclick="return checkFormDatHang()">
+                                            onclick="return checkFormDatHangNoDC()">
                                         Đặt hàng
                                     </button>
-                                </div>
-                                <!-- Modal thông báo xác nhận đặt hàng-->
-                                <div class="modal fade" id="xacNhanDatHang" tabindex="-1"
-                                     aria-labelledby="xacNhanDatHangLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="xacNhanDatHangLabel">Xác Nhận</h5>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Bạn có xác nhận đặt hàng không!</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" form="form1" onclick="buttonDatHang()"
-                                                        class="btn btn-primary">Đồng ý
-                                                </button>
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Đóng
-                                                </button>
-                                            </div>
+                                    <!-- Modal thông báo xác nhận đặt hàng-->
+                                    <div class="modal fade" id="xacNhanDatHang" tabindex="-1"
+                                         aria-labelledby="xacNhanDatHangLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="xacNhanDatHangLabel">Xác Nhận</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Bạn có xác nhận đặt hàng không!</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" form="form1" onclick="buttonDatHang()"
+                                                            class="btn btn-primary">Đồng ý
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Đóng
+                                                    </button>
+                                                </div>
 
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Modal thông báo xác nhận đặt hàng end-->
-
-                                <!-- Modal thông báo xác nhận đặt hàng-->
-                                <div class="modal fade" id="gioHangNull" tabindex="-1"
-                                     aria-labelledby="gioHangNullLabel" data-bs-backdrop="static"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="gioHangNullLabel">Giỏ hàng của bạn đang
-                                                    trống.
-                                                </h5>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Một số sản phẩm trong giỏ hàng vừa được cập nhật, bạn vui lòng
-                                                    kiểm tra giỏ hàng và thử lại.</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <a href="/user/cart" class="btn btn-primary">Đồng ý</a>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Modal thông báo xác nhận đặt hàng end-->
-                                <!-- Modal thông báo check check số lượng-->
-                                <script th:if="${checkSoLuongDB=='true'}">
-                                    window.addEventListener('DOMContentLoaded', (event) => {
-                                        // Hiển thị modal
-                                        var myModal = new bootstrap.Modal(document.getElementById('checkSoLuongDB'));
-                                        myModal.show();
-                                    });
+                                    <!-- Modal thông báo xác nhận đặt hàng end-->
 
-                                </script>
-                                <div class="modal fade" id="checkSoLuongDB" style="margin-top: 8%"
-                                     tabindex="-1"
-                                     aria-labelledby="checkSoLuongDBLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-body" style="text-align: center;margin-top: 3%">
-                                                <p>Có sản phẩm vượt quá số lượng vui lòng kiểm tra lại!
-                                                </p>
+                                    <!-- Modal thông báo xác nhận đặt hàng-->
+                                    <div class="modal fade" id="gioHangNull" tabindex="-1"
+                                         aria-labelledby="gioHangNullLabel" data-bs-backdrop="static"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="gioHangNullLabel">Giỏ hàng của bạn đang
+                                                        trống.
+                                                    </h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Một số sản phẩm trong giỏ hàng vừa được cập nhật, bạn vui lòng
+                                                        kiểm tra giỏ hàng và thử lại.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="/user/cart" class="btn btn-primary">Đồng ý</a>
+                                                </div>
                                             </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Ok
-                                                </button>
-                                            </div>
-
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Modal thông báo check check số lượng end-->
-                                <script>
-                                    function trangThaiLuuDiaChi() {
-                                        var checkbox = document.getElementById('defaultCheckLuuDiaChi');
-                                        var trangThaiAdDiaChiHidden = document.getElementById('trangThaiAdDiaChiHidden');
-
-                                        // Nếu checkbox được chọn, thiết lập giá trị của input hidden là 0
-                                        // Ngược lại, giữ giá trị là 1
-                                        trangThaiAdDiaChiHidden.value = checkbox.checked ? '1' : '0';
-                                        trangThaiAdDiaChiHidden.value = checkbox.checked ? '0' : '1';
-                                    }
-
-                                    function buttonDatHang() {
-                                        // Check spam submit
-                                        var btnDatHang2 = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChi\'}"]');
-                                        setTimeout(function () {
-                                            btnDatHang2.disabled = false;
-                                        }, 2000); // 2000 miligiây = 2 giây
-
-                                        // Check spam submit
-                                        var btnDatHang = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChiNull\'}"]');
-                                        setTimeout(function () {
-                                            btnDatHang.disabled = false;
-                                        }, 2000); // 2000 miligiây = 2 giây
-
-                                    }
-
-                                    function isValidPhoneNumber(phoneNumber) {
-                                        // Biểu thức chính quy kiểm tra số điện thoại
-                                        var phoneRegex = /^(0[35789][0-9]{8,9})$/;
-
-                                        // Kiểm tra xem số điện thoại có khớp với biểu thức chính quy hay không
-                                        return phoneRegex.test(phoneNumber);
-                                    }
-
-                                    function checkFormDatHang() {
-                                        var isValid = true; // Biến để theo dõi trạng thái tổng thể
-
-                                        var idGioHangChiTiet = document.getElementById("idGioHangChiTiet");
-                                        if (idGioHangChiTiet.value.trim() == '') {
-                                            $('#gioHangNull').modal('show');
-                                            isValid = false;
-                                        }
-                                        var ten = document.getElementById("c_fname");
-                                        var checkTen = document.getElementById("checkLoiHoTen");
-                                        checkTen.style.display = 'none'
-                                        if (ten.value.trim() == '' || ten.value == " ") {
-                                            console.log("Chưa nhập tên")
-                                            checkTen.innerHTML = ''
-                                            checkTen.style.display = 'block'
-                                            checkTen.innerText = "Chưa nhập tên"
-                                            isValid = false;
-                                        }
-                                        var sdt = document.getElementById("c_companyname");
-                                        var checkSDT = document.getElementById("checkLoiSDT");
-                                        checkSDT.style.display = 'none'
-                                        if (sdt.value.trim() == '') {
-                                            console.log("Chưa nhập số điện thoại")
-                                            checkSDT.innerHTML = ''
-                                            checkSDT.style.display = 'block'
-                                            checkSDT.innerText = "Chưa nhập số điện thoại"
-                                            isValid = false;
-                                        } else if (!isValidPhoneNumber(sdt.value.trim())) {
-                                            console.log("Số điện thoại không hợp lệ")
-                                            checkSDT.innerHTML = ''
-                                            checkSDT.style.display = 'block'
-                                            checkSDT.innerText = "Số điện thoại không hợp lệ"
-                                            isValid = false;
-                                        }
-                                        // Kiểm tra xem tất cả điều kiện đã thỏa mãn chưa
-                                        if (isValid) {
+                                    <!-- Modal thông báo xác nhận đặt hàng end-->
+                                    <!-- Modal thông báo check check số lượng-->
+                                    <script th:if="${checkSoLuongDB=='true'}">
+                                        window.addEventListener('DOMContentLoaded', (event) => {
                                             // Hiển thị modal
-                                            $('#xacNhanDatHang').modal('show');
-                                        }
-                                    }
+                                            var myModal = new bootstrap.Modal(document.getElementById('checkSoLuongDB'));
+                                            myModal.show();
+                                        });
 
-                                    function checkFormDatHangNoDC() {
-                                        var isValid = true; // Biến để theo dõi trạng thái tổng thể
+                                    </script>
+                                    <div class="modal fade" id="checkSoLuongDB" style="margin-top: 8%"
+                                         tabindex="-1"
+                                         aria-labelledby="checkSoLuongDBLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body" style="text-align: center;margin-top: 3%">
+                                                    <p>Có sản phẩm vượt quá số lượng vui lòng kiểm tra lại!
+                                                    </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Ok
+                                                    </button>
+                                                </div>
 
-                                        var idGioHangChiTiet = document.getElementById("idGioHangChiTiet");
-                                        if (idGioHangChiTiet.value.trim() == '') {
-                                            $('#gioHangNull').modal('show');
-                                            isValid = false;
-                                        }
-                                        var ten = document.getElementById("c_fname");
-                                        var checkTen = document.getElementById("checkLoiHoTen");
-                                        checkTen.style.display = 'none'
-                                        if (ten.value.trim() == '') {
-                                            console.log("Chưa nhập tên")
-                                            checkTen.innerHTML = ''
-                                            checkTen.style.display = 'block'
-                                            checkTen.innerText = "Chưa nhập tên"
-                                            isValid = false;
-                                        }
-                                        var sdt = document.getElementById("c_companyname");
-                                        var checkSDT = document.getElementById("checkLoiSDT");
-                                        checkSDT.style.display = 'none'
-                                        if (sdt.value.trim() == '') {
-                                            console.log("Chưa nhập số điện thoại")
-                                            checkSDT.innerHTML = ''
-                                            checkSDT.style.display = 'block'
-                                            checkSDT.innerText = "Chưa nhập số điện thoại"
-                                            isValid = false;
-                                        } else if (!isValidPhoneNumber(sdt.value.trim())) {
-                                            console.log("Số điện thoại không hợp lệ")
-                                            checkSDT.innerHTML = ''
-                                            checkSDT.style.display = 'block'
-                                            checkSDT.innerText = "Số điện thoại không hợp lệ"
-                                            isValid = false;
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal thông báo check check số lượng end-->
+                                    <script>
+                                        function trangThaiLuuDiaChi() {
+                                            var checkbox = document.getElementById('defaultCheckLuuDiaChi');
+                                            var trangThaiAdDiaChiHidden = document.getElementById('trangThaiAdDiaChiHidden');
+
+                                            // Nếu checkbox được chọn, thiết lập giá trị của input hidden là 0
+                                            // Ngược lại, giữ giá trị là 1
+                                            trangThaiAdDiaChiHidden.value = checkbox.checked ? '1' : '0';
+                                            trangThaiAdDiaChiHidden.value = checkbox.checked ? '0' : '1';
                                         }
 
+                                        function buttonDatHang() {
+                                            // Check spam submit
+                                            var btnDatHang2 = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChi\'}"]');
+                                            setTimeout(function () {
+                                                btnDatHang2.disabled = false;
+                                            }, 2000); // 2000 miligiây = 2 giây
 
-                                        var thanhPho = document.getElementById("citySelect");
-                                        var checkThanhPho = document.getElementById("checkLoiThanhPho");
-                                        checkThanhPho.style.display = 'none'
-                                        if (thanhPho.value.trim() == 'Chọn Thành Phố') {
-                                            console.log("Chưa chọn thành phố")
-                                            checkThanhPho.innerHTML = ''
-                                            checkThanhPho.style.display = 'block'
-                                            checkThanhPho.innerText = "Chưa chọn thành phố"
-                                            isValid = false;
-                                        }
-                                        var quanHuyen = document.getElementById("districtSelect");
-                                        var checkQuanHuyen = document.getElementById("checkLoiQuanHuyen");
-                                        checkQuanHuyen.style.display = 'none'
-                                        if (quanHuyen.value.trim() == '') {
-                                            console.log("Chưa chọn quận huyện")
-                                            checkQuanHuyen.innerHTML = ''
-                                            checkQuanHuyen.style.display = 'block'
-                                            checkQuanHuyen.innerText = "Chưa chọn quận huyện"
-                                            isValid = false;
-                                        }
-                                        var xaPhuong = document.getElementById("wardSelect");
-                                        var checkXaPhuong = document.getElementById("checkLoiPhuongXa");
-                                        checkXaPhuong.style.display = 'none'
-                                        if (xaPhuong.value.trim() == '') {
-                                            console.log("Chưa chọn xã phường")
-                                            checkXaPhuong.innerHTML = ''
-                                            checkXaPhuong.style.display = 'block'
-                                            checkXaPhuong.innerText = "Chưa chọn phường xã"
-                                            isValid = false;
-                                        }
-                                        var diaChiCT = document.getElementById("diaChiCuThe");
-                                        var checkDiaChiCT = document.getElementById("checkLoiDiaChiCT");
-                                        checkDiaChiCT.style.display = 'none'
-                                        if (diaChiCT.value.trim() == '') {
-                                            console.log("Chưa nhập địa chỉ cụ thể")
-                                            checkDiaChiCT.innerHTML = ''
-                                            checkDiaChiCT.style.display = 'block'
-                                            checkDiaChiCT.innerText = "Chưa chọn địa chỉ cụ thể"
-                                            isValid = false;
-                                        }
-                                        if (isValid) {
-                                            // Hiển thị modal
-                                            $('#xacNhanDatHang').modal('show');
-                                        }
-                                    }
+                                            // Check spam submit
+                                            var btnDatHang = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChiNull\'}"]');
+                                            setTimeout(function () {
+                                                btnDatHang.disabled = false;
+                                            }, 2000); // 2000 miligiây = 2 giây
 
-                                </script>
+                                        }
+
+                                        function isValidPhoneNumber(phoneNumber) {
+                                            // Biểu thức chính quy kiểm tra số điện thoại
+                                            var phoneRegex = /^(0[35789][0-9]{8,9})$/;
+
+                                            // Kiểm tra xem số điện thoại có khớp với biểu thức chính quy hay không
+                                            return phoneRegex.test(phoneNumber);
+                                        }
+
+                                        function checkFormDatHang() {
+                                            var isValid = true; // Biến để theo dõi trạng thái tổng thể
+
+                                            var idGioHangChiTiet = document.getElementById("idGioHangChiTiet");
+                                            if (idGioHangChiTiet.value.trim() == '') {
+                                                $('#gioHangNull').modal('show');
+                                                isValid = false;
+                                            }
+                                            var ten = document.getElementById("c_fname");
+                                            var checkTen = document.getElementById("checkLoiHoTen");
+                                            checkTen.style.display = 'none'
+                                            if (ten.value.trim() == '' || ten.value == " ") {
+                                                console.log("Chưa nhập tên")
+                                                checkTen.innerHTML = ''
+                                                checkTen.style.display = 'block'
+                                                checkTen.innerText = "Chưa nhập tên"
+                                                isValid = false;
+                                            }
+                                            var sdt = document.getElementById("c_companyname");
+                                            var checkSDT = document.getElementById("checkLoiSDT");
+                                            checkSDT.style.display = 'none'
+                                            if (sdt.value.trim() == '') {
+                                                console.log("Chưa nhập số điện thoại")
+                                                checkSDT.innerHTML = ''
+                                                checkSDT.style.display = 'block'
+                                                checkSDT.innerText = "Chưa nhập số điện thoại"
+                                                isValid = false;
+                                            } else if (!isValidPhoneNumber(sdt.value.trim())) {
+                                                console.log("Số điện thoại không hợp lệ")
+                                                checkSDT.innerHTML = ''
+                                                checkSDT.style.display = 'block'
+                                                checkSDT.innerText = "Số điện thoại không hợp lệ"
+                                                isValid = false;
+                                            }
+                                            // Kiểm tra xem tất cả điều kiện đã thỏa mãn chưa
+                                            if (isValid) {
+                                                // Hiển thị modal
+                                                $('#xacNhanDatHang').modal('show');
+                                            }
+                                        }
+
+                                        function checkFormDatHangNoDC() {
+                                            var isValid = true; // Biến để theo dõi trạng thái tổng thể
+
+                                            var idGioHangChiTiet = document.getElementById("idGioHangChiTiet");
+                                            if (idGioHangChiTiet.value.trim() == '') {
+                                                $('#gioHangNull').modal('show');
+                                                isValid = false;
+                                            }
+                                            var ten = document.getElementById("c_fname");
+                                            var checkTen = document.getElementById("checkLoiHoTen");
+                                            checkTen.style.display = 'none'
+                                            if (ten.value.trim() == '') {
+                                                console.log("Chưa nhập tên")
+                                                checkTen.innerHTML = ''
+                                                checkTen.style.display = 'block'
+                                                checkTen.innerText = "Chưa nhập tên"
+                                                isValid = false;
+                                            }
+                                            var sdt = document.getElementById("c_companyname");
+                                            var checkSDT = document.getElementById("checkLoiSDT");
+                                            checkSDT.style.display = 'none'
+                                            if (sdt.value.trim() == '') {
+                                                console.log("Chưa nhập số điện thoại")
+                                                checkSDT.innerHTML = ''
+                                                checkSDT.style.display = 'block'
+                                                checkSDT.innerText = "Chưa nhập số điện thoại"
+                                                isValid = false;
+                                            } else if (!isValidPhoneNumber(sdt.value.trim())) {
+                                                console.log("Số điện thoại không hợp lệ")
+                                                checkSDT.innerHTML = ''
+                                                checkSDT.style.display = 'block'
+                                                checkSDT.innerText = "Số điện thoại không hợp lệ"
+                                                isValid = false;
+                                            }
+
+
+                                            var thanhPho = document.getElementById("citySelect");
+                                            var checkThanhPho = document.getElementById("checkLoiThanhPho");
+                                            checkThanhPho.style.display = 'none'
+                                            if (thanhPho.value.trim() == 'Chọn Thành Phố') {
+                                                console.log("Chưa chọn thành phố")
+                                                checkThanhPho.innerHTML = ''
+                                                checkThanhPho.style.display = 'block'
+                                                checkThanhPho.innerText = "Chưa chọn thành phố"
+                                                isValid = false;
+                                            }
+                                            var quanHuyen = document.getElementById("districtSelect");
+                                            var checkQuanHuyen = document.getElementById("checkLoiQuanHuyen");
+                                            checkQuanHuyen.style.display = 'none'
+                                            if (quanHuyen.value.trim() == '') {
+                                                console.log("Chưa chọn quận huyện")
+                                                checkQuanHuyen.innerHTML = ''
+                                                checkQuanHuyen.style.display = 'block'
+                                                checkQuanHuyen.innerText = "Chưa chọn quận huyện"
+                                                isValid = false;
+                                            }
+                                            var xaPhuong = document.getElementById("wardSelect");
+                                            var checkXaPhuong = document.getElementById("checkLoiPhuongXa");
+                                            checkXaPhuong.style.display = 'none'
+                                            if (xaPhuong.value.trim() == '') {
+                                                console.log("Chưa chọn xã phường")
+                                                checkXaPhuong.innerHTML = ''
+                                                checkXaPhuong.style.display = 'block'
+                                                checkXaPhuong.innerText = "Chưa chọn phường xã"
+                                                isValid = false;
+                                            }
+                                            var diaChiCT = document.getElementById("diaChiCuThe");
+                                            var checkDiaChiCT = document.getElementById("checkLoiDiaChiCT");
+                                            checkDiaChiCT.style.display = 'none'
+                                            if (diaChiCT.value.trim() == '') {
+                                                console.log("Chưa nhập địa chỉ cụ thể")
+                                                checkDiaChiCT.innerHTML = ''
+                                                checkDiaChiCT.style.display = 'block'
+                                                checkDiaChiCT.innerText = "Chưa chọn địa chỉ cụ thể"
+                                                isValid = false;
+                                            }
+                                            if (isValid) {
+                                                // Hiển thị modal
+                                                $('#xacNhanDatHang').modal('show');
+                                            }
+                                        }
+
+                                    </script>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2110,212 +2091,6 @@
 <script src="../../static/js/aos.js"></script>
 
 <script src="../../static/js/main.js"></script>
-
-<script>
-    // Xử lý chuyển đổi phương thức thanh toán
-    document.addEventListener('DOMContentLoaded', function() {
-        const codRadio = document.getElementById('cod');
-        const vnpayRadio = document.getElementById('vnpay');
-        const orderButton = document.getElementById('orderButton');
-        const vnpayButton = document.getElementById('vnpayButton');
-
-        function toggleButtons() {
-            if (codRadio.checked) {
-                orderButton.style.display = 'block';
-                vnpayButton.style.display = 'none';
-            } else {
-                orderButton.style.display = 'none';
-                vnpayButton.style.display = 'block';
-            }
-        }
-
-        codRadio.addEventListener('change', toggleButtons);
-        vnpayRadio.addEventListener('change', toggleButtons);
-        toggleButtons(); // Gọi lần đầu để set trạng thái ban đầu
-    });
-
-    // Hàm thanh toán VNPay
-    function payWithVNPay() {
-        // Lấy thông tin đơn hàng
-        var formData = new FormData(document.getElementById('form1'));
-        var totalAmount = document.getElementById('totalAmountAndSale').innerText;
-        totalAmount = totalAmount.replace(' VNĐ', '').replace(/\./g, '');
-
-        // Tạo URL thanh toán VNPay
-        var vnpUrl = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-        var vnpParams = {
-            vnp_Version: '2.1.0',
-            vnp_Command: 'pay',
-            vnp_TmnCode: 'G5TCSXGB',
-            vnp_Amount: totalAmount * 100, // Nhân 100 vì VNPay yêu cầu số tiền là số nguyên
-            vnp_CreateDate: new Date().toISOString().replace(/[-T:]/g, '').slice(0, 14),
-            vnp_CurrCode: 'VND',
-            vnp_IpAddr: '127.0.0.1',
-            vnp_Locale: 'vn',
-            vnp_OrderInfo: 'Thanh toan don hang',
-            vnp_OrderType: 'other',
-            vnp_ReturnUrl: window.location.origin + '/user/checkout/vnpay-return',
-            vnp_TxnRef: Date.now().toString()
-        };
-
-        // Sắp xếp các tham số theo thứ tự alphabet
-        var sortedParams = Object.keys(vnpParams).sort().reduce((acc, key) => {
-            acc[key] = vnpParams[key];
-            return acc;
-        }, {});
-
-        // Tạo chuỗi dữ liệu để hash
-        var signData = Object.entries(sortedParams)
-            .map(([key, value]) => `${key}=${value}`)
-            .join('&');
-
-        // Tạo hash
-        var crypto = require('crypto');
-        var hmac = crypto.createHmac('sha512', 'UKAMKZ26L3FVBYZWMO368LNB52TU03OV');
-        var signed = hmac.update(signData).digest('hex');
-
-        // Thêm chữ ký vào URL
-        vnpParams.vnp_SecureHash = signed;
-
-        // Tạo URL thanh toán
-        var paymentUrl = vnpUrl + '?' + Object.entries(vnpParams)
-            .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-            .join('&');
-
-        // Chuyển hướng đến trang thanh toán VNPay
-        window.location.href = paymentUrl;
-    }
-</script>
-
-<script>
-    // Cấu hình VNPay
-    const vnp_TmnCode = 'G5TCSXGB';
-    const vnp_HashSecret = 'UKAMKZ26L3FVBYZWMO368LNB52TU03OV';
-    const vnp_Url = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
-    
-    // Xử lý thay đổi phương thức thanh toán
-    document.addEventListener('DOMContentLoaded', function() {
-        const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
-        const orderButton = document.getElementById('orderButton');
-        
-        paymentMethodRadios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.value === 'VNPAY') {
-                    orderButton.textContent = 'Thanh toán';
-                } else {
-                    orderButton.textContent = 'Đặt hàng';
-                }
-            });
-        });
-    });
-
-    // Hàm tạo URL thanh toán VNPay
-    function createVNPayUrl(amount, orderInfo) {
-        const vnp_Params = {
-            vnp_Version: '2.1.0',
-            vnp_Command: 'pay',
-            vnp_TmnCode: vnp_TmnCode,
-            vnp_Amount: amount * 100, // Chuyển sang VND (nhân 100)
-            vnp_CreateDate: new Date().toISOString().replace(/[-:]/g, '').split('.')[0],
-            vnp_CurrCode: 'VND',
-            vnp_IpAddr: '127.0.0.1',
-            vnp_Locale: 'vn',
-            vnp_OrderInfo: orderInfo,
-            vnp_OrderType: 'other',
-            vnp_ReturnUrl: window.location.origin + '/user/vnpay/return',
-            vnp_TxnRef: Date.now().toString()
-        };
-
-        // Sắp xếp các tham số theo thứ tự alphabet
-        const sortedParams = Object.keys(vnp_Params).sort().reduce((acc, key) => {
-            acc[key] = vnp_Params[key];
-            return acc;
-        }, {});
-
-        // Tạo chuỗi dữ liệu để hash
-        let signData = '';
-        for (const key in sortedParams) {
-            signData += key + '=' + sortedParams[key] + '&';
-        }
-        signData = signData.slice(0, -1);
-        
-        // Tạo hash bảo mật
-        const secureHash = CryptoJS.HmacSHA512(signData, vnp_HashSecret).toString();
-        
-        // Thêm hash vào params
-        vnp_Params.vnp_SecureHash = secureHash;
-
-        // Tạo URL thanh toán cuối cùng
-        const queryString = Object.keys(vnp_Params)
-            .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(vnp_Params[key]))
-            .join('&');
-
-        return vnp_Url + '?' + queryString;
-    }
-
-    // Sửa đổi hàm checkFormDatHang để xử lý thanh toán VNPay
-    function checkFormDatHang() {
-        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-        
-        if (paymentMethod === 'VNPAY') {
-            const totalAmount = document.getElementById('tongTienAndSale').value;
-            const orderInfo = 'Thanh toan don hang TeeHaven';
-            
-            const vnpayUrl = createVNPayUrl(totalAmount, orderInfo);
-            window.location.href = vnpayUrl;
-            return false;
-        }
-        
-        // Tiếp tục với quy trình thanh toán COD thông thường
-        return true;
-    }
-</script>
-
-<!-- Thêm thư viện CryptoJS để tạo hash -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-
-<div class="row">
-    <div class="col-md-6 mb-5 mb-md-0">
-        <h2 class="h3 mb-3 text-black">Payment Method</h2>
-        <div class="p-3 p-lg-5 border">
-            <div class="form-group">
-                <div class="custom-control custom-radio">
-                    <input type="radio" id="paymentMethodCOD" name="paymentMethod" value="COD" class="custom-control-input" checked>
-                    <label class="custom-control-label" for="paymentMethodCOD">Cash on Delivery (COD)</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="custom-control custom-radio">
-                    <input type="radio" id="paymentMethodVNPAY" name="paymentMethod" value="VNPAY" class="custom-control-input">
-                    <label class="custom-control-label" for="paymentMethodVNPAY">VNPay</label>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row mb-5">
-    <div class="col-md-12">
-        <button type="submit" class="btn btn-primary btn-lg py-3 btn-block" id="submitOrderBtn">ĐẶT HÀNG</button>
-    </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
-    const submitOrderBtn = document.getElementById('submitOrderBtn');
-    
-    paymentMethodRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.value === 'VNPAY') {
-                submitOrderBtn.textContent = 'THANH TOÁN QUA VNPAY';
-            } else {
-                submitOrderBtn.textContent = 'ĐẶT HÀNG';
-            }
-        });
-    });
-});
-</script>
 </body>
 
 </html>
