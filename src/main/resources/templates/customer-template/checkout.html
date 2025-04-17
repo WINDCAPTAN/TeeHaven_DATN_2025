@@ -1184,6 +1184,23 @@
                                           class="form-control" placeholder="Viết ghi chú của bạn ở đây..."></textarea>
                             </div>
 
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label class="text-black">Phương thức thanh toán</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" checked>
+                                        <label class="form-check-label" for="cod">
+                                            Thanh toán khi nhận hàng (COD)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="vnpay" value="VNPAY">
+                                        <label class="form-check-label" for="vnpay">
+                                            Thanh toán qua VNPay
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div th:if="${checkDiaChi=='DiaChiNull'}">
@@ -1763,11 +1780,13 @@
                                 <div class="form-group">
                                     <button th:if="${checkDiaChi=='DiaChi'}"
                                             class="btn btn-primary btn-lg py-3 btn-block"
+                                            id="checkoutButton"
                                             onclick="return checkFormDatHang()">
                                         Đặt hàng
                                     </button>
                                     <button th:if="${checkDiaChi=='DiaChiNull'}"
                                             class="btn btn-primary btn-lg py-3 btn-block"
+                                            id="checkoutButtonNoDC"
                                             onclick="return checkFormDatHangNoDC()">
                                         Đặt hàng
                                     </button>
@@ -2091,6 +2110,58 @@
 <script src="../../static/js/aos.js"></script>
 
 <script src="../../static/js/main.js"></script>
+
+<script>
+    function handleVNPayPayment() {
+        const amountElement = document.getElementById('tongTienAndSale');
+        const amount = parseInt(amountElement.value.replace(/[^\d]/g, ''));
+        const orderInfo = 'Thanh toan don hang TeeHaven';
+        const encodedOrderInfo = encodeURIComponent(orderInfo);
+
+        window.location.href = '/vnpay-payment?amount=' + amount + '&orderInfo=' + encodedOrderInfo;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
+        const checkoutButton = document.getElementById('checkoutButton');
+        const checkoutButtonNoDC = document.getElementById('checkoutButtonNoDC');
+
+        paymentMethodRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                if (this.value === 'VNPAY') {
+                    if (checkoutButton) {
+                        checkoutButton.textContent = 'Thanh toán';
+                        checkoutButton.onclick = function () {
+                            handleVNPayPayment();
+                            return false;
+                        };
+                    }
+
+                    if (checkoutButtonNoDC) {
+                        checkoutButtonNoDC.textContent = 'Thanh toán';
+                        checkoutButtonNoDC.onclick = function () {
+                            handleVNPayPayment();
+                            return false;
+                        };
+                    }
+
+                } else {
+                    if (checkoutButton) {
+                        checkoutButton.textContent = 'Đặt hàng';
+                        checkoutButton.onclick = function () { return checkFormDatHang(); };
+                    }
+                    if (checkoutButtonNoDC) {
+                        checkoutButtonNoDC.textContent = 'Đặt hàng';
+                        checkoutButtonNoDC.onclick = function () { return checkFormDatHangNoDC(); };
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
+
 </body>
 
 </html>
