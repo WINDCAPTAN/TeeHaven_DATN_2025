@@ -339,6 +339,14 @@ public class CustomersController {
             diaChi.setTaiKhoan(TaiKhoan.builder().id(idTaiKhoan).build());
             diaChiService.save(diaChi);
         }
+        
+//        // Trừ số lượng sản phẩm trong kho
+//        for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
+//            ChiTietSanPham chiTietSanPham = chiTietSanPhamSerivce.getById(gioHangChiTiet.getChiTietSanPham().getId());
+//            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - gioHangChiTiet.getSoLuong());
+//            chiTietSanPhamSerivce.update(chiTietSanPham);
+//        }
+//
         gioHangChiTietService.addHoaDon(listIdString, Long.valueOf(tongTien), Long.valueOf(tongTienAndSale), hoVaTen,
                 soDienThoai, tienShip,tienGiam, email, voucher, diaChiCuThe, ghiChu, khachHang, phuongXaID, quanHuyenID,
                 thanhPhoID, khachHang.getGioHang().getId());
@@ -352,6 +360,27 @@ public class CustomersController {
                 gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer-template/thankyou";
     }
+
+    @PostMapping("/user/dia-chi/add")
+    public String adđDiaChi(
+            @RequestParam("phuongXaID") String phuongXa,
+            @RequestParam("quanHuyenID") String quanHuyen,
+            @RequestParam("thanhPhoID") String thanhPho,
+            @RequestParam("diaChiCuThe") String diaChiCuThe) {
+        Date date = new Date();
+        DiaChi diaChi = new DiaChi();
+        diaChi.setPhuongXa(phuongXa);
+        diaChi.setQuanHuyen(quanHuyen);
+        diaChi.setThanhPho(thanhPho);
+        diaChi.setDiaChiCuThe(diaChiCuThe);
+        diaChi.setTrangThai(1);
+        diaChi.setNgayTao(date);
+        diaChi.setNgaySua(date);
+        diaChi.setTaiKhoan(TaiKhoan.builder().id(idTaiKhoan).build());
+        diaChiService.save(diaChi);
+        return "redirect:/user/cart";
+    }
+
     @PostMapping("/user/dia-chi/update")
     public String updateDiaChi(
             @RequestParam("idDiaChi") Long idDiaChi,
