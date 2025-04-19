@@ -523,12 +523,13 @@
 
                                     <div class="row" th:if="${byHoaDon.trangThai!=6}">
                                         <div class="col-md-10 d-flex align-items-center">
+                                            <div th:each="url : ${#strings.listSplit(listHoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
                                             <img th:if="${listHoaDonCT.chiTietSanPham.sanPham != null && listHoaDonCT.chiTietSanPham.sanPham.hinhAnh != null}"
-                                                 th:src="@{|/uploads/${#strings.arraySplit(listHoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}|}"
+                                                 th:src="${url}"
                                                  alt="Hình ảnh sản phẩm"
                                                  style="width: 100px; height: auto;" />
 
-
+                                            </div>
                                             <div class="divider-line">
                                                 <h6 th:text="${listHoaDonCT.chiTietSanPham.sanPham.ten}">
                                                     </h6>
@@ -816,7 +817,7 @@
                                         13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
                                     </li>
                                     <li class="phone">
-                                        <a href="tel://23923929210">+84 377 463 664</a>
+                                        <a href="tel://23923929210">0867431821</a>
                                     </li>
                                     <li class="email">bachdung004@gmail.com</li>
                                 </ul>

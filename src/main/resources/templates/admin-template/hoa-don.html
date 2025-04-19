@@ -689,7 +689,7 @@
                                                 <td th:text="${hd.loaiHoaDon == 1 ? 'Online' : 'Offline'}"></td>
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}"></td>
-                                                <td th:text="${#numbers.formatDecimal(hd.getTongTienKhiGiam(), 0, 'POINT', 0, 'NONE')} + ' VND'"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.getTongTienKhiGiam(), 0, 'POINT', 0, 'NONE')} + ' VNĐ'"></td>
                                                 <td th:text="${hd.getStringTrangThai}">Trạng thái</td>
                                                 <td>
                                                     <button th:disabled="!${hd.trangThai==0||hd.trangThai==1||hd.trangThai==2}"
@@ -731,7 +731,7 @@
                                                 <td th:text="${hd.getLoaiHoaDon()} == 1?'Online':'Offline'">Online</td>
                                                 <td th:text="${hd.getNguoiNhan()}"></td>
                                                 <td th:text="${hd.getSdtNguoiNhan()}">0377463664</td>
-                                                <td th:text="${#numbers.formatDecimal(hd.getTongTienKhiGiam(), 0, 'POINT', 0, 'NONE')} + ' VND'"></td>
+                                                <td th:text="${#numbers.formatDecimal(hd.getTongTienKhiGiam(), 0, 'POINT', 0, 'NONE')} + ' VNĐ'"></td>
                                                 <td th:text="${hd.getStringTrangThai}">Trạng thái</td>
                                                 <td>
                                                     <button th:disabled="!${hd.trangThai==0||hd.trangThai==1||hd.trangThai==2}"

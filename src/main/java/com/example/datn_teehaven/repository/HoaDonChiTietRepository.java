@@ -107,28 +107,84 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
     @Query("SELECT SUM(hd.soLuong) FROM HoaDonChiTiet hd WHERE hd.trangThai=0 and (hd.hoaDon.trangThai =3 or hd.hoaDon.trangThai = 6) and MONTH(hd.hoaDon.ngayTao) = MONTH(:ngayTao)")
     Integer sumSanPhamHoaDonThang(@Param("ngayTao") Date ngayTao);
 
-    @Query(value = "WITH SumSoLuong AS (" +
-            "SELECT hdct.chi_tiet_san_pham_id, SUM(hdct.so_luong) as total_sold " +
-            "FROM hoa_don_chi_tiet hdct " +
-            "JOIN hoa_don hd ON hd.id = hdct.hoa_don_id " +
-            "WHERE hd.trang_thai = 3 " +
-            "GROUP BY hdct.chi_tiet_san_pham_id" +
-            ") " +
-            "SELECT TOP 10 hdct.* " +
-            "FROM hoa_don_chi_tiet hdct " +
-            "JOIN SumSoLuong ss ON hdct.chi_tiet_san_pham_id = ss.chi_tiet_san_pham_id " +
-            "JOIN hoa_don hd ON hd.id = hdct.hoa_don_id " +
-            "WHERE hd.trang_thai = 3 " +
-            "ORDER BY ss.total_sold DESC",
+    @Query(value = "WITH RankedSales AS (" +
+            "    SELECT" +
+            "        hdct.chi_tiet_san_pham_id," +
+            "        SUM(hdct.so_luong) as total_sold," +
+            "        ROW_NUMBER() OVER(ORDER BY SUM(hdct.so_luong) DESC) as sales_rank" +
+            "    FROM" +
+            "        hoa_don_chi_tiet hdct" +
+            "    JOIN" +
+            "        hoa_don hd ON hd.id = hdct.hoa_don_id" +
+            "    JOIN" +
+            "        chi_tiet_san_pham ctsp ON ctsp.id = hdct.chi_tiet_san_pham_id" +
+            "    JOIN" +
+            "        san_pham sp ON ctsp.san_pham_id = sp.id" +
+            "    WHERE" +
+            "        hd.trang_thai = 3" + // Consider if status 6 should also be included
+            "        AND hdct.trang_thai = 0" +
+            "        AND sp.trang_thai = 0" + // Ensure parent product is active
+            "    GROUP BY" +
+            "        hdct.chi_tiet_san_pham_id" +
+            "), Top5Variants AS (" +
+            "    SELECT chi_tiet_san_pham_id, total_sold" +
+            "    FROM RankedSales" +
+            "    WHERE sales_rank <= 10" + // Changed from 10 to 5
+            "), RepresentativeHDCT AS (" +
+            "    SELECT" +
+            "        hdct.*," +
+            "        ROW_NUMBER() OVER(PARTITION BY hdct.chi_tiet_san_pham_id ORDER BY hdct.id DESC) as rn" +
+            "    FROM" +
+            "        hoa_don_chi_tiet hdct" +
+            "    JOIN" +
+            "        Top5Variants t5 ON hdct.chi_tiet_san_pham_id = t5.chi_tiet_san_pham_id" +
+            "    WHERE " +
+            "        hdct.trang_thai = 0" + // Redundant check? No, ensure the chosen representative is active
+            ")" +
+            "SELECT" +
+            "    r.id, r.so_luong, r.don_gia, r.ghi_chu, r.ngay_tao, r.nguoi_tao, r.hoa_don_id, r.chi_tiet_san_pham_id, r.trang_thai " +
+            "FROM" +
+            "    RepresentativeHDCT r " +
+            "JOIN " +
+            "    Top5Variants t5 ON r.chi_tiet_san_pham_id = t5.chi_tiet_san_pham_id " + // Join to order by total_sold
+            "WHERE" +
+            "    r.rn = 1 " +
+            "ORDER BY" +
+            "    t5.total_sold DESC",
             nativeQuery = true)
     List<HoaDonChiTiet> findTop5BanChay();
 
-    @Query(value = "SELECT TOP 10 hdct.* " +
-            "FROM hoa_don_chi_tiet hdct " +
-            "JOIN chi_tiet_san_pham ctsp ON hdct.chi_tiet_san_pham_id = ctsp.id " +
-            "JOIN san_pham sp ON ctsp.san_pham_id = sp.id " +
-            "WHERE hdct.trang_thai = 0 " +
-            "ORDER BY sp.ngay_tao DESC",
+    @Query(value = "WITH RankedHoaDonChiTiet AS (" +
+            "    SELECT" +
+            "        hdct.*," +
+            "        sp.ngay_tao AS product_ngay_tao," +
+            "        ROW_NUMBER() OVER(PARTITION BY hdct.chi_tiet_san_pham_id ORDER BY sp.ngay_tao DESC, hdct.id DESC) as rn" +
+            "    FROM" +
+            "        hoa_don_chi_tiet hdct" +
+            "    JOIN" +
+            "        chi_tiet_san_pham ctsp ON hdct.chi_tiet_san_pham_id = ctsp.id" +
+            "    JOIN" +
+            "        san_pham sp ON ctsp.san_pham_id = sp.id" +
+            "    WHERE" +
+            "        hdct.trang_thai = 0" +
+            "        AND sp.trang_thai = 0" + // Ensure parent product is active
+            ")" +
+            "SELECT TOP 10" +
+            "    rhdct.id," +
+            "    rhdct.so_luong," +
+            "    rhdct.don_gia," +
+            "    rhdct.ghi_chu," +
+            "    rhdct.ngay_tao," +
+            "    rhdct.nguoi_tao," +
+            "    rhdct.hoa_don_id," +
+            "    rhdct.chi_tiet_san_pham_id," +
+            "    rhdct.trang_thai " +
+            "FROM" +
+            "    RankedHoaDonChiTiet rhdct " +
+            "WHERE" +
+            "    rhdct.rn = 1 " +
+            "ORDER BY" +
+            "    rhdct.product_ngay_tao DESC",
             nativeQuery = true)
     List<HoaDonChiTiet> findTop10SanPhamMoi();
 }
