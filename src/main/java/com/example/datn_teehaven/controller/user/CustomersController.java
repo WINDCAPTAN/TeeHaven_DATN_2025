@@ -19,6 +19,7 @@ import com.example.datn_teehaven.service.MauSacService;
 import com.example.datn_teehaven.service.TaiKhoanService;
 import com.example.datn_teehaven.service.TayAoService;
 import com.example.datn_teehaven.service.ThuongHieuService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -477,14 +478,18 @@ public class CustomersController {
     public String donMuaChiTiet(
             @PathVariable("idHoaDon") Long idHoaDon,
             Model model) {
-        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+
         model.addAttribute("soLuongSPGioHangCT",
-                gioHangChiTietService.soLuongSPGioHangCT((khachHang.getGioHang() != null ? khachHang.getGioHang().getId() : null)));
+                gioHangChiTietService.soLuongSPGioHangCT(null));
+
         model.addAttribute("byHoaDon", hoaDonService.findById(idHoaDon));
         model.addAttribute("listLichSuHoaDon", lichSuHoaDonService.findByIdhdNgaySuaAsc(idHoaDon));
-        System.out.println(lichSuHoaDonService.findById(idHoaDon));
+
         return "/customer-template/don-mua-chi-tiet";
     }
+
+
+
 
 }
 //huynh1

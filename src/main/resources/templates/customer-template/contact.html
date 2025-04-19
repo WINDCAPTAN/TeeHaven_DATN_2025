@@ -96,7 +96,10 @@
                             <ul class="nav nav-pills" style="margin-left: 54%">
                                 <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
                                             Tôi</a>
@@ -107,19 +110,19 @@
                                 </li>
                                 <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
-
                                     </ul>
                                 </li>
 
-                                <!--                                <li class="nav-item" style="margin-left: -15%">-->
-                                <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
-                                <!--                                </li>-->
                                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
                                     <a class="site-cart" href="/user/cart">
-                                        <span class="icon icon-shopping_cart"></span>
+                                        <!-- Updated shopping cart icon -->
+                                        <i class="fa-solid fa-cart-shopping"></i>
                                         <span class="count" th:if="${checkDangNhap=='true'}"
                                               th:text="${soLuongSPGioHangCT}"></span>
                                     </a>

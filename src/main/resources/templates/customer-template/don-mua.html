@@ -105,9 +105,12 @@
                     <div class="col-6 col-md-4 order-3 order-md-3 text-right">
                         <div class="site-top-icons">
                             <ul class="nav nav-pills" style="margin-left: 54%">
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
                                             Tôi</a>
@@ -116,14 +119,23 @@
                                         <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
                                     </ul>
                                 </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+                                    </ul>
+                                </li>
 
-                                <!--                                <li class="nav-item" style="margin-left: -15%">-->
-                                <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
-                                <!--                                </li>-->
                                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
                                     <a class="site-cart" href="/user/cart">
-                                        <span class="icon icon-shopping_cart"></span>
-                                        <span class="count" th:text="${soLuongSPGioHangCT}"></span>
+                                        <!-- Updated shopping cart icon -->
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        <span class="count" th:if="${checkDangNhap=='true'}"
+                                              th:text="${soLuongSPGioHangCT}"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -348,7 +360,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span th:text="${#numbers.formatDecimal(listHoaDonCT.donGia, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -362,9 +374,12 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>
-                                                    </div>
+                                                        <h5 th:if="${allHoaDon.trangThai != 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5>
+                                                        <h5 th:if="${allHoaDon.trangThai == 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDon() + allHoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5></div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
@@ -727,7 +742,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span th:text="${#numbers.formatDecimal(listHoaDonCT.donGia, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -738,9 +753,12 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>
-                                                    </div>
+                                                        <h5 th:if="${allHoaDon.trangThai != 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5>
+                                                        <h5 th:if="${allHoaDon.trangThai == 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDon() + allHoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5> </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
@@ -895,7 +913,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span th:text="${#numbers.formatDecimal(listHoaDonCT.donGia, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -906,9 +924,12 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>                                                    </div>
-                                                </div>
+                                                        <h5 th:if="${allHoaDon.trangThai != 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5>
+                                                        <h5 th:if="${allHoaDon.trangThai == 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDon() + allHoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5> </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
                                                         <form
@@ -1062,7 +1083,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span th:text="${#numbers.formatDecimal(listHoaDonCT.donGia, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -1073,8 +1094,13 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>                                                    </div>
+                                                        <h5 th:if="${allHoaDon.trangThai != 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5>
+                                                        <h5 th:if="${allHoaDon.trangThai == 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDon() + allHoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
@@ -1083,6 +1109,7 @@
                                                 </div>
                                             </div>
                                         </section>
+
                                     </td>
                                 </tr>
                                 </tbody>
@@ -1158,7 +1185,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span th:text="${#numbers.formatDecimal(listHoaDonCT.donGia, 0, 'COMMA', 0, 'POINT') + ' VND'}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -1169,8 +1196,13 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>                                                    </div>
+                                                        <h5 th:if="${allHoaDon.trangThai != 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5>
+                                                        <h5 th:if="${allHoaDon.trangThai == 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDon() + allHoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
@@ -1182,6 +1214,7 @@
                                                 </div>
                                             </div>
                                         </section>
+
                                     </td>
                                 </tr>
                                 </tbody>
@@ -1590,9 +1623,12 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>
-                                                    </div>
+                                                        <h5 th:if="${allHoaDon.trangThai != 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5>
+                                                        <h5 th:if="${allHoaDon.trangThai == 6}">
+                                                            [[${#numbers.formatDecimal(allHoaDon.tongTienHoaDon() + allHoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]] VND
+                                                        </h5> </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
