@@ -3,6 +3,7 @@ package com.example.datn_teehaven.service;
 
 
 
+import com.example.datn_teehaven.entyti.HoaDon;
 import com.example.datn_teehaven.entyti.LichSuHoaDon;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,6 @@ public interface LichSuHoaDonService {
 
     List<LichSuHoaDon> findByIdhdNgaySuaAsc(Long idhd);
 
+     void saveLichSuHoaDon(HoaDon hoaDon);
 
 }

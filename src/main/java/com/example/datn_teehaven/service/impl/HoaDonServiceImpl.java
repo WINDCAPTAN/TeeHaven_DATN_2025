@@ -3,7 +3,12 @@ package com.example.datn_teehaven.service.impl;
 
 
 
+import com.example.datn_teehaven.entyti.ChiTietSanPham;
 import com.example.datn_teehaven.entyti.HoaDon;
+import com.example.datn_teehaven.entyti.HoaDonChiTiet;
+import com.example.datn_teehaven.entyti.LichSuHoaDon;
+import com.example.datn_teehaven.entyti.SanPham;
+import com.example.datn_teehaven.repository.HoaDonChiTietRepository;
 import com.example.datn_teehaven.repository.HoaDonRepository;
 import com.example.datn_teehaven.service.HoaDonService;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
@@ -13,6 +18,7 @@ import com.example.datn_teehaven.repository.HoaDonRepository;
 import com.example.datn_teehaven.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +33,8 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Autowired
     LichSuHoaDonService lichSuHoaDonService;
 
-
+    @Autowired
+    private HoaDonChiTietRepository chiTietHoaDonRepository;
     @Override
     public List<HoaDon> findAll() {
         return hoaDonRepository.findAll();
@@ -53,7 +60,11 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     public void saveOrUpdate(HoaDon hoaDon) {
+        // Lưu hoặc cập nhật hóa đơn
         hoaDonRepository.save(hoaDon);
+
+        // Lưu lịch sử trạng thái sau khi thay đổi trạng thái hóa đơn
+        lichSuHoaDonService.saveLichSuHoaDon(hoaDon);
     }
 
 
@@ -146,5 +157,6 @@ public class HoaDonServiceImpl implements HoaDonService {
     public Long sumGiaTriHoaDonAll() {
         return hoaDonRepository.sumGiaTriHoaDonAll();
     }
+
 
 }

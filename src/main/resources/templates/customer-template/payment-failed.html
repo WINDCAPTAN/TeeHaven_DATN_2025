@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+  <title>Tee Haven - Thanh toán thất bại</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link href="../../static/img/logo_teehaven.png" rel="icon">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700" />
+  <link rel="stylesheet" href="../../static/fonts/icomoon/style.css" />
+  <link rel="stylesheet" href="../../static/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../../static/css/magnific-popup.css" />
+  <link rel="stylesheet" href="../../static/css/jquery-ui.css" />
+  <link rel="stylesheet" href="../../static/css/owl.carousel.min.css" />
+  <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css" />
+  <link rel="stylesheet" href="../../static/css/aos.css" />
+  <link rel="stylesheet" href="../../static/css/style-customer-template.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    .payment-failed-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    .failed-icon {
+      font-size: 80px;
+      color: #dc3545;
+      margin-bottom: 20px;
+    }
+    .payment-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .payment-header h2 {
+      color: #dc3545;
+      font-size: 2.5rem;
+      margin: 20px 0;
+    }
+    .error-info {
+      background: #fff8f8;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      border: 1px solid #ffebee;
+    }
+    .error-info h4 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+      border-bottom: 2px solid #dc3545;
+      padding-bottom: 10px;
+    }
+    .error-details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .error-detail-item {
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #ffebee;
+    }
+    .error-detail-item label {
+      display: block;
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+    .error-detail-item .value {
+      color: #333;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    .status-failed {
+      background: #dc3545;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      display: inline-block;
+      font-size: 0.9rem;
+    }
+    .action-buttons {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .action-buttons .btn {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      margin: 0 10px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+    }
+    .btn-danger {
+      background-color: #dc3545;
+      border-color: #dc3545;
+    }
+    .btn-danger:hover {
+      background-color: #c82333;
+      border-color: #bd2130;
+    }
+    .btn-outline-danger {
+      color: #dc3545;
+      border-color: #dc3545;
+    }
+    .btn-outline-danger:hover {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: #fff;
+    }
+    .error-note {
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+    }
+    .error-message {
+      background: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .help-section {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    .help-section h5 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+    .help-section ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .help-section ul li {
+      margin-bottom: 10px;
+      color: #666;
+    }
+    .help-section ul li i {
+      color: #dc3545;
+      margin-right: 10px;
+    }
+    @media (max-width: 768px) {
+      .error-details {
+        grid-template-columns: 1fr;
+      }
+      .action-buttons .btn {
+        display: block;
+        margin: 10px auto;
+        width: 80%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="site-wrap">
+  <header class="site-navbar" role="banner">
+    <div class="site-navbar-top">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+            <div class="site-logo">
+              <a href="/home" class="js-logo-clone">Tee Haven</a>
+            </div>
+          </div>
+
+          <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+            <div class="site-top-icons">
+              <ul class="nav nav-pills" style="margin-left: 54%">
+                <li class="nav-item dropdown" >
+                  <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                     role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của Tôi</a></li>
+                    <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                    <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                  <a class="site-cart" href="/user/cart">
+                    <span class="icon icon-shopping_cart"></span>
+                    <span class="count" th:text="${soLuongSPGioHangCT}"></span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="site-navigation text-right text-md-center" role="navigation">
+      <div class="container">
+        <ul class="site-menu js-clone-nav d-none d-md-block">
+          <li><a href="/home">Trang chủ</a></li>
+          <li><a href="/shop">Sản phẩm</a></li>
+          <li><a href="/about">Về chúng tôi</a></li>
+          <li><a href="/lien-he">Liên hệ</a></li>
+          <li><a href="/chinh-sach">Chính Sách</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <div class="bg-light py-3">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 mb-0">
+          <a href="/home">Trang chủ</a> <span class="mx-2 mb-0">/</span>
+          <strong class="text-black">Thanh toán thất bại</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="site-section">
+    <div class="container">
+      <div class="payment-failed-container">
+        <div class="payment-header">
+          <i class="fas fa-times-circle failed-icon"></i>
+          <h2>Thanh toán thất bại!</h2>
+          <p>Rất tiếc, giao dịch của bạn không thể hoàn tất</p>
+        </div>
+
+        <div class="error-message">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span th:text="${paymentError}">Lỗi thanh toán</span>
+        </div>
+
+        <div class="error-info">
+          <h4><i class="fas fa-info-circle"></i> Thông tin giao dịch</h4>
+          <div class="error-details">
+            <div class="error-detail-item">
+              <label>Mã giao dịch</label>
+              <div class="value" th:text="${transactionId}">97981056</div>
+            </div>
+            <div class="error-detail-item">
+              <label>Số tiền</label>
+              <div class="value" th:text="${#numbers.formatDecimal(amount/100, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">2.999.000 VNĐ</div>
+            </div>
+            <div class="error-detail-item">
+              <label>Thời gian</label>
+              <div class="value" th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy HH:mm:ss')}"></div>
+            </div>
+            <div class="error-detail-item">
+              <label>Trạng thái</label>
+              <div class="value">
+                <span class="status-failed">
+                  <i class="fas fa-times-circle"></i> Thất bại
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="help-section">
+          <h5><i class="fas fa-question-circle"></i> Bạn có thể thử các cách sau:</h5>
+          <ul>
+            <li><i class="fas fa-check"></i> Kiểm tra lại thông tin thẻ/tài khoản</li>
+            <li><i class="fas fa-check"></i> Đảm bảo số dư tài khoản đủ để thanh toán</li>
+            <li><i class="fas fa-check"></i> Thử lại với phương thức thanh toán khác</li>
+            <li><i class="fas fa-check"></i> Liên hệ ngân hàng nếu tiền đã bị trừ</li>
+          </ul>
+        </div>
+
+        <div class="action-buttons">
+          <a href="/checkout" class="btn btn-danger">
+            <i class="fas fa-redo"></i> Thử lại
+          </a>
+          <a href="/user/cart" class="btn btn-outline-danger">
+            <i class="fas fa-shopping-cart"></i> Quay lại giỏ hàng
+          </a>
+        </div>
+
+        <div class="error-note">
+          <p><i class="fas fa-headset"></i> Nếu bạn cần hỗ trợ, vui lòng liên hệ: <a href="tel:0123456789">0123456789</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer border-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="row">
+            <div class="col-md-12">
+              <h3 class="footer-heading mb-4">Thông tin</h3>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <ul class="list-unstyled">
+                <li><a href="/shop">Sản phẩm</a></li>
+                <li><a href="/about">Về chúng tôi</a></li>
+                <li><a href="/lien-he">Liên hệ</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="block-5 mb-5">
+            <h3 class="footer-heading mb-4">Thông tin liên hệ</h3>
+            <ul class="list-unstyled">
+              <li class="address">Địa chỉ của bạn</li>
+              <li class="phone"><a href="tel://0123456789">0123456789</a></li>
+              <li class="email">email@teehaven.com</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/jquery-ui.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../../static/js/aos.js"></script>
+<script src="../../static/js/main.js"></script>
+</body>
+</html> 

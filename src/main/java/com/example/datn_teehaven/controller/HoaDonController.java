@@ -9,6 +9,7 @@ import com.example.datn_teehaven.entyti.HoaDonChiTiet;
 import com.example.datn_teehaven.entyti.LichSuHoaDon;
 import com.example.datn_teehaven.entyti.TaiKhoan;
 import com.example.datn_teehaven.entyti.Voucher;
+import com.example.datn_teehaven.repository.LichSuHoaDonRepository;
 import com.example.datn_teehaven.service.ChiTietSanPhamSerivce;
 import com.example.datn_teehaven.service.DiaChiService;
 import com.example.datn_teehaven.service.HoaDonChiTietService;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Controller
 @RequestMapping("/hoa-don")
@@ -66,6 +68,9 @@ public class HoaDonController {
     @Autowired
     private SanPhamService sanPhamService;
     private PrincipalCustom principalCustom = new PrincipalCustom();
+
+    @Autowired
+    LichSuHoaDonRepository lichSuHoaDonRepository;
 
     @GetMapping("/quan-ly")
     public String quanLyHoaDon(Model model) {
@@ -118,15 +123,23 @@ public class HoaDonController {
         }
 
     }
-    public void addLichSuHoaDon(Long idHoaDon, String ghiChu, Integer trangThai) {
-        HoaDon hd = hoaDonService.findById(idHoaDon);
-        LichSuHoaDon lshd = new LichSuHoaDon();
-        lshd.setHoaDon(hd);
-        lshd.setGhiChu(ghiChu);
-        lshd.setTrangThai(trangThai);
+    public void addLichSuHoaDon(Long idHoaDon, String ghiChu, Integer trangThaiMoi) {
+        HoaDon hoaDon = hoaDonService.findById(idHoaDon);
+        if (hoaDon == null) return;
 
-        lichSuHoaDonService.saveOrUpdate(lshd);
+        LichSuHoaDon cuoi = lichSuHoaDonRepository.findTopByHoaDonOrderByNgaySuaDesc(hoaDon);
+        if (cuoi == null || !cuoi.getTrangThai().equals(trangThaiMoi)) {
+            LichSuHoaDon lichSu = new LichSuHoaDon();
+            lichSu.setHoaDon(hoaDon);
+            lichSu.setTrangThai(trangThaiMoi);
+            lichSu.setGhiChu(ghiChu);
+            lichSu.setNgaySua(new Date());
+
+            lichSuHoaDonRepository.save(lichSu);
+        }
     }
+
+
     private void updateSL(HoaDon hd) {
         List<HoaDonChiTiet> lstHdct = hoaDonService.findById(hd.getId()).getLstHoaDonChiTiet();
         for (HoaDonChiTiet hdct : lstHdct) {
@@ -340,6 +353,11 @@ public class HoaDonController {
             thongBao(redirectAttributes, "Có sản phẩm vượt quá số lượng vui lòng kiểm tra lại", 0);
             return "redirect:/hoa-don/detail/" + idHoaDon;
         }
+        if (hd.getTrangThai() == 0) {
+            // If order is moving from "waiting for confirmation" to "confirmed"
+            updateSL(hd); // Reduce product quantities in inventory
+        }
+
         hd.setTrangThai(hd.getTrangThai() + 1);
         addLichSuHoaDon(idHoaDon, ghiChu, hd.getTrangThai());
         hoaDonService.saveOrUpdate(hd);
