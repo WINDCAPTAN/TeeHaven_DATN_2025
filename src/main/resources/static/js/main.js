@@ -379,12 +379,20 @@ function submitForm() {
     // Check if files have been selected
     var fileInput = document.getElementById("file--input");
     if (fileInput.files.length === 0) {
-        // alert("Không được để ảnh trống")
         var errorMsg = document.getElementById("error-msg");
         errorMsg.textContent = "Không được để trống ảnh"
         return false
-    } else {
-        return true
     }
+
+    // Validate special characters in product name
+    var productName = document.getElementById("themSanPham").value;
+    var specialCharRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialCharRegex.test(productName)) {
+        var errorMsg = document.getElementById("error-msg");
+        errorMsg.textContent = "Tên sản phẩm không được chứa ký tự đặc biệt";
+        return false;
+    }
+
+    return true;
 }
 // *******************************ảnh end********************
