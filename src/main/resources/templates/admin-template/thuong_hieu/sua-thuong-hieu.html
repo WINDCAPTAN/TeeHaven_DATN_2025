@@ -400,7 +400,7 @@
               <i class=" bi bi-arrow-left-circle-fill"></i>
             </a>
             <!-- form thêm thuộc tính -->
-            <form method="post" style="width: 55%;margin: auto"   th:action="@{/admin/thuong-hieu/update}"  th:object="${thuongHieu}">
+            <form method="post" style="width: 55%;margin: auto" th:action="@{/admin/thuong-hieu/update}" th:object="${thuongHieu}" onsubmit="return validateThuongHieu()">
               <input type="hidden" th:field="*{id}" name="id">
               <h1 class="modal-title fs-5"
                   style="text-align: center;;margin-top: 10%;margin-bottom: 5%;">Cập Nhật
@@ -413,10 +413,10 @@
                 </label>
                 <div class="col-sm-8">
                   <input type="text" class="form-control" placeholder="Nhập tên thương hiệu"
-                         th:field="*{ten}"/>
+                         th:field="*{ten}" id="ten" onkeyup="validateThuongHieuInput(this)"/>
                   <span class="check-loi" th:errors="*{ten}"></span>
                   <span class="check-loi" th:text="${checkTenTrung}"></span>
-
+                  <span class="check-loi" id="thuongHieuError"></span>
                 </div>
               </div>
               <fieldset class="row mb-3">
@@ -508,6 +508,40 @@
         class="bi bi-arrow-up-short"></i></a>
 
 <div th:replace="~{admin-template/fragment/script :: script}"></div>
+
+<script>
+function validateThuongHieuInput(input) {
+    const value = input.value;
+    const errorElement = document.getElementById('thuongHieuError');
+    
+    // Kiểm tra khoảng trống ở đầu và cuối
+    if (value.trim() !== value) {
+        errorElement.textContent = 'Không được chứa khoảng trống ở đầu hoặc cuối';
+        return false;
+    }
+    
+    // Kiểm tra ký tự đặc biệt
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(value)) {
+        errorElement.textContent = 'Không được chứa ký tự đặc biệt';
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống liên tiếp
+    if (value.includes('  ')) {
+        errorElement.textContent = 'Không được chứa khoảng trống liên tiếp';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateThuongHieu() {
+    const input = document.getElementById('ten');
+    return validateThuongHieuInput(input);
+}
+</script>
 
 </body>
 

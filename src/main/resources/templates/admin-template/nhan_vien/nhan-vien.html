@@ -474,21 +474,24 @@
                                               enctype="multipart/form-data"
                                               th:action="@{/admin/nhan-vien/add}"
                                               th:object="${nhanVien}"
+                                              onsubmit="return validateNhanVien()"
                                         >
                                             <div class="col-md-6">
                                                 <label class="form-label">
                                                     <span class="dau-sao">*</span>Tên tài khoản:</label>
                                                 <input type="text" class="form-control"
-                                                       placeholder="Nhập tên tài khoản" th:field="*{tenTaiKhoan}">
+                                                       placeholder="Nhập tên tài khoản" th:field="*{tenTaiKhoan}" onkeyup="validateNhanVienInput(this, 'tenTaiKhoan')">
                                                 <span class="check-loi" th:errors="*{tenTaiKhoan}"></span>
                                                 <span class="check-loi" th:text="${checkTenTrung}"></span>
+                                                <span class="check-loi" id="tenTaiKhoanError"></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">
                                                     <span class="dau-sao">*</span>Tên nhân viên:</label>
                                                 <input type="text" class="form-control" placeholder="Nhập tên nhân viên"
-                                                       th:field="*{hoVaTen}">
+                                                       th:field="*{hoVaTen}" onkeyup="validateNhanVienInput(this, 'hoVaTen')">
                                                 <span class="check-loi" th:errors="*{hoVaTen}"></span>
+                                                <span class="check-loi" id="hoVaTenError"></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">
@@ -536,8 +539,8 @@
                                                 <label class="form-label">
                                                     <span class="dau-sao">*</span>Email:</label>
                                                 <input type="email" class="form-control" placeholder="Nhập email"
-                                                       th:field="*{email}">
-                                                <span class="check-loi" th:errors="*{email}"></span>
+                                                       th:field="*{email}" id="email" onblur="validateEmail(this)">
+                                                <span class="check-loi" id="emailError"></span>
                                                 <span class="check-loi" th:text="${checkEmailTrung}"></span>
                                             </div>
 
@@ -744,5 +747,58 @@
         /* Xóa nội dung */
     }
 </style>
+
+<script>
+function validateEmail(input) {
+    var emailError = document.getElementById('emailError');
+    var email = input.value.trim();
+    var emailPattern = /^[A-Za-z0-9+_.-]+@(.+)$/;
+    
+    if(email === '') {
+        emailError.textContent = 'Email không được bỏ trống';
+    } else if(!emailPattern.test(email)) {
+        emailError.textContent = 'Email không hợp lệ';
+    } else {
+        emailError.textContent = '';
+    }
+}
+
+function validateNhanVienInput(input, fieldName) {
+    const value = input.value;
+    const errorElement = document.getElementById(fieldName + 'Error');
+    
+    // Kiểm tra khoảng trống ở đầu và cuối
+    if (value.trim() !== value) {
+        errorElement.textContent = 'Không được chứa khoảng trống ở đầu hoặc cuối';
+        return false;
+    }
+    
+    // Kiểm tra ký tự đặc biệt
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(value)) {
+        errorElement.textContent = 'Không được chứa ký tự đặc biệt';
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống liên tiếp
+    if (value.includes('  ')) {
+        errorElement.textContent = 'Không được chứa khoảng trống liên tiếp';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateNhanVien() {
+    const tenTaiKhoan = document.querySelector('input[th\\:field="*{tenTaiKhoan}"]');
+    const hoVaTen = document.querySelector('input[th\\:field="*{hoVaTen}"]');
+    
+    const validTenTaiKhoan = validateNhanVienInput(tenTaiKhoan, 'tenTaiKhoan');
+    const validHoVaTen = validateNhanVienInput(hoVaTen, 'hoVaTen');
+    
+    return validTenTaiKhoan && validHoVaTen;
+}
+</script>
 
 </html>

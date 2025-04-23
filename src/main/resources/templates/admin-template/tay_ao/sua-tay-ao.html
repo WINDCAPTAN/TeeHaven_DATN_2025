@@ -397,7 +397,7 @@
                             <a class="btn btn-link" style="float: left; margin-top: 1%;" href="/admin/tay-ao">
                                 <i class="bi bi-arrow-left-circle-fill"></i>
                             </a>
-                            <form method="post" style="width: 55%; margin: auto;" th:action="@{/admin/tay-ao/update}" th:object="${tayAo}">
+                            <form method="post" style="width: 55%; margin: auto;" th:action="@{/admin/tay-ao/update}" th:object="${tayAo}" onsubmit="return validateTayAo()">
                                 <input type="hidden" th:field="*{id}" name="id">
                                 <h1 class="modal-title fs-5" style="text-align: center; margin-top: 10%; margin-bottom: 5%;">Cập Nhật Tay Áo</h1>
 
@@ -406,9 +406,10 @@
                                         <span style="color: red;">*</span> Tay Áo
                                     </label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control" placeholder="Nhập Tay áo" th:field="*{ten}" id="ten"/>
+                                        <input type="text" class="form-control" placeholder="Nhập Tay áo" th:field="*{ten}" id="ten" onkeyup="validateTayAoInput(this)"/>
                                         <span class="check-loi" th:if="${#fields.hasErrors('ten')}" th:errors="*{ten}"></span>
                                         <span class="check-loi" th:text="${checkTenTrung}"></span>
+                                        <span class="check-loi" id="tayAoError"></span>
                                     </div>
                                 </div>
 
@@ -464,6 +465,40 @@
 <div th:replace="~{admin-template/fragment/script :: script}"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+<script>
+function validateTayAoInput(input) {
+    const value = input.value;
+    const errorElement = document.getElementById('tayAoError');
+    
+    // Kiểm tra khoảng trống ở đầu và cuối
+    if (value.trim() !== value) {
+        errorElement.textContent = 'Không được chứa khoảng trống ở đầu hoặc cuối';
+        return false;
+    }
+    
+    // Kiểm tra ký tự đặc biệt
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(value)) {
+        errorElement.textContent = 'Không được chứa ký tự đặc biệt';
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống liên tiếp
+    if (value.includes('  ')) {
+        errorElement.textContent = 'Không được chứa khoảng trống liên tiếp';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateTayAo() {
+    const input = document.getElementById('ten');
+    return validateTayAoInput(input);
+}
+</script>
 
 </body>
 

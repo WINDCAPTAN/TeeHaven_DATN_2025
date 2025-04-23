@@ -238,6 +238,23 @@ public class BanHangController {
         TaiKhoan userInfo = taiKhoan;
         TaiKhoan taiKhoanEntity = new TaiKhoan();
         taiKhoanEntity.setNgaySinh(taiKhoan.getNgaySinh());
+        
+        // Validate tên khách hàng
+        if (taiKhoan.getHoVaTen() == null || taiKhoan.getHoVaTen().trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("errorHoVaTen", "Vui lòng nhập họ và tên");
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        }
+        
+        // Kiểm tra tên khách hàng chỉ chứa chữ cái và dấu cách
+        if (!taiKhoan.getHoVaTen().matches("^[a-zA-ZÀ-ỹ\\s]+$")) {
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("errorHoVaTen", "Họ và tên chỉ được chứa chữ cái và dấu cách");
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        }
+        
         if (!taiKhoanEntity.isValidNgaySinh()) {
             redirectAttributes.addFlashAttribute("checkModal", "modal");
             redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
@@ -269,7 +286,6 @@ public class BanHangController {
             userInfo.setTrangThai(0);
             userInfo.setVaiTro(vaiTro);
             khachHangService.update(userInfo);
-
 
             return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
         }

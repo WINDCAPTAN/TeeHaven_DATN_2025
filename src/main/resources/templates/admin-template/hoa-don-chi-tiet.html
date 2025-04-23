@@ -845,13 +845,10 @@
                                                         khoản:</label>
                                                     <input type="text" class="form-control"
                                                            placeholder="Nhập tên tài khoản"
-                                                           th:field="*{tenTaiKhoan}">
-                                                    <!-- <span class="check-loi" th:errors="*{tenTaiKhoan}"></span> -->
-                                                    <span id="errorTenTaiKhoan"
-                                                          class="check-loi"
-                                                          th:text="${checkTenTrung}"></span>
-                                                    <!-- <span class="check-loi"
-                                                    id="errorTenTaiKhoan"></span> -->
+                                                           th:field="*{tenTaiKhoan}" onkeyup="validateKhachHangInput(this, 'tenTaiKhoan')">
+                                                    <span class="check-loi" th:errors="*{tenTaiKhoan}"></span>
+                                                    <span class="check-loi" th:text="${checkTenTrung}"></span>
+                                                    <span class="check-loi" id="tenTaiKhoanError"></span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">
@@ -860,11 +857,9 @@
                                                         hàng:</label>
                                                     <input type="text" class="form-control"
                                                            placeholder="Nhập khách hàng"
-                                                           th:field="*{hoVaTen}">
-                                                    <span class="check-loi"
-                                                          id="errorHoVaTen"></span>
-
-                                                    <!-- <span class="check-loi" th:errors="*{hoVaTen}"></span> -->
+                                                           th:field="*{hoVaTen}" onkeyup="validateKhachHangInput(this, 'hoVaTen')">
+                                                    <span class="check-loi" th:errors="*{hoVaTen}"></span>
+                                                    <span class="check-loi" id="hoVaTenError"></span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">
@@ -913,7 +908,7 @@
                                                         thoại:</label>
                                                     <input type="text" class="form-control"
                                                            placeholder="Nhập số điện thoại"
-                                                           th:field="*{soDienThoai}">
+                                                           th:field="*{soDienThoai}" onkeyup="validateKhachHangInput(this, 'soDienThoai')">
                                                     <!-- <span class="check-loi" th:errors="*{soDienThoai}"></span> -->
                                                     <span class="check-loi"
                                                           id="errorsoDienThoai"></span>
@@ -925,7 +920,7 @@
                                                                                             class="dau-sao">*</span>Email:</label>
                                                     <input type="email" class="form-control"
                                                            placeholder="Nhập email"
-                                                           th:field="*{email}" name="email">
+                                                           th:field="*{email}" name="email" onkeyup="validateKhachHangInput(this, 'email')">
                                                     <!-- <span class="check-loi" th:errors="*{email}"></span> -->
 
                                                     <span id="errorEmail" class="check-loi"
@@ -2689,6 +2684,170 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Hàm kiểm soát hiển thị modal
+    function showErrorModal() {
+        const modal = new bootstrap.Modal(document.getElementById('them-khach-hang'));
+        
+        // Ngăn modal tự động đóng và reset
+        $('#them-khach-hang').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true
+        });
+        
+        // Thêm nút đóng modal
+        const closeButton = document.createElement('button');
+        closeButton.className = 'btn btn-secondary';
+        closeButton.textContent = 'Đóng';
+        closeButton.onclick = function() {
+            modal.hide();
+        };
+        
+        // Thêm nút đóng vào modal footer
+        const modalFooter = document.querySelector('#them-khach-hang .modal-footer');
+        if (modalFooter && !modalFooter.querySelector('.btn-secondary')) {
+            modalFooter.appendChild(closeButton);
+        }
+    }
+
+    // Kiểm tra nếu có thông báo lỗi thì hiển thị modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkThongBao = '[[${checkThongBao}]]';
+        const errorHoVaTen = '[[${errorHoVaTen}]]';
+        
+        if (checkThongBao === 'thaiBai' && errorHoVaTen) {
+            // Sử dụng setTimeout để đảm bảo DOM đã load xong
+            setTimeout(function() {
+                showErrorModal();
+            }, 100);
+        }
+    });
+
+    function validThemKhachHang() {
+        let isValid = true;
+        const hoVaTen = document.getElementById('hoVaTen').value.trim();
+        const errorHoVaTen = document.getElementById('errorHoVaTen');
+        
+        // Validate tên khách hàng
+        if (hoVaTen === '') {
+            errorHoVaTen.textContent = 'Vui lòng nhập họ và tên';
+            errorHoVaTen.style.color = 'red';
+            isValid = false;
+        } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(hoVaTen)) {
+            errorHoVaTen.textContent = 'Họ và tên chỉ được chứa chữ cái và dấu cách';
+            errorHoVaTen.style.color = 'red';
+            isValid = false;
+        } else {
+            errorHoVaTen.textContent = '';
+        }
+
+        // Các validate khác giữ nguyên
+        const email = document.getElementById('email').value;
+        const errorEmail = document.getElementById('errorEmail');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (email === '') {
+            errorEmail.textContent = 'Vui lòng nhập email';
+            errorEmail.style.color = 'red';
+            isValid = false;
+        } else if (!emailRegex.test(email)) {
+            errorEmail.textContent = 'Email không hợp lệ';
+            errorEmail.style.color = 'red';
+            isValid = false;
+        } else {
+            errorEmail.textContent = '';
+        }
+
+        const soDienThoai = document.getElementById('soDienThoai').value;
+        const errorSoDienThoai = document.getElementById('errorSoDienThoai');
+        const phoneRegex = /^0[0-9]{9}$/;
+
+        if (soDienThoai === '') {
+            errorSoDienThoai.textContent = 'Vui lòng nhập số điện thoại';
+            errorSoDienThoai.style.color = 'red';
+            isValid = false;
+        } else if (!phoneRegex.test(soDienThoai)) {
+            errorSoDienThoai.textContent = 'Số điện thoại không hợp lệ';
+            errorSoDienThoai.style.color = 'red';
+            isValid = false;
+        } else {
+            errorSoDienThoai.textContent = '';
+        }
+
+        return isValid;
+    }
+</script>
+
+<script>
+function validateKhachHangInput(input, fieldName) {
+    const value = input.value;
+    const errorElement = document.getElementById(fieldName + 'Error');
+    
+    // Kiểm tra khoảng trống ở đầu và cuối
+    if (value.trim() !== value) {
+        errorElement.textContent = 'Không được chứa khoảng trống ở đầu hoặc cuối';
+        return false;
+    }
+    
+    // Kiểm tra ký tự đặc biệt
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(value)) {
+        errorElement.textContent = 'Không được chứa ký tự đặc biệt';
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống liên tiếp
+    if (value.includes('  ')) {
+        errorElement.textContent = 'Không được chứa khoảng trống liên tiếp';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validThemKhachHang() {
+    const tenTaiKhoan = document.querySelector('input[th\\:field="*{tenTaiKhoan}"]');
+    const hoVaTen = document.querySelector('input[th\\:field="*{hoVaTen}"]');
+    
+    const validTenTaiKhoan = validateKhachHangInput(tenTaiKhoan, 'tenTaiKhoan');
+    const validHoVaTen = validateKhachHangInput(hoVaTen, 'hoVaTen');
+    
+    // Validate email
+    const email = document.querySelector('input[th\\:field="*{email}"]');
+    const emailError = document.getElementById('errorEmail');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    if (!email.value) {
+        emailError.textContent = 'Email không được để trống';
+        return false;
+    } else if (!emailRegex.test(email.value)) {
+        emailError.textContent = 'Email không hợp lệ';
+        return false;
+    } else {
+        emailError.textContent = '';
+    }
+    
+    // Validate số điện thoại
+    const soDienThoai = document.querySelector('input[th\\:field="*{soDienThoai}"]');
+    const soDienThoaiError = document.getElementById('errorsoDienThoai');
+    const phoneRegex = /^0[0-9]{9}$/;
+    
+    if (!soDienThoai.value) {
+        soDienThoaiError.textContent = 'Số điện thoại không được để trống';
+        return false;
+    } else if (!phoneRegex.test(soDienThoai.value)) {
+        soDienThoaiError.textContent = 'Số điện thoại không hợp lệ';
+        return false;
+    } else {
+        soDienThoaiError.textContent = '';
+    }
+    
+    return validTenTaiKhoan && validHoVaTen;
+}
+</script>
 
 </body>
 </html>
