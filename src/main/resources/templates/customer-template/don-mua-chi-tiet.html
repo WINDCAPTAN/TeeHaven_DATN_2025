@@ -524,15 +524,15 @@
                                     <div class="row" th:if="${byHoaDon.trangThai!=6}">
                                         <div class="col-md-10 d-flex align-items-center">
                                             <div th:each="url : ${#strings.listSplit(listHoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
-                                            <img th:if="${listHoaDonCT.chiTietSanPham.sanPham != null && listHoaDonCT.chiTietSanPham.sanPham.hinhAnh != null}"
-                                                 th:src="${url}"
-                                                 alt="Hình ảnh sản phẩm"
-                                                 style="width: 100px; height: auto;" />
+                                                <img th:if="${listHoaDonCT.chiTietSanPham.sanPham != null && listHoaDonCT.chiTietSanPham.sanPham.hinhAnh != null}"
+                                                     th:src="${url}"
+                                                     alt="Hình ảnh sản phẩm"
+                                                     style="width: 100px; height: auto;" />
 
                                             </div>
                                             <div class="divider-line">
                                                 <h6 th:text="${listHoaDonCT.chiTietSanPham.sanPham.ten}">
-                                                    </h6>
+                                                </h6>
                                                 <span th:text="${'Phân loại hàng: ' + listHoaDonCT.chiTietSanPham.mauSac.ten + ' - ' + listHoaDonCT.chiTietSanPham.kichCo.ten}"></span>
                                                 <p th:text="${'x'+listHoaDonCT.soLuong}"></p>
                                             </div>
