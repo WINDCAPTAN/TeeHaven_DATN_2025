@@ -1,13 +1,13 @@
 package com.example.datn_teehaven.service;
 
-
-
 import com.example.datn_teehaven.entyti.GioHangChiTiet;
 import com.example.datn_teehaven.entyti.HoaDonChiTiet;
 import com.example.datn_teehaven.entyti.TaiKhoan;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public interface GioHangChiTietService {
     GioHangChiTiet fillByIdCTSP(Long idCTSP);
 
@@ -31,4 +31,6 @@ public interface GioHangChiTietService {
                             String hoVaTen, String soDienThoai, String tienShip, String tienGiam, String email,
                             String voucher, String diaChiCuThe, String ghiChu, TaiKhoan taiKhoan,
                             String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang);
+
+    void clearCart(Long gioHangId);
 }

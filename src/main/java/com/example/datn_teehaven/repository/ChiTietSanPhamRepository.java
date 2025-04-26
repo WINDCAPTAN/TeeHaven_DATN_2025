@@ -80,7 +80,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<ChiTietSanPham, 
             "    FROM chi_tiet_san_pham\n" +
             "    WHERE san_pham_id = :id\n" +
             ") cts\n" +
-            "WHERE cts.RowAsc = 1  AND cts.trang_thai = 0;", nativeQuery = true)
+            "WHERE cts.RowAsc = 1 ;", nativeQuery = true)
     List<ChiTietSanPham> fillAllChiTietSpShop(@Param("id") Long id);
 
     @Query(value = "select * from chi_tiet_san_pham where san_pham_id = :idSanPham and mau_sac_id = :idMauSac and trang_thai = 0 ORDER BY kich_co_id ASC, id ASC;\n", nativeQuery = true)

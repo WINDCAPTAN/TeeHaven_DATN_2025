@@ -98,9 +98,12 @@
                     <div class="col-6 col-md-4 order-3 order-md-3 text-right">
                         <div class="site-top-icons">
                             <ul class="nav nav-pills" style="margin-left: 54%">
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
                                             Tôi</a>
@@ -109,14 +112,23 @@
                                         <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
                                     </ul>
                                 </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+                                    </ul>
+                                </li>
 
-                                <!--                                <li class="nav-item" style="margin-left: -15%">-->
-                                <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
-                                <!--                                </li>-->
                                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
                                     <a class="site-cart" href="/user/cart">
-                                        <span class="icon icon-shopping_cart"></span>
-                                        <span class="count" id="soLuongGHCT" th:text="${soLuongSPGioHangCT}"></span>
+                                        <!-- Updated shopping cart icon -->
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        <span class="count" th:if="${checkDangNhap=='true'}"
+                                              th:text="${soLuongSPGioHangCT}"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -1235,7 +1247,7 @@
                 <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <h3 class="footer-heading mb-4">Mẫu mã</h3>
                     <a href="/shop" class="block-6">
-                        <img src="../../static/img/hero_1.jpg" alt="Image placeholder"
+                        <img src="../../static/img/logo_teehaven.png" alt="Image placeholder"
                              class="img-fluid rounded mb-4"/>
                         <h3 class="font-weight-light mb-0">
                             Tìm những chiếc áo hoàn hảo của bạn
@@ -1250,9 +1262,9 @@
                                 13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
                             </li>
                             <li class="Tee Havene">
-                                <a href="tel://23923929210">+84 377 463 664</a>
+                                <a href="tel://23923929210">0867431821</a>
                             </li>
-                            <li class="email">Tee Havenshopshoes@gmail.com</li>
+                            <li class="email">TeeHavenshopshoes@gmail.com</li>
                         </ul>
                     </div>
                 </div>

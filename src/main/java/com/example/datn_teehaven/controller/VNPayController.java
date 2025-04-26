@@ -1,6 +1,11 @@
 package com.example.datn_teehaven.controller;
 
+import com.example.datn_teehaven.entyti.HoaDon;
 import com.example.datn_teehaven.service.VNPayService;
+import com.example.datn_teehaven.service.GioHangChiTietService;
+import com.example.datn_teehaven.service.HoaDonService;
+import com.example.datn_teehaven.service.TaiKhoanService;
+import com.example.datn_teehaven.Config.PrincipalCustom;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 @Controller
 public class VNPayController {
@@ -18,6 +26,17 @@ public class VNPayController {
 
     @Autowired
     private VNPayService vnPayService;
+
+    @Autowired
+    private GioHangChiTietService gioHangChiTietService;
+
+    @Autowired
+    private HoaDonService hoaDonService;
+
+    @Autowired
+    private TaiKhoanService taiKhoanService;
+
+    private PrincipalCustom principalCustom = new PrincipalCustom();
 
     @GetMapping("/vnpay-payment")
     public String submitOrder(@RequestParam("amount") int amount,
@@ -70,6 +89,69 @@ public class VNPayController {
 
             if (paymentStatus == 1) {
                 logger.info("Payment successful for transaction: {}", transactionId);
+                
+                // Get current user's cart items
+                String username = principalCustom.getCurrentUserNameCustomer();
+                if (username != null) {
+                    // Get user's account
+                    var taiKhoan = taiKhoanService.getTaiKhoanByName(username);
+                    if (taiKhoan != null && taiKhoan.getGioHang() != null) {
+                        // Get cart items
+                        var cartItems = gioHangChiTietService.findAllByIdGioHang(taiKhoan.getGioHang().getId());
+                        
+                        // Create list of cart item IDs
+                        List<String> listIdString = new ArrayList<>();
+                        for (var item : cartItems) {
+                            listIdString.add(item.getId().toString());
+                        }
+                        
+                        // Calculate total amount
+                        long tongTien = 0;
+                        for (var item : cartItems) {
+                            tongTien += item.tongTien();
+                        }
+                        
+                        // Get user's address if available
+                        String phuongXaID = "";
+                        String quanHuyenID = "";
+                        String thanhPhoID = "";
+                        String diaChiCuThe = "";
+                        
+                        if (taiKhoan.getLstDiaChi() != null && !taiKhoan.getLstDiaChi().isEmpty()) {
+                            var diaChi = taiKhoan.getLstDiaChi().get(0); // Get first address
+                            phuongXaID = diaChi.getPhuongXa();
+                            quanHuyenID = diaChi.getQuanHuyen();
+                            thanhPhoID = diaChi.getThanhPho();
+                            diaChiCuThe = diaChi.getDiaChiCuThe();
+                        }
+                        
+                        // Create new order using GioHangChiTietService
+                        gioHangChiTietService.addHoaDon(
+                            listIdString,
+                            tongTien, // tongTien
+                            tongTien, // tongTienAndSale
+                            taiKhoan.getHoVaTen(), // hoVaTen
+                            taiKhoan.getSoDienThoai(), // soDienThoai
+                            "0", // tienShip
+                            "0", // tienGiam
+                            taiKhoan.getEmail(), // email
+                            "", // voucher
+                            diaChiCuThe, // diaChiCuThe
+                            "", // ghiChu
+                            taiKhoan, // taiKhoan
+                            phuongXaID, // phuongXaID
+                            quanHuyenID, // quanHuyenID
+                            thanhPhoID, // thanhPhoID
+                            taiKhoan.getGioHang().getId() // idGioHang
+                        );
+                        
+                        // Clear cart after successful payment
+                        for (var item : cartItems) {
+                            gioHangChiTietService.deleteById(item.getId());
+                        }
+                    }
+                }
+                
                 return "customer-template/payment-success";
             } else {
                 // Payment failed
@@ -126,3 +208,4 @@ public class VNPayController {
         }
     }
 }
+
