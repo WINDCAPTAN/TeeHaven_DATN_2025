@@ -186,12 +186,5 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
     }
 
-    @Override
-    public void clearCart(Long gioHangId) {
-        List<GioHangChiTiet> cartItems = repository.getfindAllByIdGioHang(gioHangId);
-        if (cartItems != null && !cartItems.isEmpty()) {
-            repository.deleteAll(cartItems);
-        }
-    }
 
 }

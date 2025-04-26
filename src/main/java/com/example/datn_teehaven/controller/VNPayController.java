@@ -42,11 +42,21 @@ public class VNPayController {
     public String submitOrder(@RequestParam("amount") int amount,
                             @RequestParam("orderInfo") String orderInfo,
                             @RequestParam(value = "bankCode", required = false) String bankCode,
+                            @RequestParam(value = "voucherId", required = false) String voucherId,
+                            @RequestParam(value = "tienShip", required = false) String tienShip,
+                            @RequestParam(value = "tienGiam", required = false) String tienGiam,
                             HttpServletRequest request) {
         try {
-            logger.info("Initiating VNPay payment - Amount: {}, OrderInfo: {}, BankCode: {}", amount, orderInfo, bankCode);
+            logger.info("Initiating VNPay payment - Amount: {}, OrderInfo: {}, BankCode: {}, VoucherId: {}, TienShip: {}, TienGiam: {}", 
+                       amount, orderInfo, bankCode, voucherId, tienShip, tienGiam);
+            
+            // Lưu thông tin vào session
+            request.getSession().setAttribute("voucherId", voucherId);
+            request.getSession().setAttribute("tienShip", tienShip);
+            request.getSession().setAttribute("tienGiam", tienGiam);
+            
             String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-            String vnpayUrl = vnPayService.createOrder(amount, orderInfo, baseUrl, bankCode);
+            String vnpayUrl = vnPayService.createOrder(amount, orderInfo, baseUrl, bankCode, voucherId, tienShip, tienGiam);
             
             if (vnpayUrl != null) {
                 logger.info("Redirecting to VNPay URL: {}", vnpayUrl);
@@ -75,9 +85,10 @@ public class VNPayController {
             String payDate = fields.get("vnp_PayDate");
             String transactionNo = fields.get("vnp_TransactionNo");
             String responseCode = fields.get("vnp_ResponseCode");
+            String orderInfo = fields.get("vnp_OrderInfo");
 
-            logger.info("Payment return - TransactionId: {}, Amount: {}, ResponseCode: {}", 
-                       transactionId, amount, responseCode);
+            logger.info("Payment return - TransactionId: {}, Amount: {}, ResponseCode: {}, OrderInfo: {}", 
+                       transactionId, amount, responseCode, orderInfo);
 
             // Add common attributes
             model.addAttribute("transactionId", transactionId);
@@ -125,17 +136,35 @@ public class VNPayController {
                             diaChiCuThe = diaChi.getDiaChiCuThe();
                         }
                         
+                        // Lấy thông tin voucher và shipping từ session
+                        String voucherId = (String) request.getSession().getAttribute("voucherId");
+                        String tienShip = (String) request.getSession().getAttribute("tienShip");
+                        String tienGiam = (String) request.getSession().getAttribute("tienGiam");
+                        
+                        // Xóa thông tin khỏi session sau khi đã sử dụng
+                        request.getSession().removeAttribute("voucherId");
+                        request.getSession().removeAttribute("tienShip");
+                        request.getSession().removeAttribute("tienGiam");
+                        
+                        // Kiểm tra và xử lý giá trị null
+                        if (voucherId == null) voucherId = "";
+                        if (tienShip == null) tienShip = "0";
+                        if (tienGiam == null) tienGiam = "0";
+                        
+                        logger.info("Creating order with voucherId: {}, tienShip: {}, tienGiam: {}", 
+                                  voucherId, tienShip, tienGiam);
+                        
                         // Create new order using GioHangChiTietService
                         gioHangChiTietService.addHoaDon(
                             listIdString,
                             tongTien, // tongTien
-                            tongTien, // tongTienAndSale
+                            tongTien - Long.parseLong(tienGiam), // tongTienAndSale
                             taiKhoan.getHoVaTen(), // hoVaTen
                             taiKhoan.getSoDienThoai(), // soDienThoai
-                            "0", // tienShip
-                            "0", // tienGiam
+                            tienShip, // tienShip
+                            tienGiam, // tienGiam
                             taiKhoan.getEmail(), // email
-                            "", // voucher
+                            voucherId, // voucher
                             diaChiCuThe, // diaChiCuThe
                             "", // ghiChu
                             taiKhoan, // taiKhoan

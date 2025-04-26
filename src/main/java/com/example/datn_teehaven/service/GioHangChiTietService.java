@@ -32,5 +32,4 @@ public interface GioHangChiTietService {
                             String voucher, String diaChiCuThe, String ghiChu, TaiKhoan taiKhoan,
                             String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang);
 
-    void clearCart(Long gioHangId);
 }
