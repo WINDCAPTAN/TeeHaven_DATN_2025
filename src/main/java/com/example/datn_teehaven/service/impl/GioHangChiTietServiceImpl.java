@@ -2,9 +2,11 @@ package com.example.datn_teehaven.service.impl;
 
 
 import com.example.datn_teehaven.entyti.*;
+import com.example.datn_teehaven.repository.ChiTietSanPhamRepository;
 import com.example.datn_teehaven.repository.GioHangChiTietRepository;
 import com.example.datn_teehaven.repository.HoaDonChiTietRepository;
 import com.example.datn_teehaven.repository.HoaDonRepository;
+import com.example.datn_teehaven.repository.LichSuHoaDonRepository;
 import com.example.datn_teehaven.service.GioHangChiTietService;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,14 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
     private HoaDonChiTietRepository repositoryHoaDonChiTiet;
 
     @Autowired
+    private GioHangChiTietRepository gioHangChiTietRepository;
+    @Autowired
     private LichSuHoaDonService lichSuHoaDonService;
+
+    @Autowired
+    private LichSuHoaDonRepository lichSuHoaDonRepository;
+    @Autowired
+    private ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Override
     public GioHangChiTiet fillByIdCTSP(Long idCTSP) {
@@ -184,6 +193,75 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
         return null;
 
+    }
+
+    public Long addHoaDonVNPay(List<String> listIdString, Long tongTien, Long tongTienAndSale, Integer loaiHoaDon,
+                               String hoVaTen, String soDienThoai, String tienShip, String tienGiam,
+                               String email, String voucher, String diaChiCuThe, String ghiChu,
+                               TaiKhoan khachHang, String phuongXaID, String quanHuyenID,
+                               String thanhPhoID, Long idGioHang, Integer trangThai) {
+        // Create a new order with the specified status
+        HoaDon hoaDon = new HoaDon();
+        hoaDon.setMaHoaDon("HD"+ hoaDon.getId());
+        hoaDon.setNgayTao(new Date());
+        hoaDon.setNgayThanhToan(new Date());
+        hoaDon.setLoaiHoaDon(1);
+        hoaDon.setTongTien(tongTien);
+        hoaDon.setTongTienKhiGiam(tongTienAndSale);
+        hoaDon.setPhiShip(Long.valueOf(tienShip));
+        hoaDon.setTienGiam(Long.valueOf(tienGiam));
+        hoaDon.setNguoiNhan(hoVaTen);
+        hoaDon.setSdtNguoiNhan(soDienThoai);
+        hoaDon.setEmailNguoiNhan(email);
+        hoaDon.setDiaChiNguoiNhan(diaChiCuThe);
+        hoaDon.setPhuongXa(phuongXaID);
+        hoaDon.setQuanHuyen(quanHuyenID);
+        hoaDon.setThanhPho(thanhPhoID);
+        hoaDon.setGhiChu(ghiChu);
+        hoaDon.setTrangThai(trangThai); // Set the specified status
+        hoaDon.setTaiKhoan(khachHang);
+
+        // Save voucher if provided
+        if (voucher != null && !voucher.isEmpty() && !voucher.equals("null")) {
+            hoaDon.setVoucher(Voucher.builder().id(Long.valueOf(voucher)).build());
+        }
+
+        // Save the order
+        hoaDon = repositoryHoaDon.save(hoaDon);
+        hoaDon.setMaHoaDon("HD" + hoaDon.getId());
+        // Create order details
+        for (String id : listIdString) {
+            GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findById(Long.valueOf(id)).orElse(null);
+            if (gioHangChiTiet != null) {
+                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                hoaDonChiTiet.setHoaDon(hoaDon);
+                hoaDonChiTiet.setChiTietSanPham(gioHangChiTiet.getChiTietSanPham());
+                hoaDonChiTiet.setSoLuong(gioHangChiTiet.getSoLuong());
+                hoaDonChiTiet.setDonGia(gioHangChiTiet.getChiTietSanPham().getGiaHienHanh());
+                hoaDonChiTiet.setNgayTao(new Date());
+                repositoryHoaDonChiTiet.save(hoaDonChiTiet);
+
+                // Reduce product quantity
+                ChiTietSanPham chiTietSanPham = gioHangChiTiet.getChiTietSanPham();
+                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - gioHangChiTiet.getSoLuong());
+                chiTietSanPhamRepository.save(chiTietSanPham);
+
+                // Delete cart item
+                gioHangChiTietRepository.deleteById(gioHangChiTiet.getId());
+            }
+        }
+
+        // Create order history
+        hoaDon.setMaHoaDon("HD" + hoaDon.getId());
+        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
+        lichSuHoaDon.setHoaDon(hoaDon);
+        lichSuHoaDon.setTrangThai(trangThai);
+        lichSuHoaDon.setGhiChu("Đơn hàng đang chờ thanh toán VNPay");
+        lichSuHoaDon.setNgayTao(new Date());
+        lichSuHoaDon.setNgaySua(new Date());
+        lichSuHoaDonRepository.save(lichSuHoaDon);
+
+        return hoaDon.getId();
     }
 
 }

@@ -2387,12 +2387,22 @@
 
 <script>
     function handleVNPayPayment() {
-        const amountElement = document.getElementById('tongTienAndSale');
-        const amount = parseInt(amountElement.value.replace(/[^\d]/g, ''));
-        const orderInfo = 'Thanh toan don hang TeeHaven';
-        const encodedOrderInfo = encodeURIComponent(orderInfo);
+        // Submit the form with VNPay payment method
+        const form = document.getElementById('form1');
 
-        window.location.href = '/vnpay-payment?amount=' + amount + '&orderInfo=' + encodedOrderInfo;
+        // Validate the form first
+        if (document.getElementById('checkDiaChi').value === 'DiaChi') {
+            if (!checkFormDatHang()) {
+                return false;
+            }
+        } else {
+            if (!checkFormDatHangNoDC()) {
+                return false;
+            }
+        }
+
+        // Submit the form
+        form.submit();
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -2406,19 +2416,16 @@
                     if (checkoutButton) {
                         checkoutButton.textContent = 'Thanh toán';
                         checkoutButton.onclick = function () {
-                            handleVNPayPayment();
-                            return false;
+                            return checkFormDatHang();
                         };
                     }
 
                     if (checkoutButtonNoDC) {
                         checkoutButtonNoDC.textContent = 'Thanh toán';
                         checkoutButtonNoDC.onclick = function () {
-                            handleVNPayPayment();
-                            return false;
+                            return checkFormDatHangNoDC();
                         };
                     }
-
                 } else {
                     if (checkoutButton) {
                         checkoutButton.textContent = 'Đặt hàng';

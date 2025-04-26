@@ -34,7 +34,7 @@ import java.util.List;
 
 @Controller
 public class CustomersController {
-//huynh1 //6/4
+    //huynh1 //6/4
     private Long idTaiKhoan;
 
     @Autowired
@@ -316,17 +316,23 @@ public class CustomersController {
             @RequestParam("quanHuyenID") String quanHuyenID,
             @RequestParam("thanhPhoID") String thanhPhoID,
             @RequestParam("trangThaiLuuDC") String trangThaiLuuDC,
+            @RequestParam("paymentMethod") String paymentMethod,
+            HttpSession session,
             RedirectAttributes redirectAttributes) {
         String[] optionArray = idGioHangChiTiet.split(",");
 
         TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
         List<String> listIdString = Arrays.asList(optionArray);
+
+        // Validate product quantities
         for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
             if (gioHangChiTiet.getSoLuong() > chiTietSanPhamSerivce.getById(gioHangChiTiet.getChiTietSanPham().getId()).getSoLuong()) {
                 redirectAttributes.addFlashAttribute("checkSoLuongDB","true");
                 return "redirect:/user/checkout?options="+idGioHangChiTiet;
             }
         }
+
+        // Save address if needed
         if (trangThaiLuuDC.equals("0")) {
             Date date = new Date();
             DiaChi diaChi = new DiaChi();
@@ -340,18 +346,29 @@ public class CustomersController {
             diaChi.setTaiKhoan(TaiKhoan.builder().id(idTaiKhoan).build());
             diaChiService.save(diaChi);
         }
-        
-//        // Trừ số lượng sản phẩm trong kho
-//        for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
-//            ChiTietSanPham chiTietSanPham = chiTietSanPhamSerivce.getById(gioHangChiTiet.getChiTietSanPham().getId());
-//            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - gioHangChiTiet.getSoLuong());
-//            chiTietSanPhamSerivce.update(chiTietSanPham);
-//        }
-//
-        gioHangChiTietService.addHoaDon(listIdString, Long.valueOf(tongTien), Long.valueOf(tongTienAndSale), hoVaTen,
-                soDienThoai, tienShip,tienGiam, email, voucher, diaChiCuThe, ghiChu, khachHang, phuongXaID, quanHuyenID,
-                thanhPhoID, khachHang.getGioHang().getId());
-        return "redirect:/user/thankyou";
+
+        // Check payment method
+        if ("VNPAY".equals(paymentMethod)) {
+            // Create order with status 4 (pending payment)
+            Long orderId = gioHangChiTietService.addHoaDonVNPay(listIdString, Long.valueOf(tongTien),
+                    Long.valueOf(tongTienAndSale), 1, hoVaTen, soDienThoai, tienShip, tienGiam,
+                    email, voucher, diaChiCuThe, ghiChu, khachHang, phuongXaID, quanHuyenID,
+                    thanhPhoID, khachHang.getGioHang().getId(), 4);
+
+            // Store order ID in session for later reference
+            session.setAttribute("pendingOrderId", orderId);
+
+            // Redirect to VNPay payment
+            int amount = Integer.parseInt(tongTienAndSale);
+            String orderInfo = "Thanh toan don hang TeeHaven #" + orderId;
+            return "redirect:/vnpay-payment?amount=" + amount + "&orderInfo=" + orderInfo;
+        } else {
+            // COD payment - create order with status 0 (normal flow)
+            gioHangChiTietService.addHoaDon(listIdString, Long.valueOf(tongTien), Long.valueOf(tongTienAndSale),
+                    hoVaTen, soDienThoai, tienShip, tienGiam, email, voucher, diaChiCuThe, ghiChu,
+                    khachHang, phuongXaID, quanHuyenID, thanhPhoID, khachHang.getGioHang().getId());
+            return "redirect:/user/thankyou";
+        }
     }
     @GetMapping("/user/thankyou")
     public String thankYou(

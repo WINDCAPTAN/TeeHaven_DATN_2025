@@ -166,7 +166,8 @@ public class HoaDon {
                 return "Đã hủy";
             case 6:
                 return "Hoàn trả";
-
+            case 7:
+                return "Đã thanh toán";
             case 8:
                 return "Đơn đổi trả tạm";
             default:
