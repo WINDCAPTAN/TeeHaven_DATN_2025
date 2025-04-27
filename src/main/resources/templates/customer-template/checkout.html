@@ -19,12 +19,275 @@
     <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
     <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
     <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
-
     <link rel="stylesheet" href="../../static/css/aos.css"/>
-
     <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
-    <!--    <link rel="stylesheet" href="../../static/css/style.css"/>-->
 
+    <style>
+        /* Modern Form Styles */
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            padding: 12px 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            background-color: #ffffff;
+            height: auto;
+            min-height: 45px;
+            font-size: 14px;
+            width: 100%;
+            white-space: nowrap;
+            overflow: visible;
+            text-overflow: unset;
+        }
+
+        .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+
+        .border {
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            background: white;
+        }
+
+        .btn-primary {
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0,123,255,0.2);
+            border: 2px solid #0056b3;
+        }
+
+        .table {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid #e0e0e0;
+        }
+
+        .table thead th {
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        .table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 2px solid #e0e0e0;
+            overflow: visible;
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #e0e0e0;
+            padding: 20px 25px;
+            background-color: #f8f9fa;
+        }
+
+        .modal-body {
+            padding: 25px;
+            background-color: #ffffff;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            border-top: 2px solid #e0e0e0;
+            padding: 20px 25px;
+            background-color: #f8f9fa;
+        }
+
+        .check-loi {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .site-section {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+
+        .bg-light {
+            background-color: #f8f9fa !important;
+        }
+
+        .text-black {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .h3 {
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        /* Basic Modern Styles */
+        .btn-secondary {
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background-color: #6c757d;
+            border: 2px solid #5a6268;
+        }
+
+        .btn-warning {
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border: 2px solid #d39e00;
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+            padding-left: 15px;
+            text-overflow: ellipsis;
+        }
+
+        select.form-control option {
+            padding: 10px;
+            font-size: 14px;
+            white-space: normal;
+            min-height: 30px;
+            line-height: 1.4;
+        }
+
+        .form-check-input {
+            width: 1.2em;
+            height: 1.2em;
+            margin-top: 0.2em;
+            border: 2px solid #adb5bd;
+        }
+
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .form-check-label {
+            padding-left: 0.5em;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .card {
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            background-color: #ffffff;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .text-body-secondary {
+            color: #6c757d !important;
+        }
+
+        .muted-radio {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .muted-card {
+            opacity: 0.5;
+        }
+
+        /* Additional form styling */
+        .p-3.p-lg-5.border {
+            background-color: #ffffff;
+            border: 2px solid #e0e0e0;
+        }
+
+        .site-blocks-table {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+        }
+
+        /* Adjust spacing for address form */
+        .col-md-4 {
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .col-md-4 {
+                margin-bottom: 0;
+            }
+        }
+
+        /* Ensure text is visible in buttons */
+        .btn {
+            white-space: normal;
+            height: auto;
+            min-height: 45px;
+            line-height: 1.4;
+            padding: 12px 25px;
+        }
+
+        /* Adjust modal title */
+        .modal-title {
+            font-size: 18px;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Ensure form inputs have sufficient height */
+        input[type="text"].form-control {
+            min-height: 45px;
+            line-height: 1.4;
+        }
+
+        /* Adjust table cell content */
+        .table td {
+            white-space: normal;
+            word-break: break-word;
+            vertical-align: middle;
+            min-height: 50px;
+        }
+    </style>
 </head>
 
 <body>
@@ -100,9 +363,12 @@
                     <div class="col-6 col-md-4 order-3 order-md-3 text-right">
                         <div class="site-top-icons">
                             <ul class="nav nav-pills" style="margin-left: 54%">
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
                                             Tôi</a>
@@ -111,14 +377,23 @@
                                         <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
                                     </ul>
                                 </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false">
+                                        <!-- Updated person icon -->
+                                        <i class="fa-solid fa-user"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+                                    </ul>
+                                </li>
 
-                                <!--                                <li class="nav-item" style="margin-left: -15%">-->
-                                <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
-                                <!--                                </li>-->
                                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
                                     <a class="site-cart" href="/user/cart">
-                                        <span class="icon icon-shopping_cart"></span>
-                                        <span class="count" th:text="${soLuongSPGioHangCT}"></span>
+                                        <!-- Updated shopping cart icon -->
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                        <span class="count" th:if="${checkDangNhap=='true'}"
+                                              th:text="${soLuongSPGioHangCT}"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -177,7 +452,7 @@
 
     <div class="site-section">
         <div class="container" style="max-width: 90%">
-            <div class="row mb-3">
+            <div class="row mb-3 fade-in">
                 <form class="col-md-12" method="post">
                     <div class="site-blocks-table">
                         <!--                        <table class="table table-bordered">-->
@@ -234,7 +509,7 @@
                 </form>
             </div>
             <div class="row">
-                <div class="col-md-7 mb-5 mb-md-0">
+                <div class="col-md-7 mb-5 mb-md-0 fade-in">
                     <h2 class="h3 mb-3 text-black">Thông tin của bạn</h2>
 
 
@@ -474,8 +749,8 @@
                                 <td th:id="${diaChi.thanhPho}" class="thanhPhoColumn"></td>
                                 <td>
                                     <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                            th:data-bs-target="${'#modalDiaChi'+diaChi.id}">
-                                        Sửa
+                                            th:data-bs-target="${'#modalDiaChi'+diaChi.id}" style="font-size: smaller;">
+                                        Cập Nhật
                                     </button>
                                     <!-- Modal -->
                                     <div class="modal fade" th:id="${'modalDiaChi'+diaChi.id}" tabindex="-1"
@@ -657,8 +932,7 @@
                                                             districtSelect.addEventListener('change', function () {
                                                                 // Lấy ID của quận đã chọn
                                                                 var selectedDistrictId = this.value;
-
-                                                                console.log(selectedDistrictId);
+                                                                console.log(selectedDistrictId)
                                                                 // Kiểm tra nếu giá trị quận đã được chọn
                                                                 if (selectedDistrictId) {
                                                                     // Xóa hết các quận/huyện hiện tại trước khi tải mới
@@ -1005,9 +1279,9 @@
                                         var moneyVoucher = document.getElementById("moneyVoucher");
 
 
-                                        var tienVoucher = parseInt(moneyVoucher.innerText.replace(" VND", "").replace(" VNĐ", "").replace(/\./g, "").trim());
+                                        var tienVoucher = parseInt(moneyVoucher.innerText.replace(" VNĐ", "").replace(/\./g, "").trim());
                                         var tongTien = document.getElementById("tongTien");
-                                        var tongTienHangInt = parseInt(tongTienHang.innerText.replace(" VND", "").replace(" VNĐ", "").replace(/\./g, "").trim());
+                                        var tongTienHangInt = parseInt(tongTienHang.innerText.replace(" VNĐ", "").replace(/\./g, "").trim());
 
                                         // tongTien.value = `${data.data.total + tongTienHangInt}`;
                                         tongTienAndSale.value = tongTienHangInt - tienVoucher;
@@ -1446,9 +1720,9 @@
                                                 var moneyVoucher = document.getElementById("moneyVoucher");
 
 
-                                                var tienVoucher = parseInt(moneyVoucher.innerText.replace(" VND", "").replace(" VNĐ", "").replace(/\./g, "").trim());
+                                                var tienVoucher = parseInt(moneyVoucher.innerText.replace(" VNĐ", "").replace(/\./g, "").trim());
                                                 var tongTien = document.getElementById("tongTien");
-                                                var tongTienHangInt = parseInt(tongTienHang.innerText.replace(" VND", "").replace(" VNĐ", "").replace(/\./g, "").trim());
+                                                var tongTienHangInt = parseInt(tongTienHang.innerText.replace(" VNĐ", "").replace(/\./g, "").trim());
 
                                                 // tongTien.value = `${data.data.total + tongTienHangInt}`;
                                                 tongTienAndSale.value = tongTienHangInt - tienVoucher;
@@ -1491,11 +1765,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-5 fade-in">
                     <div class="row mb-5">
                         <div class="col-md-12">
                             <h2 class="h3 mb-3 text-black">Voucher</h2>
-                            <div class="p-3 p-lg-5 border">
+                            <div class="border p-4">
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
@@ -1525,7 +1799,7 @@
                                                                 <div class="col-md-3">
                                                                     <div class="card-body"
                                                                          style="margin-left: 5px;margin-top: 15px">
-                                                                        <img src="../../static/img/logo.png"
+                                                                        <img src="../../static/img/logo_teehaven.png"
                                                                              style="margin-left: 15px"
                                                                              class="img-fluid rounded-start"
                                                                              alt="...">
@@ -1614,9 +1888,9 @@
                                                                 var tienGiam = document.getElementById("tienGiam");
 
 
-                                                                var shippingFeeResultInt = parseInt(shippingFeeResult.innerText.replace(" VND", "").replace(" VNĐ", "").replace(/\./g, "").trim());
+                                                                var shippingFeeResultInt = parseInt(shippingFeeResult.innerText.replace(" VNĐ", "").replace(/\./g, "").trim());
                                                                 var tongTien = document.getElementById("tongTien");
-                                                                var tongTienHangInt = parseInt(tongTienHang.innerText.replace(" VND", "").replace(" VNĐ", "").replace(/\./g, "").trim());
+                                                                var tongTienHangInt = parseInt(tongTienHang.innerText.replace(" VNĐ", "").replace(/\./g, "").trim());
 
                                                                 var tongTienGiamTheoPhanTram = ((tongTienHangInt * phamTramGiam) / 100).toFixed(0)
                                                                 if (tongTienGiamTheoPhanTram > giaTriGiam) {
@@ -1645,12 +1919,12 @@
                                                             function checkAndDisplayVouchers() {
 
                                                                 // Lấy giá trị totalAmount từ #totalAmount
-                                                                var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(' VND', '').replace(' VNĐ', '').replace(/\./g, '').trim());
+                                                                var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(' VNĐ', '').replace(/\./g, '').trim());
                                                                 console.log(totalAmount)
 
                                                                 // Lặp qua danh sách voucher và kiểm tra điều kiện
                                                                 document.querySelectorAll('.card.mb-3').forEach(function (card) {
-                                                                    var voucherGiaTriDonToiThieu = parseFloat(card.querySelector('#donToiThieu').innerText.replace('Đơn Tối Thiểu ', '').replace(' VND', '').replace(' VNĐ', '').replace(/\./g, '').trim());
+                                                                    var voucherGiaTriDonToiThieu = parseFloat(card.querySelector('#donToiThieu').innerText.replace('Đơn Tối Thiểu ', '').replace(' VNĐ', '').replace(/\./g, '').trim());
                                                                     var radio = card.querySelector('input[name="voucherRadio"]');
                                                                     var thongBao = card.querySelector('#thongBaoThieuTien');
 
@@ -1701,7 +1975,7 @@
 
                     <div class="row mb-5">
                         <div class="col-md-12">
-                            <div class="p-3 p-lg-5 border">
+                            <div class="border p-4">
                                 <table class="table site-block-order-table mb-5">
                                     <tbody>
                                     <tr>
@@ -1738,7 +2012,7 @@
 
                                             for (var i = 1; i < table.rows.length; i++) {
                                                 var cell = table.rows[i].cells[5];
-                                                var value = cell.innerHTML.replace(" VND", "").replace(" VNĐ", "").replace(/\./g, "").trim();
+                                                var value = cell.innerHTML.replace(" VNĐ", "").replace(/\./g, "").trim();
                                                 total += parseFloat(value);
                                             }
 
@@ -1761,7 +2035,7 @@
                                             totalElement.innerText = formatMoney(total);
 
                                             var tienShip = document.getElementById("shippingFeeResult");
-                                            var soTienShip = parseInt(tienShip.innerText.replace(" VND", "").replace(" VNĐ", "").replace(/\./g, "").trim());
+                                            var soTienShip = parseInt(tienShip.innerText.replace(" VNĐ", "").replace(/\./g, "").trim());
 
                                             var totalElementSale = document.getElementById("totalAmountAndSale");
                                             totalElementSale.innerText = formatMoney(total);
@@ -1770,7 +2044,7 @@
                                     <tr>
                                         <td class="text-black font-weight-bold">
                                             <strong>Tổng thanh toán
-                                                <strong id="totalAmountAndSale" style="float: right">0 VND</strong>
+                                                <strong id="totalAmountAndSale" style="float: right">0 VNĐ</strong>
                                             </strong>
                                         </td>
 
@@ -2051,7 +2325,7 @@
                         <div class="col-md-6 col-lg-4">
                             <ul class="list-unstyled">
                                 <li><a href="/about">Đội ngũ</a></li>
-                                <li><a href="/chinh-sach">Trả hàng</a></li>
+
                                 <li><a href="#">Bảo mật</a></li>
                             </ul>
                         </div>
@@ -2067,7 +2341,7 @@
                 <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <h3 class="footer-heading mb-4">Mẫu mã</h3>
                     <a href="/shop" class="block-6">
-                        <img src="../../static/img/ImgShoe/sg-11134201-7qvdm-lgivjtmj66gzc4.jpg" alt="Image placeholder"
+                        <img src="../../static/img/logo_teehaven.png" alt="Image placeholder"
                              class="img-fluid rounded mb-4"/>
                         <h3 class="font-weight-light mb-0">
                             Tìm chiếc áo hoàn hảo của bạn
@@ -2082,9 +2356,9 @@
                                 13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
                             </li>
                             <li class="phone">
-                                <a href="tel://23923929210">+84 377 463 664</a>
+                                <a href="tel://23923929210">0867431821</a>
                             </li>
-                            <li class="email">Tee Havenshopshoes@gmail.com</li>
+                            <li class="email">TeeHavenshopshoes@gmail.com</li>
                         </ul>
                     </div>
                 </div>

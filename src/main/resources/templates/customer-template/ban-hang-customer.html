@@ -198,7 +198,16 @@
                         <i class="fa-solid fa-rotate"></i>
                     </div>
                     <div class="text">
+
+                        <h2 class="text-uppercase">Giá cả hợp lý</h2>
+                        <!-- <p>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Phasellus at iaculis quam. Integer accumsan tincidunt
+                      fringilla.
+                    </p> -->
+
                         <h2 class="text-uppercase">SẢN PHẨM CHẤT LƯỢNG</h2>
+
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="200">
@@ -237,7 +246,11 @@
                                         <div class="container" style="width: 90%">
                                             <div class="pf-card" style="margin-top: -30%">
                                                 <a class="product-item"
-                                                   th:href="@{/user/shop-single/{id}(id=${hoaDonCT.chiTietSanPham.sanPham.id})}">
+                                                   th:href="${hoaDonCT.chiTietSanPham.soLuong > 0 ? 
+                                                              '/user/shop-single/' + hoaDonCT.chiTietSanPham.sanPham.id : 
+                                                              'javascript:void(0);'}" 
+                                                   th:data-out-of-stock="${hoaDonCT.chiTietSanPham.soLuong == 0}"
+                                                   onclick="handleProductClick(this)">
                                                     <div class="product-thumbnail-container">
                                                         <div th:each="url : ${#strings.listSplit(hoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
                                                             <img th:src="${url}"
@@ -245,6 +258,7 @@
                                                                  th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
                                                                  th:data-power="${hoaDonCT.chiTietSanPham.tayAo.ten}"
                                                                  class="img-fluid product-thumbnail">
+                                                            <div th:if="${hoaDonCT.chiTietSanPham.soLuong == 0}" class="out-of-stock-label">Hết hàng</div>
                                                         </div>
                                                     </div>
                                                     <div class="product-info-container">
@@ -253,11 +267,15 @@
                                                         <strong class="product-price"
                                                                 th:text="${#numbers.formatDecimal(hoaDonCT.chiTietSanPham.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></strong>
                                                         <div class="button-group">
-                                                            <form th:action="@{/user/gio-hang-chi-tiet/add-fast/{idChiTietSpAdd}/{soLuongAdd}(idChiTietSpAdd=${hoaDonCT.chiTietSanPham.id},soLuongAdd=1)}"
+                                                            <form th:if="${hoaDonCT.chiTietSanPham.soLuong > 0}" 
+                                                                  th:action="@{/user/gio-hang-chi-tiet/add-fast/{idChiTietSpAdd}/{soLuongAdd}(idChiTietSpAdd=${hoaDonCT.chiTietSanPham.id},soLuongAdd=1)}"
                                                                   method="post">
-                                                                <button type="submit" class="buy-now-btn">Mua Nhanh
-                                                                </button>
+                                                                <button type="submit" class="buy-now-btn">Mua Nhanh</button>
                                                             </form>
+                                                            <button th:if="${hoaDonCT.chiTietSanPham.soLuong == 0}" 
+                                                                    class="buy-now-btn out-of-stock-btn" 
+                                                                    type="button"
+                                                                    disabled>Mua Nhanh</button>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -304,7 +322,11 @@
                                         <div class="container" style="width: 90%">
                                             <div class="pf-card" style="margin-top: -30%">
                                                 <a class="product-item"
-                                                   th:href="@{/user/shop-single/{id}(id=${hoaDonCT.chiTietSanPham.sanPham.id})}">
+                                                   th:href="${hoaDonCT.chiTietSanPham.soLuong > 0 ? 
+                                                              '/user/shop-single/' + hoaDonCT.chiTietSanPham.sanPham.id : 
+                                                              'javascript:void(0);'}" 
+                                                   th:data-out-of-stock="${hoaDonCT.chiTietSanPham.soLuong == 0}"
+                                                   onclick="handleProductClick(this)">
                                                     <div class="product-thumbnail-container">
                                                         <div th:each="url : ${#strings.listSplit(hoaDonCT.chiTietSanPham.sanPham.hinhAnh, ',')[0]}">
                                                             <img th:src="${url}"
@@ -312,6 +334,7 @@
                                                                  th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
                                                                  th:data-power="${hoaDonCT.chiTietSanPham.tayAo.ten}"
                                                                  class="img-fluid product-thumbnail">
+                                                            <div th:if="${hoaDonCT.chiTietSanPham.soLuong == 0}" class="out-of-stock-label">Hết hàng</div>
                                                         </div>
                                                     </div>
                                                     <div class="product-info-container">
@@ -320,11 +343,15 @@
                                                         <strong class="product-price"
                                                                 th:text="${#numbers.formatDecimal(hoaDonCT.chiTietSanPham.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></strong>
                                                         <div class="button-group">
-                                                            <form th:action="@{/user/gio-hang-chi-tiet/add-fast/{idChiTietSpAdd}/{soLuongAdd}(idChiTietSpAdd=${hoaDonCT.chiTietSanPham.id},soLuongAdd=1)}"
+                                                            <form th:if="${hoaDonCT.chiTietSanPham.soLuong > 0}" 
+                                                                  th:action="@{/user/gio-hang-chi-tiet/add-fast/{idChiTietSpAdd}/{soLuongAdd}(idChiTietSpAdd=${hoaDonCT.chiTietSanPham.id},soLuongAdd=1)}"
                                                                   method="post">
-                                                                <button type="submit" class="buy-now-btn">Mua Nhanh
-                                                                </button>
+                                                                <button type="submit" class="buy-now-btn">Mua Nhanh</button>
                                                             </form>
+                                                            <button th:if="${hoaDonCT.chiTietSanPham.soLuong == 0}" 
+                                                                    class="buy-now-btn out-of-stock-btn" 
+                                                                    type="button"
+                                                                    disabled>Mua Nhanh</button>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -370,7 +397,7 @@
                 <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
                     <a class="block-2-item" href="/shop">
                         <figure class="image">
-                            <img src="../../static/img/ImgShoe/sg-11134201-7qvdm-lgivjtmj66gzc4.jpg" alt=""
+                            <img src="../../static/img/logo_teehaven.png" alt=""
                                  class="img-fluid"/>
                         </figure>
                         <div class="text">
@@ -401,7 +428,6 @@
                         <div class="col-md-6 col-lg-4">
                             <ul class="list-unstyled">
                                 <li><a href="/about">Đội ngũ</a></li>
-                                <li><a href="/chinh-sach">Trả hàng</a></li>
                                 <li><a href="#">Bảo mật</a></li>
                             </ul>
                         </div>
@@ -417,7 +443,7 @@
                 <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <h3 class="footer-heading mb-4">Mẫu mã</h3>
                     <a href="/shop" class="block-6">
-                        <img src="../../static/img/ImgShoe/vn-11134207-7r98o-lvw0og0ze1gbb1.jpg" alt="Image placeholder"
+                        <img src="../../static/img/logo_teehaven.png" alt="Image placeholder"
                              class="img-fluid rounded mb-4" style="max-width: 80%; height: auto;"/>
                         <h3 class="font-weight-light mb-0">
                             Tìm chiếc áo hoàn hảo của bạn
@@ -438,7 +464,7 @@
                             </li>
                             <li class="email">
                                 <i class="fa-solid fa-envelope mr-2"></i>
-                                Tee Havenshopshoes@gmail.com
+                                TeeHavenshopshoes@gmail.com
                             </li>
                         </ul>
                     </div>
@@ -815,6 +841,27 @@
     .marquee-banner:hover .marquee-content {
         animation-play-state: paused;
     }
+
+    .out-of-stock-label {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(255, 0, 0, 0.8);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 3px;
+        font-weight: bold;
+        z-index: 1;
+    }
+
+    .out-of-stock-btn {
+        background-color: #ccc !important;
+        cursor: not-allowed;
+    }
+
+    .out-of-stock-btn:hover {
+        background-color: #ccc !important;
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -924,6 +971,16 @@
         slides[slideIndex - 1].style.display = "block";
         dots[slideIndex - 1].classList.add("active");
     }
+</script>
+
+<script>
+function handleProductClick(element) {
+    if (element.getAttribute('data-out-of-stock') === 'true') {
+        alert("Sản phẩm này hiện đang hết hàng. Vui lòng chọn sản phẩm khác.");
+        return false;
+    }
+    return true;
+}
 </script>
 
 </body>

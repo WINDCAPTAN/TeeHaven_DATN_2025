@@ -826,9 +826,9 @@ public class BanHangController {
             hoaDonService.saveOrUpdate(hd);
             
             // Chỉ cập nhật số lượng khi hóa đơn hoàn thành (trạng thái 3)
-            if (hd.getTrangThai() == 3) {
-                updateSL(hd);
-            }
+//            if (hd.getTrangThai() == 3) {
+//                updateSL(hd);
+//            }
             
             if (hd.getTrangThai() == 4) {
                 return "redirect:/ban-hang-tai-quay/hoa-don";
