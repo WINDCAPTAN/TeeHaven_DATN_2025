@@ -474,28 +474,40 @@
                                               enctype="multipart/form-data"
                                               th:action="@{/admin/nhan-vien/add}"
                                               th:object="${nhanVien}"
+                                              onsubmit="return validateNhanVien()"
                                         >
                                             <div class="col-md-6">
                                                 <label class="form-label">
                                                     <span class="dau-sao">*</span>Tên tài khoản:</label>
                                                 <input type="text" class="form-control"
-                                                       placeholder="Nhập tên tài khoản" th:field="*{tenTaiKhoan}">
+                                                       placeholder="Nhập tên tài khoản" 
+                                                       th:field="*{tenTaiKhoan}" 
+                                                       oninput="validateNhanVienInput(this, 'tenTaiKhoan')"
+                                                       onblur="validateNhanVienInput(this, 'tenTaiKhoan')">
                                                 <span class="check-loi" th:errors="*{tenTaiKhoan}"></span>
                                                 <span class="check-loi" th:text="${checkTenTrung}"></span>
+                                                <span class="check-loi" id="tenTaiKhoanError" style="color: red; display: block;"></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">
                                                     <span class="dau-sao">*</span>Tên nhân viên:</label>
-                                                <input type="text" class="form-control" placeholder="Nhập tên nhân viên"
-                                                       th:field="*{hoVaTen}">
+                                                <input type="text" class="form-control" 
+                                                       placeholder="Nhập tên nhân viên"
+                                                       th:field="*{hoVaTen}" 
+                                                       oninput="validateNhanVienInput(this, 'hoVaTen')"
+                                                       onblur="validateNhanVienInput(this, 'hoVaTen')">
                                                 <span class="check-loi" th:errors="*{hoVaTen}"></span>
+                                                <span class="check-loi" id="hoVaTenError" style="color: red; display: block;"></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">
                                                     <span class="dau-sao">*</span>Ngày sinh:</label>
-                                                <input type="date" class="form-control" th:field="*{ngaySinh}">
+                                                <input type="date" class="form-control" 
+                                                       th:field="*{ngaySinh}"
+                                                       oninput="validateNgaySinh(this)"
+                                                       onchange="validateNgaySinh(this)">
                                                 <span class="check-loi" th:errors="*{ngaySinh}"></span>
-                                                <span class="check-loi" th:if="${checkNgaySinh=='ngaySinh'}">Năm sinh phải lớn 1900</span>
+                                                <span class="check-loi" id="ngaySinhError" style="color: red; display: block;"></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">
@@ -522,8 +534,13 @@
                                                 <label class="form-label">
                                                     <span class="dau-sao">*</span>Số điện thoại:</label>
                                                 <input type="text" class="form-control"
-                                                       placeholder="Nhập số điện thoại" th:field="*{soDienThoai}">
+                                                       placeholder="Nhập số điện thoại" 
+                                                       th:field="*{soDienThoai}"
+                                                       oninput="validateSoDienThoai(this)"
+                                                       onblur="validateSoDienThoai(this)"
+                                                       onkeypress="return onlyNumbers(event)">
                                                 <span class="check-loi" th:errors="*{soDienThoai}"></span>
+                                                <span class="check-loi" id="soDienThoaiError" style="color: red; display: block;"></span>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">
@@ -535,9 +552,13 @@
                                             <div class="col-md-6">
                                                 <label class="form-label">
                                                     <span class="dau-sao">*</span>Email:</label>
-                                                <input type="email" class="form-control" placeholder="Nhập email"
-                                                       th:field="*{email}">
-                                                <span class="check-loi" th:errors="*{email}"></span>
+                                                <input type="email" class="form-control" 
+                                                       placeholder="Nhập email"
+                                                       th:field="*{email}" 
+                                                       id="email" 
+                                                       oninput="validateEmail(this)"
+                                                       onblur="validateEmail(this)">
+                                                <span class="check-loi" id="emailError" style="color: red; display: block;"></span>
                                                 <span class="check-loi" th:text="${checkEmailTrung}"></span>
                                             </div>
 
@@ -744,5 +765,136 @@
         /* Xóa nội dung */
     }
 </style>
+
+<script>
+// Thêm hàm kiểm tra chỉ cho phép nhập số
+function onlyNumbers(event) {
+    const charCode = (event.which) ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault();
+        return false;
+    }
+    return true;
+}
+
+function validateNgaySinh(input) {
+    const value = input.value;
+    const errorElement = document.getElementById('ngaySinhError');
+    
+    if (!value) {
+        errorElement.textContent = 'Vui lòng chọn ngày sinh';
+        return false;
+    }
+    
+    const selectedDate = new Date(value);
+    const currentDate = new Date();
+    const minDate = new Date('1900-01-01');
+    
+    if (selectedDate > currentDate) {
+        errorElement.textContent = 'Ngày sinh không được lớn hơn ngày hiện tại';
+        return false;
+    }
+    
+    if (selectedDate < minDate) {
+        errorElement.textContent = 'Ngày sinh phải lớn hơn năm 1900';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateSoDienThoai(input) {
+    const value = input.value.trim();
+    const errorElement = document.getElementById('soDienThoaiError');
+    
+    if (!value) {
+        errorElement.textContent = 'Vui lòng nhập số điện thoại';
+        return false;
+    }
+    
+    // Kiểm tra xem có chứa ký tự không phải số không
+    if (!/^\d+$/.test(value)) {
+        errorElement.textContent = 'Số điện thoại chỉ được chứa số';
+        return false;
+    }
+    
+    const phoneRegex = /^0[0-9]{9}$/;
+    if (!phoneRegex.test(value)) {
+        errorElement.textContent = 'Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateEmail(input) {
+    const value = input.value.trim();
+    const errorElement = document.getElementById('emailError');
+    
+    if (!value) {
+        errorElement.textContent = 'Vui lòng nhập email';
+        return false;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+        errorElement.textContent = 'Email không hợp lệ';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateNhanVienInput(input, fieldName) {
+    const value = input.value.trim();
+    const errorElement = document.getElementById(fieldName + 'Error');
+    
+    if (!value) {
+        errorElement.textContent = 'Vui lòng nhập ' + (fieldName === 'tenTaiKhoan' ? 'tên tài khoản' : 'tên nhân viên');
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống ở đầu và cuối
+    if (value !== input.value) {
+        errorElement.textContent = 'Không được chứa khoảng trống ở đầu hoặc cuối';
+        return false;
+    }
+    
+    // Kiểm tra ký tự đặc biệt
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(value)) {
+        errorElement.textContent = 'Không được chứa ký tự đặc biệt';
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống liên tiếp
+    if (value.includes('  ')) {
+        errorElement.textContent = 'Không được chứa khoảng trống liên tiếp';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateNhanVien() {
+    const tenTaiKhoan = document.querySelector('input[th\\:field="*{tenTaiKhoan}"]');
+    const hoVaTen = document.querySelector('input[th\\:field="*{hoVaTen}"]');
+    const ngaySinh = document.querySelector('input[th\\:field="*{ngaySinh}"]');
+    const soDienThoai = document.querySelector('input[th\\:field="*{soDienThoai}"]');
+    const email = document.querySelector('input[th\\:field="*{email}"]');
+    
+    const validTenTaiKhoan = validateNhanVienInput(tenTaiKhoan, 'tenTaiKhoan');
+    const validHoVaTen = validateNhanVienInput(hoVaTen, 'hoVaTen');
+    const validNgaySinh = validateNgaySinh(ngaySinh);
+    const validSoDienThoai = validateSoDienThoai(soDienThoai);
+    const validEmail = validateEmail(email);
+    
+    return validTenTaiKhoan && validHoVaTen && validNgaySinh && validSoDienThoai && validEmail;
+}
+</script>
 
 </html>

@@ -845,13 +845,12 @@
                                                         khoản:</label>
                                                     <input type="text" class="form-control"
                                                            placeholder="Nhập tên tài khoản"
-                                                           th:field="*{tenTaiKhoan}">
-                                                    <!-- <span class="check-loi" th:errors="*{tenTaiKhoan}"></span> -->
-                                                    <span id="errorTenTaiKhoan"
-                                                          class="check-loi"
-                                                          th:text="${checkTenTrung}"></span>
-                                                    <!-- <span class="check-loi"
-                                                    id="errorTenTaiKhoan"></span> -->
+                                                           th:field="*{tenTaiKhoan}" 
+                                                           oninput="validateKhachHangInput(this, 'tenTaiKhoan')"
+                                                           onblur="validateKhachHangInput(this, 'tenTaiKhoan')">
+                                                    <span class="check-loi" th:errors="*{tenTaiKhoan}"></span>
+                                                    <span class="check-loi" th:text="${checkTenTrung}"></span>
+                                                    <span class="check-loi" id="tenTaiKhoanError" style="color: red; display: block;"></span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">
@@ -860,51 +859,22 @@
                                                         hàng:</label>
                                                     <input type="text" class="form-control"
                                                            placeholder="Nhập khách hàng"
-                                                           th:field="*{hoVaTen}">
-                                                    <span class="check-loi"
-                                                          id="errorHoVaTen"></span>
-
-                                                    <!-- <span class="check-loi" th:errors="*{hoVaTen}"></span> -->
+                                                           th:field="*{hoVaTen}" 
+                                                           oninput="validateKhachHangInput(this, 'hoVaTen')"
+                                                           onblur="validateKhachHangInput(this, 'hoVaTen')">
+                                                    <span class="check-loi" th:errors="*{hoVaTen}"></span>
+                                                    <span class="check-loi" id="hoVaTenError" style="color: red; display: block;"></span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">
                                                         <span class="dau-sao">*</span>Ngày
                                                         sinh:</label>
                                                     <input type="date" class="form-control"
-                                                           th:field="*{ngaySinh}">
-                                                    <!-- <span class="check-loi" th:errors="*{ngaySinh}"></span> -->
-                                                    <span class="check-loi"
-                                                          id="errorNgaySinh"></span>
-
-                                                    <span class="check-loi"
-                                                          th:if="${checkNgaySinh=='ngaySinh'}">Năm
-                                                                                    sinh phải lớn 1900</span>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <label class="form-label">
-                                                        <span class="dau-sao">*</span>Giới
-                                                        tính:</label>
-                                                    <div style="margin-top: 1%;">
-                                                        <input th:checked="true"
-                                                               class="form-check-input"
-                                                               type="radio" name="gridRadios"
-                                                               style="margin-left:5%;"
-                                                               th:field="*{gioiTinh}"
-                                                               value="0">
-                                                        <label class="form-check-label">
-                                                            Nam
-                                                        </label>
-
-                                                        <input class="form-check-input"
-                                                               type="radio" name="gridRadios"
-                                                               style="margin-left:5%;"
-                                                               th:field="*{gioiTinh}"
-                                                               value="1">
-                                                        <label class="form-check-label">
-                                                            Nữ
-                                                        </label>
-                                                    </div>
-                                                    <!-- <span class="check-loi" th:errors="*{gioiTinh}"></span> -->
+                                                           th:field="*{ngaySinh}"
+                                                           oninput="validateNgaySinh(this)"
+                                                           onchange="validateNgaySinh(this)">
+                                                    <span class="check-loi" th:errors="*{ngaySinh}"></span>
+                                                    <span class="check-loi" id="ngaySinhError" style="color: red; display: block;"></span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">
@@ -913,24 +883,24 @@
                                                         thoại:</label>
                                                     <input type="text" class="form-control"
                                                            placeholder="Nhập số điện thoại"
-                                                           th:field="*{soDienThoai}">
-                                                    <!-- <span class="check-loi" th:errors="*{soDienThoai}"></span> -->
-                                                    <span class="check-loi"
-                                                          id="errorsoDienThoai"></span>
-
+                                                           th:field="*{soDienThoai}"
+                                                           oninput="validateSoDienThoai(this)"
+                                                           onblur="validateSoDienThoai(this)"
+                                                           onkeypress="return onlyNumbers(event)">
+                                                    <span class="check-loi" th:errors="*{soDienThoai}"></span>
+                                                    <span class="check-loi" id="soDienThoaiError" style="color: red; display: block;"></span>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">
-                                                                                    <span
-                                                                                            class="dau-sao">*</span>Email:</label>
+                                                        <span class="dau-sao">*</span>Email:</label>
                                                     <input type="email" class="form-control"
                                                            placeholder="Nhập email"
-                                                           th:field="*{email}" name="email">
-                                                    <!-- <span class="check-loi" th:errors="*{email}"></span> -->
-
-                                                    <span id="errorEmail" class="check-loi"
-                                                          th:text="${checkEmailTrung}"></span>
-
+                                                           th:field="*{email}" 
+                                                           name="email"
+                                                           oninput="validateEmail(this)"
+                                                           onblur="validateEmail(this)">
+                                                    <span class="check-loi" th:errors="*{email}"></span>
+                                                    <span class="check-loi" id="emailError" style="color: red; display: block;"></span>
                                                 </div>
 
                                                 <div class="modal-footer">
@@ -2689,6 +2659,222 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Hàm kiểm soát hiển thị modal
+    function showErrorModal() {
+        const modal = new bootstrap.Modal(document.getElementById('them-khach-hang'));
+        
+        // Ngăn modal tự động đóng và reset
+        $('#them-khach-hang').modal({
+            backdrop: 'static',
+            keyboard: false,
+            show: true
+        });
+        
+        // Thêm nút đóng modal
+        const closeButton = document.createElement('button');
+        closeButton.className = 'btn btn-secondary';
+        closeButton.textContent = 'Đóng';
+        closeButton.onclick = function() {
+            modal.hide();
+        };
+        
+        // Thêm nút đóng vào modal footer
+        const modalFooter = document.querySelector('#them-khach-hang .modal-footer');
+        if (modalFooter && !modalFooter.querySelector('.btn-secondary')) {
+            modalFooter.appendChild(closeButton);
+        }
+    }
+
+    // Kiểm tra nếu có thông báo lỗi thì hiển thị modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkThongBao = '[[${checkThongBao}]]';
+        const errorHoVaTen = '[[${errorHoVaTen}]]';
+        
+        if (checkThongBao === 'thaiBai' && errorHoVaTen) {
+            // Sử dụng setTimeout để đảm bảo DOM đã load xong
+            setTimeout(function() {
+                showErrorModal();
+            }, 100);
+        }
+    });
+
+    function validThemKhachHang() {
+        let isValid = true;
+        const hoVaTen = document.getElementById('hoVaTen').value.trim();
+        const errorHoVaTen = document.getElementById('errorHoVaTen');
+        
+        // Validate tên khách hàng
+        if (hoVaTen === '') {
+            errorHoVaTen.textContent = 'Vui lòng nhập họ và tên';
+            errorHoVaTen.style.color = 'red';
+            isValid = false;
+        } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(hoVaTen)) {
+            errorHoVaTen.textContent = 'Họ và tên chỉ được chứa chữ cái và dấu cách';
+            errorHoVaTen.style.color = 'red';
+            isValid = false;
+        } else {
+            errorHoVaTen.textContent = '';
+        }
+
+        // Các validate khác giữ nguyên
+        const email = document.getElementById('email').value;
+        const errorEmail = document.getElementById('errorEmail');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (email === '') {
+            errorEmail.textContent = 'Vui lòng nhập email';
+            errorEmail.style.color = 'red';
+            isValid = false;
+        } else if (!emailRegex.test(email)) {
+            errorEmail.textContent = 'Email không hợp lệ';
+            errorEmail.style.color = 'red';
+            isValid = false;
+        } else {
+            errorEmail.textContent = '';
+        }
+
+        const soDienThoai = document.getElementById('soDienThoai').value;
+        const errorSoDienThoai = document.getElementById('errorSoDienThoai');
+        const phoneRegex = /^0[0-9]{9}$/;
+
+        if (soDienThoai === '') {
+            errorSoDienThoai.textContent = 'Vui lòng nhập số điện thoại';
+            errorSoDienThoai.style.color = 'red';
+            isValid = false;
+        } else if (!phoneRegex.test(soDienThoai)) {
+            errorSoDienThoai.textContent = 'Số điện thoại không hợp lệ';
+            errorSoDienThoai.style.color = 'red';
+            isValid = false;
+        } else {
+            errorSoDienThoai.textContent = '';
+        }
+
+        return isValid;
+    }
+</script>
+
+<script>
+function validateKhachHangInput(input, fieldName) {
+    const value = input.value.trim();
+    const errorElement = document.getElementById(fieldName + 'Error');
+    
+    if (!value) {
+        errorElement.textContent = 'Vui lòng nhập ' + (fieldName === 'tenTaiKhoan' ? 'tên tài khoản' : 'tên khách hàng');
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống ở đầu và cuối
+    if (value !== input.value) {
+        errorElement.textContent = 'Không được chứa khoảng trống ở đầu hoặc cuối';
+        return false;
+    }
+    
+    // Kiểm tra ký tự đặc biệt
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(value)) {
+        errorElement.textContent = 'Không được chứa ký tự đặc biệt';
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống liên tiếp
+    if (value.includes('  ')) {
+        errorElement.textContent = 'Không được chứa khoảng trống liên tiếp';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateNgaySinh(input) {
+    const value = input.value;
+    const errorElement = document.getElementById('ngaySinhError');
+    
+    if (!value) {
+        errorElement.textContent = 'Vui lòng chọn ngày sinh';
+        return false;
+    }
+    
+    const selectedDate = new Date(value);
+    const currentDate = new Date();
+    const minDate = new Date('1900-01-01');
+    
+    if (selectedDate > currentDate) {
+        errorElement.textContent = 'Ngày sinh không được lớn hơn ngày hiện tại';
+        return false;
+    }
+    
+    if (selectedDate < minDate) {
+        errorElement.textContent = 'Ngày sinh phải lớn hơn năm 1900';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateSoDienThoai(input) {
+    const value = input.value.trim();
+    const errorElement = document.getElementById('soDienThoaiError');
+    
+    if (!value) {
+        errorElement.textContent = 'Vui lòng nhập số điện thoại';
+        return false;
+    }
+    
+    // Kiểm tra xem có chứa ký tự không phải số không
+    if (!/^\d+$/.test(value)) {
+        errorElement.textContent = 'Số điện thoại chỉ được chứa số';
+        return false;
+    }
+    
+    const phoneRegex = /^0[0-9]{9}$/;
+    if (!phoneRegex.test(value)) {
+        errorElement.textContent = 'Số điện thoại phải bắt đầu bằng số 0 và có 10 chữ số';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateEmail(input) {
+    const value = input.value.trim();
+    const errorElement = document.getElementById('emailError');
+    
+    if (!value) {
+        errorElement.textContent = 'Vui lòng nhập email';
+        return false;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+        errorElement.textContent = 'Email không hợp lệ';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validThemKhachHang() {
+    const tenTaiKhoan = document.querySelector('input[th\\:field="*{tenTaiKhoan}"]');
+    const hoVaTen = document.querySelector('input[th\\:field="*{hoVaTen}"]');
+    const ngaySinh = document.querySelector('input[th\\:field="*{ngaySinh}"]');
+    const soDienThoai = document.querySelector('input[th\\:field="*{soDienThoai}"]');
+    const email = document.querySelector('input[th\\:field="*{email}"]');
+    
+    const validTenTaiKhoan = validateKhachHangInput(tenTaiKhoan, 'tenTaiKhoan');
+    const validHoVaTen = validateKhachHangInput(hoVaTen, 'hoVaTen');
+    const validNgaySinh = validateNgaySinh(ngaySinh);
+    const validSoDienThoai = validateSoDienThoai(soDienThoai);
+    const validEmail = validateEmail(email);
+    
+    return validTenTaiKhoan && validHoVaTen && validNgaySinh && validSoDienThoai && validEmail;
+}
+</script>
 
 </body>
 </html>
