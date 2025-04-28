@@ -691,6 +691,13 @@ function validateTayAoInput(input) {
         errorElement.textContent = 'Không được chứa ký tự đặc biệt';
         return false;
     }
+
+    // Kiểm tra số
+    const hasNumber = /\d/;
+    if (hasNumber.test(value)) {
+        errorElement.textContent = 'Không được chứa số';
+        return false;
+    }
     
     // Kiểm tra khoảng trống liên tiếp
     if (value.includes('  ')) {
