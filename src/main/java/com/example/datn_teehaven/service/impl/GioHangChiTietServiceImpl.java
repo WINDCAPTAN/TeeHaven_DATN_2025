@@ -54,12 +54,14 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         return repository.soLuongSpTrongGioHangCT(idGioHang);
 
     }
+
     @Override
     public List<GioHangChiTiet> findAllByIdGioHang(Long idGioHang) {
 
         return repository.getfindAllByIdGioHang(idGioHang);
 
     }
+
     @Override
     public List<GioHangChiTiet> save(Long idGioHang, List<String> idChiTietSp, Integer soLuong) {
         List<GioHangChiTiet> gioHangChiTietList = repository.getByGioHangChiTiet(idGioHang, idChiTietSp);
@@ -108,17 +110,21 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         return repository.findById(id).get();
 
     }
+
     @Override
     public void deleteById(Long id) {
 
         repository.deleteById(id);
 
-    } @Override
+    }
+
+    @Override
     public GioHangChiTiet update(GioHangChiTiet gioHangChiTiet) {
 
         return repository.save(gioHangChiTiet);
 
     }
+
     @Override
     public List<GioHangChiTiet> findAllById(List<String> listIdString, Long idGioHang) {
         List<Long> listIdLong = new ArrayList<>();
@@ -135,6 +141,7 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         return repository.findAllByIdGHCT(listIdLong, idGioHang);
 
     }
+
     @Override
     public HoaDonChiTiet addHoaDon(List<String> listStringIdGioHangCT, Long tongTien, Long tongTienSale,
                                    String hoVaTen, String soDienThoai, String tienShip, String tienGiam, String email,
@@ -202,14 +209,34 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
                                String thanhPhoID, Long idGioHang, Integer trangThai) {
         // Create a new order with the specified status
         HoaDon hoaDon = new HoaDon();
-        hoaDon.setMaHoaDon("HD"+ hoaDon.getId());
+        hoaDon.setMaHoaDon("HD" + hoaDon.getId());
         hoaDon.setNgayTao(new Date());
-        hoaDon.setNgayThanhToan(new Date());
         hoaDon.setLoaiHoaDon(1);
         hoaDon.setTongTien(tongTien);
         hoaDon.setTongTienKhiGiam(tongTienAndSale);
-        hoaDon.setPhiShip(Long.valueOf(tienShip));
-        hoaDon.setTienGiam(Long.valueOf(tienGiam));
+
+        // Xử lý phí ship
+        if (tienShip != null && !tienShip.isEmpty()) {
+            try {
+                hoaDon.setPhiShip(Long.valueOf(tienShip));
+            } catch (NumberFormatException e) {
+                hoaDon.setPhiShip(0L);
+            }
+        } else {
+            hoaDon.setPhiShip(0L);
+        }
+
+        // Xử lý tiền giảm từ voucher
+        if (tienGiam != null && !tienGiam.isEmpty()) {
+            try {
+                hoaDon.setTienGiam(Long.valueOf(tienGiam));
+            } catch (NumberFormatException e) {
+                hoaDon.setTienGiam(0L);
+            }
+        } else {
+            hoaDon.setTienGiam(0L);
+        }
+
         hoaDon.setNguoiNhan(hoVaTen);
         hoaDon.setSdtNguoiNhan(soDienThoai);
         hoaDon.setEmailNguoiNhan(email);
@@ -229,6 +256,8 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         // Save the order
         hoaDon = repositoryHoaDon.save(hoaDon);
         hoaDon.setMaHoaDon("HD" + hoaDon.getId());
+        repositoryHoaDon.save(hoaDon);
+
         // Create order details
         for (String id : listIdString) {
             GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findById(Long.valueOf(id)).orElse(null);
@@ -252,7 +281,6 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         }
 
         // Create order history
-        hoaDon.setMaHoaDon("HD" + hoaDon.getId());
         LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
         lichSuHoaDon.setHoaDon(hoaDon);
         lichSuHoaDon.setTrangThai(trangThai);
@@ -263,5 +291,4 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
         return hoaDon.getId();
     }
-
 }

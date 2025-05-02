@@ -76,6 +76,16 @@ public class SanPhamController {
                       @RequestParam("fileImage") List<MultipartFile> listHinhAnh,
                       RedirectAttributes redirectAttributes) throws IOException {
 
+        // Kiểm tra ký tự đặc biệt trong tên sản phẩm
+        if (sanPham.getTen() != null && sanPham.getTen().matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+.*")) {
+            model.addAttribute("checkModal", "modal");
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("checkTenTrung", "Tên sản phẩm không được chứa ký tự đặc biệt");
+            model.addAttribute("listSP", sanPhamService.getAll());
+            model.addAttribute("listTH", thuongHieuService.getAllDangHoatDong());
+            return "admin-template/san_pham/san-pham";
+        }
+
         // Kiểm tra lỗi validate
         if (result.hasErrors()) {
             model.addAttribute("checkModal", "modal");
@@ -143,9 +153,16 @@ public class SanPhamController {
                          @RequestParam(value = "fileImage", required = false) List<MultipartFile> listHinhAnh,
                          RedirectAttributes redirectAttributes) throws IOException {
 
+        // Kiểm tra ký tự đặc biệt trong tên sản phẩm
+        if (sanPham.getTen() != null && sanPham.getTen().matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]+.*")) {
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("checkTenTrung", "Tên sản phẩm không được chứa ký tự đặc biệt");
+            model.addAttribute("listTH", thuongHieuService.getAllDangHoatDong());
+            return "admin-template/san_pham/sua-san-pham";
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("checkThongBao", "thaiBai");
-            model.addAttribute("listSP", sanPhamService.getAll());
             model.addAttribute("listTH", thuongHieuService.getAllDangHoatDong());
             return "admin-template/san_pham/sua-san-pham";
         }

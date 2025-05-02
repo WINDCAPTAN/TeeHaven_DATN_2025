@@ -358,10 +358,14 @@ public class CustomersController {
             // Store order ID in session for later reference
             session.setAttribute("pendingOrderId", orderId);
 
-            // Redirect to VNPay payment
+            // Redirect to VNPay payment with shipping fee and voucher discount
             int amount = Integer.parseInt(tongTienAndSale);
             String orderInfo = "Thanh toan don hang TeeHaven #" + orderId;
-            return "redirect:/vnpay-payment?amount=" + amount + "&orderInfo=" + orderInfo;
+            return "redirect:/vnpay-payment?amount=" + amount +
+                    "&orderInfo=" + orderInfo +
+                    "&shippingFee=" + tienShip +
+                    "&voucherDiscount=" + tienGiam +
+                    (voucher != null && !voucher.isEmpty() && !voucher.equals("null") ? "&voucherId=" + voucher : "");
         } else {
             // COD payment - create order with status 0 (normal flow)
             gioHangChiTietService.addHoaDon(listIdString, Long.valueOf(tongTien), Long.valueOf(tongTienAndSale),
