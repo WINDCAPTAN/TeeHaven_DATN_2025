@@ -20,8 +20,8 @@ public class VNPayService {
     private final String vnp_Version = "2.1.0";
     private final String vnp_Command = "pay";
 
-    public String createOrder(int amount, String orderInfo, String baseUrl, String bankCode, 
-                            String voucherId, String tienShip, String tienGiam) {
+    public String createOrder(int amount, String orderInfo, String baseUrl, String bankCode,
+                              String voucherId, String tienShip, String tienGiam) {
         try {
             String vnp_TxnRef = String.valueOf(System.currentTimeMillis());
             String vnp_CreateDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
@@ -84,7 +84,7 @@ public class VNPayService {
             String vnp_SecureHash = hmacSHA512(vnp_HashSecret, hashData.toString());
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = vnp_Url + "?" + queryUrl;
-            
+
             return paymentUrl;
         } catch (Exception e) {
 //            logger.error("Error creating VNPay order", e);
@@ -105,7 +105,7 @@ public class VNPayService {
 
             String vnp_SecureHash = request.getParameter("vnp_SecureHash");
             String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
-            
+
             // Remove hash from fields
             if (fields.containsKey("vnp_SecureHashType")) {
                 fields.remove("vnp_SecureHashType");
@@ -133,7 +133,7 @@ public class VNPayService {
             }
 
             String checkSum = hmacSHA512(vnp_HashSecret, hashData.toString());
-            
+
             // Debug information
             System.out.println("Raw hash data: " + hashData.toString());
             System.out.println("Calculated hash: " + checkSum);

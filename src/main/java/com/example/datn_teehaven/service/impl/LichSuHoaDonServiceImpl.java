@@ -59,7 +59,7 @@ public class LichSuHoaDonServiceImpl implements LichSuHoaDonService {
             LichSuHoaDon lichSu = LichSuHoaDon.builder()
                     .hoaDon(hoaDon)  // Liên kết với hóa đơn
                     .trangThai(trangThaiMoi)  // Trạng thái hiện tại của hóa đơn
-                    .ghiChu("Cập nhật trạng thái hóa đơn") // Thêm ghi chú cho thay đổi
+                    .ghiChu("") // Thêm ghi chú cho thay đổi
                     .ngaySua(new Date())  // Lưu thời gian thay đổi trạng thái
                     .build();
 

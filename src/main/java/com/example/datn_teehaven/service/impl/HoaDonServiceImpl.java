@@ -63,8 +63,12 @@ public class HoaDonServiceImpl implements HoaDonService {
         // Lưu hoặc cập nhật hóa đơn
         hoaDonRepository.save(hoaDon);
 
-        // Lưu lịch sử trạng thái sau khi thay đổi trạng thái hóa đơn
-        lichSuHoaDonService.saveLichSuHoaDon(hoaDon);
+        // Chỉ lưu lịch sử trạng thái nếu đây là một hóa đơn mới
+        // hoặc nếu trạng thái đã thay đổi so với trạng thái trước đó
+        HoaDon existingHoaDon = hoaDonRepository.findById(hoaDon.getId()).orElse(null);
+        if (existingHoaDon == null || !existingHoaDon.getTrangThai().equals(hoaDon.getTrangThai())) {
+            lichSuHoaDonService.saveLichSuHoaDon(hoaDon);
+        }
     }
 
 
