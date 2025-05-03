@@ -41,16 +41,14 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
     @Override
     public Integer soLuongSPGioHangCT(Long idGioHang) {
-
         return repository.soLuongSpTrongGioHangCT(idGioHang);
-
     }
+
     @Override
     public List<GioHangChiTiet> findAllByIdGioHang(Long idGioHang) {
-
         return repository.getfindAllByIdGioHang(idGioHang);
-
     }
+
     @Override
     public List<GioHangChiTiet> save(Long idGioHang, List<String> idChiTietSp, Integer soLuong) {
         List<GioHangChiTiet> gioHangChiTietList = repository.getByGioHangChiTiet(idGioHang, idChiTietSp);
@@ -95,21 +93,19 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
     @Override
     public GioHangChiTiet fillById(Long id) {
-
         return repository.findById(id).get();
-
     }
+
     @Override
     public void deleteById(Long id) {
-
         repository.deleteById(id);
-
-    } @Override
-    public GioHangChiTiet update(GioHangChiTiet gioHangChiTiet) {
-
-        return repository.save(gioHangChiTiet);
-
     }
+
+    @Override
+    public GioHangChiTiet update(GioHangChiTiet gioHangChiTiet) {
+        return repository.save(gioHangChiTiet);
+    }
+
     @Override
     public List<GioHangChiTiet> findAllById(List<String> listIdString, Long idGioHang) {
         List<Long> listIdLong = new ArrayList<>();
@@ -124,8 +120,8 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         }
 
         return repository.findAllByIdGHCT(listIdLong, idGioHang);
-
     }
+
     @Override
     public HoaDonChiTiet addHoaDon(List<String> listStringIdGioHangCT, Long tongTien, Long tongTienSale,
                                    String hoVaTen, String soDienThoai, String tienShip, String tienGiam, String email,
@@ -148,7 +144,7 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         hoaDon.setPhuongXa(phuongXaID);
         hoaDon.setQuanHuyen(quanHuyenID);
         hoaDon.setThanhPho(thanhPhoID);
-        if (voucher != "") {
+        if (voucher != null && !voucher.isEmpty()) {
             hoaDon.setVoucher(Voucher.builder().id(Long.valueOf(voucher)).build());
         }
 
@@ -164,10 +160,9 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
                 .build());
 
         hoaDon.setMaHoaDon("HD" + hoaDon.getId());
-
         repositoryHoaDon.save(hoaDon);
 
-
+        // Only process the selected items
         List<GioHangChiTiet> listGioHangChiTiet = this.findAllById(listStringIdGioHangCT, idGioHang);
 
         for (GioHangChiTiet gioHangChiTiet : listGioHangChiTiet) {
@@ -179,19 +174,11 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
             hoaDonChiTiet.setTrangThai(0);
             hoaDonChiTiet.setNgayTao(new Date());
             repositoryHoaDonChiTiet.save(hoaDonChiTiet);
+
+            // Only delete the items that were processed
             repository.delete(gioHangChiTiet);
         }
 
         return null;
-
     }
-
-    @Override
-    public void clearCart(Long gioHangId) {
-        List<GioHangChiTiet> cartItems = repository.getfindAllByIdGioHang(gioHangId);
-        if (cartItems != null && !cartItems.isEmpty()) {
-            repository.deleteAll(cartItems);
-        }
-    }
-
 }

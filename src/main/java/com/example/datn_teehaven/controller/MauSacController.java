@@ -1,6 +1,5 @@
 package com.example.datn_teehaven.controller;
 
-
 import com.example.datn_teehaven.Config.PrincipalCustom;
 import com.example.datn_teehaven.Config.UserInfoUserDetails;
 import com.example.datn_teehaven.entyti.MauSac;
@@ -65,13 +64,15 @@ public class MauSacController {
             Model model,
             RedirectAttributes redirectAttributes
     ) {
+        // Kiểm tra tên có hợp lệ không
         if (!mauSacService.isTenValid(mauSac.getTen())) {
-            result.rejectValue("ten", "error.mauSac", "Tên màu sắc chỉ được chứa chữ cái tiếng Việt có dấu.");
+            result.rejectValue("ten", "error.mauSac", "Tên màu sắc chỉ được chứa chữ cái tiếng Việt có dấu và khoảng trắng, không ký tự đặc biệt.");
             model.addAttribute("checkThongBao", "thaiBai");
-            model.addAttribute("errorMessage", "Tên màu sắc không hợp lệ.");
+            model.addAttribute("errorMessage", "Tên màu sắc không hợp lệ. Chỉ được chứa chữ cái tiếng Việt có dấu và khoảng trắng, không ký tự đặc biệt.");
             return "/admin-template/mau_sac/sua-mau-sac";
         }
 
+        // Kiểm tra tên có trùng không
         if (!mauSacService.checkTenTrungSua(mauSac.getId(), mauSac.getTen())) {
             model.addAttribute("checkTenTrung", "Màu sắc đã tồn tại");
             model.addAttribute("checkThongBao", "thaiBai");
@@ -98,13 +99,16 @@ public class MauSacController {
         // Kiểm tra tên có hợp lệ không
         if (!mauSacService.isTenValid(mauSac.getTen())) {
             redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
-            redirectAttributes.addFlashAttribute("errorMessage", "Tên màu sắc chỉ được chứa chữ cái tiếng Việt có dấu.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Tên màu sắc không hợp lệ. Chỉ được chứa chữ cái tiếng Việt có dấu và khoảng trắng, không ký tự đặc biệt.");
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
             return "redirect:/admin/mau-sac"; // Chuyển hướng về trang danh sách
         }
 
+        // Kiểm tra tên có trùng không
         if (!mauSacService.checkTenTrung(mauSac.getTen())) {
             redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
             redirectAttributes.addFlashAttribute("errorMessage", "Tên màu sắc đã tồn tại.");
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
             return "redirect:/admin/mau-sac"; // Chuyển hướng về trang danh sách
         }
 
@@ -119,7 +123,4 @@ public class MauSacController {
         redirectAttributes.addFlashAttribute("successMessage", "Thêm màu sắc thành công!");
         return "redirect:/admin/mau-sac"; // Chuyển hướng về danh sách màu sắc
     }
-
-
 }
-

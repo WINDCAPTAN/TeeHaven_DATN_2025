@@ -2387,12 +2387,40 @@
 
 <script>
     function handleVNPayPayment() {
+        // Get the total amount after voucher discount
         const amountElement = document.getElementById('tongTienAndSale');
         const amount = parseInt(amountElement.value.replace(/[^\d]/g, ''));
+
+        // Get shipping fee
+        const shippingFeeElement = document.getElementById('shippingFeeResult');
+        const shippingFee = parseInt(shippingFeeElement.innerText.replace(/[^\d]/g, ''));
+
+        // Calculate total payment amount
+        const totalAmount = amount + shippingFee;
+
         const orderInfo = 'Thanh toan don hang TeeHaven';
         const encodedOrderInfo = encodeURIComponent(orderInfo);
 
-        window.location.href = '/vnpay-payment?amount=' + amount + '&orderInfo=' + encodedOrderInfo;
+        // Get voucher and shipping information
+        const voucherId = document.getElementById('voucherID').value;
+        const tienShip = document.getElementById('tienShip').value;
+        const tienGiam = document.getElementById('tienGiam').value;
+
+        // Build the VNPay payment URL with all parameters
+        let paymentUrl = '/vnpay-payment?amount=' + totalAmount +
+            '&orderInfo=' + encodedOrderInfo;
+
+        if (voucherId) {
+            paymentUrl += '&voucherId=' + voucherId;
+        }
+        if (tienShip) {
+            paymentUrl += '&tienShip=' + tienShip;
+        }
+        if (tienGiam) {
+            paymentUrl += '&tienGiam=' + tienGiam;
+        }
+
+        window.location.href = paymentUrl;
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -2417,16 +2445,6 @@
                             handleVNPayPayment();
                             return false;
                         };
-                    }
-
-                } else {
-                    if (checkoutButton) {
-                        checkoutButton.textContent = 'Đặt hàng';
-                        checkoutButton.onclick = function () { return checkFormDatHang(); };
-                    }
-                    if (checkoutButtonNoDC) {
-                        checkoutButtonNoDC.textContent = 'Đặt hàng';
-                        checkoutButtonNoDC.onclick = function () { return checkFormDatHangNoDC(); };
                     }
                 }
             });

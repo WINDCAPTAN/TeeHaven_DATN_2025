@@ -20,11 +20,24 @@ public class VNPayService {
     private final String vnp_Version = "2.1.0";
     private final String vnp_Command = "pay";
 
-    public String createOrder(int amount, String orderInfo, String baseUrl, String bankCode) {
+    public String createOrder(int amount, String orderInfo, String baseUrl, String bankCode,
+                              String voucherId, String tienShip, String tienGiam) {
         try {
             String vnp_TxnRef = String.valueOf(System.currentTimeMillis());
             String vnp_CreateDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
             String vnp_IpAddr = "127.0.0.1";
+
+            // Build detailed order info with voucher and shipping
+            StringBuilder detailedOrderInfo = new StringBuilder(orderInfo);
+            if (voucherId != null && !voucherId.isEmpty()) {
+                detailedOrderInfo.append("|Voucher:").append(voucherId);
+            }
+            if (tienShip != null && !tienShip.isEmpty()) {
+                detailedOrderInfo.append("|Ship:").append(tienShip);
+            }
+            if (tienGiam != null && !tienGiam.isEmpty()) {
+                detailedOrderInfo.append("|Giam:").append(tienGiam);
+            }
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", vnp_Version);
@@ -33,7 +46,7 @@ public class VNPayService {
             vnp_Params.put("vnp_Amount", String.valueOf(amount * 100));
             vnp_Params.put("vnp_CurrCode", "VND");
             vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-            vnp_Params.put("vnp_OrderInfo", orderInfo);
+            vnp_Params.put("vnp_OrderInfo", detailedOrderInfo.toString());
             vnp_Params.put("vnp_OrderType", "other");
             vnp_Params.put("vnp_Locale", "vn");
             vnp_Params.put("vnp_ReturnUrl", vnp_ReturnUrl);
@@ -54,16 +67,12 @@ public class VNPayService {
                 String fieldName = itr.next();
                 String fieldValue = vnp_Params.get(fieldName);
                 if ((fieldValue != null) && (fieldValue.length() > 0)) {
-                    // Build hash data
                     hashData.append(fieldName);
                     hashData.append('=');
                     hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-
-                    // Build query
                     query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
                     query.append('=');
                     query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
-
                     if (itr.hasNext()) {
                         query.append('&');
                         hashData.append('&');
@@ -74,10 +83,11 @@ public class VNPayService {
             String queryUrl = query.toString();
             String vnp_SecureHash = hmacSHA512(vnp_HashSecret, hashData.toString());
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+            String paymentUrl = vnp_Url + "?" + queryUrl;
 
-            return vnp_Url + "?" + queryUrl;
+            return paymentUrl;
         } catch (Exception e) {
-            e.printStackTrace();
+//            logger.error("Error creating VNPay order", e);
             return null;
         }
     }
@@ -95,7 +105,7 @@ public class VNPayService {
 
             String vnp_SecureHash = request.getParameter("vnp_SecureHash");
             String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
-            
+
             // Remove hash from fields
             if (fields.containsKey("vnp_SecureHashType")) {
                 fields.remove("vnp_SecureHashType");
@@ -123,7 +133,7 @@ public class VNPayService {
             }
 
             String checkSum = hmacSHA512(vnp_HashSecret, hashData.toString());
-            
+
             // Debug information
             System.out.println("Raw hash data: " + hashData.toString());
             System.out.println("Calculated hash: " + checkSum);
