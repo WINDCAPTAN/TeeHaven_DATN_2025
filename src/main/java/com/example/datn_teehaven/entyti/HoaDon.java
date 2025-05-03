@@ -95,6 +95,10 @@ public class HoaDon {
     private Integer trangThai;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phuong_thuc_thanh_toan_id", referencedColumnName = "id")
+    private PhuongThucThanhToan phuongThucThanhToan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voucher_id", referencedColumnName = "id")
     private Voucher voucher;
 

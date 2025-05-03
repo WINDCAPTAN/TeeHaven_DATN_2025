@@ -449,20 +449,47 @@
                 </div>
             </div>
         </section>
-        <!-- Thông báo thành công -->
-        <div th:if="${checkThongBaoUpdate == 'thanhCongUpdate'}" class="alert alert-success position-fixed"
-             style="top: 20px; right: 20px;">
-            Cập nhật thành công!
-        </div>
 
-        <div th:if="${checkThongBaoUpdate == 'thatBai'}" class="alert alert-danger position-fixed"
-             style="top: 20px; right: 20px;">
-            Cập nhật không thành công, vui lòng kiểm tra lại.
-        </div>
     </div>
 </main><!-- End #main -->
+!-- Hiển thị thông báo thành công -->
+<script th:if="${checkThongBao == 'thanhCong'}">
+    window.addEventListener('DOMContentLoaded', () => {
+        var toastEl = document.getElementById('liveToastSuccess');
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    });
+</script>
 
+<div id="liveToastSuccess" class="toast align-items-center text-white bg-success border-0" role="alert"
+     aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+        <div class="toast-body" th:text="${successMessage}">
+            <!-- Thông báo thành công sẽ hiển thị ở đây -->
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+    </div>
+</div>
 
+<!-- Hiển thị thông báo thất bại -->
+<script th:if="${checkThongBao == 'thaiBai'}">
+    window.addEventListener('DOMContentLoaded', () => {
+        var toastEl = document.getElementById('liveToastDanger');
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    });
+</script>
+<div id="liveToastDanger" class="toast align-items-center text-white bg-danger border-0" role="alert"
+     aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+        <div class="toast-body" th:text="${errorMessage}">
+            <!-- Thông báo lỗi cụ thể sẽ hiển thị ở đây -->
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                aria-label="Close"></button>
+    </div>
+</div>
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">

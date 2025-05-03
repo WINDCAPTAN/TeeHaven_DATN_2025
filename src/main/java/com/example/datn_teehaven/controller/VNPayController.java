@@ -7,6 +7,7 @@ import com.example.datn_teehaven.service.HoaDonService;
 import com.example.datn_teehaven.service.TaiKhoanService;
 import com.example.datn_teehaven.Config.PrincipalCustom;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+
 import com.example.datn_teehaven.entyti.LichSuHoaDon;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
 
@@ -44,26 +46,20 @@ public class VNPayController {
     private PrincipalCustom principalCustom = new PrincipalCustom();
 
     @GetMapping("/vnpay-payment")
-    public String submitOrder(@RequestParam("amount") int amount,
-                              @RequestParam("orderInfo") String orderInfo,
-                              @RequestParam(value = "bankCode", required = false) String bankCode,
-                              @RequestParam(value = "shippingFee", required = false, defaultValue = "0") String shippingFee,
-                              @RequestParam(value = "voucherDiscount", required = false, defaultValue = "0") String voucherDiscount,
-                              @RequestParam(value = "voucherId", required = false) String voucherId,
-                              HttpServletRequest request) {
+    public String submitOrder(@RequestParam("amount") int amount, @RequestParam("orderInfo") String orderInfo, @RequestParam(value = "bankCode", required = false) String bankCode, @RequestParam(value = "voucherId", required = false) String voucherId, @RequestParam(value = "tienShip", required = false, defaultValue = "0") String tienShip, @RequestParam(value = "tienGiam", required = false, defaultValue = "0") String tienGiam, HttpServletRequest request) {
         try {
-            logger.info("Initiating VNPay payment - Amount: {}, OrderInfo: {}, BankCode: {}, ShippingFee: {}, VoucherDiscount: {}, VoucherId: {}",
-                    amount, orderInfo, bankCode, shippingFee, voucherDiscount, voucherId);
+            logger.info("Initiating VNPay payment - Amount: {}, OrderInfo: {}, BankCode: {}, VoucherId: {}, TienShip: {}, TienGiam: {}", amount, orderInfo, bankCode, voucherId, tienShip, tienGiam);
 
-            // Lưu thông tin vào session để sử dụng khi xử lý kết quả thanh toán
-            request.getSession().setAttribute("shippingFee", shippingFee);
-            request.getSession().setAttribute("voucherDiscount", voucherDiscount);
-            request.getSession().setAttribute("voucherId", voucherId);
+            // Lưu thông tin vào session (chuyển về dạng số nếu cần xử lý về sau)
+            HttpSession session = request.getSession();
+            session.setAttribute("voucherId", voucherId);
+            session.setAttribute("tienShip", tienShip);
+            session.setAttribute("tienGiam", tienGiam);
 
-            String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-            String vnpayUrl = vnPayService.createOrder(amount, orderInfo, baseUrl, bankCode);
+            String baseUrl = String.format("%s://%s:%d", request.getScheme(), request.getServerName(), request.getServerPort());
+            String vnpayUrl = vnPayService.createOrder(amount, orderInfo, baseUrl, bankCode, voucherId, tienShip, tienGiam);
 
-            if (vnpayUrl != null) {
+            if (vnpayUrl != null && !vnpayUrl.isEmpty()) {
                 logger.info("Redirecting to VNPay URL: {}", vnpayUrl);
                 return "redirect:" + vnpayUrl;
             } else {
@@ -75,6 +71,7 @@ public class VNPayController {
             return "redirect:/checkout?error=system_error";
         }
     }
+
 
     @GetMapping("/vnpay-payment-return")
     public String paymentReturn(HttpServletRequest request, Model model) {
@@ -90,17 +87,19 @@ public class VNPayController {
             String payDate = fields.get("vnp_PayDate");
             String transactionNo = fields.get("vnp_TransactionNo");
             String responseCode = fields.get("vnp_ResponseCode");
+            String orderInfo = fields.get("vnp_OrderInfo");
 
-            // Lấy thông tin phí ship và voucher từ session
-            String shippingFee = (String) request.getSession().getAttribute("shippingFee");
-            String voucherDiscount = (String) request.getSession().getAttribute("voucherDiscount");
+            // Lấy thông tin voucher và shipping từ session
             String voucherId = (String) request.getSession().getAttribute("voucherId");
+            String tienShip = (String) request.getSession().getAttribute("tienShip");
+            String tienGiam = (String) request.getSession().getAttribute("tienGiam");
 
-            if (shippingFee == null) shippingFee = "0";
-            if (voucherDiscount == null) voucherDiscount = "0";
+            // Kiểm tra và xử lý giá trị null
+            if (voucherId == null) voucherId = "";
+            if (tienShip == null) tienShip = "0";
+            if (tienGiam == null) tienGiam = "0";
 
-            logger.info("Payment return - TransactionId: {}, Amount: {}, ResponseCode: {}, ShippingFee: {}, VoucherDiscount: {}",
-                    transactionId, amount, responseCode, shippingFee, voucherDiscount);
+            logger.info("Payment return - TransactionId: {}, Amount: {}, ResponseCode: {}, OrderInfo: {}", transactionId, amount, responseCode, orderInfo);
 
             // Add common attributes
             model.addAttribute("transactionId", transactionId);
@@ -169,18 +168,16 @@ public class VNPayController {
                             }
                         } else {
                             // Create new order using GioHangChiTietService
-                            gioHangChiTietService.addHoaDon(
-                                    listIdString,
-                                    tongTien, // tongTien
-                                    tongTien, // tongTienAndSale
+                            gioHangChiTietService.addHoaDon(listIdString, tongTien, // tongTien
+                                    tongTien - Long.parseLong(tienGiam), // tongTienAndSale
                                     taiKhoan.getHoVaTen(), // hoVaTen
                                     taiKhoan.getSoDienThoai(), // soDienThoai
-                                    shippingFee, // tienShip
-                                    voucherDiscount, // tienGiam
+                                    tienShip, // tienShip
+                                    tienGiam, // tienGiam
                                     taiKhoan.getEmail(), // email
                                     voucherId, // voucher
                                     diaChiCuThe, // diaChiCuThe
-                                    "Thanh toán qua VNPay", // ghiChu
+                                    "", // ghiChu
                                     taiKhoan, // taiKhoan
                                     phuongXaID, // phuongXaID
                                     quanHuyenID, // quanHuyenID
@@ -189,15 +186,10 @@ public class VNPayController {
                             );
                         }
 
-                        // Clear cart after successful payment
-                        for (var item : cartItems) {
-                            gioHangChiTietService.deleteById(item.getId());
-                        }
-
                         // Xóa thông tin session
-                        request.getSession().removeAttribute("shippingFee");
-                        request.getSession().removeAttribute("voucherDiscount");
                         request.getSession().removeAttribute("voucherId");
+                        request.getSession().removeAttribute("tienShip");
+                        request.getSession().removeAttribute("tienGiam");
                         request.getSession().removeAttribute("pendingOrderId");
                     }
                 }
@@ -251,9 +243,9 @@ public class VNPayController {
                 model.addAttribute("paymentError", errorMessage);
 
                 // Xóa thông tin session
-                request.getSession().removeAttribute("shippingFee");
-                request.getSession().removeAttribute("voucherDiscount");
                 request.getSession().removeAttribute("voucherId");
+                request.getSession().removeAttribute("tienShip");
+                request.getSession().removeAttribute("tienGiam");
                 request.getSession().removeAttribute("pendingOrderId");
 
                 return "customer-template/payment-failed";

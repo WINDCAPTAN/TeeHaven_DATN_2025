@@ -14,7 +14,7 @@ public interface GioHangChiTietService {
     List<GioHangChiTiet> findAll();
 
     Integer soLuongSPGioHangCT(Long idGioHang);
-    
+
     List<GioHangChiTiet> findAllByIdGioHang(Long idGioHang);
 
     List<GioHangChiTiet> save(Long idGioHang, List<String> idChiTietSp, Integer soLuong);
@@ -30,13 +30,9 @@ public interface GioHangChiTietService {
     HoaDonChiTiet addHoaDon(List<String> listStringIdGioHangCT, Long tongTien, Long tongTienSale,
                             String hoVaTen, String soDienThoai, String tienShip, String tienGiam, String email,
                             String voucher, String diaChiCuThe, String ghiChu, TaiKhoan taiKhoan,
-                            String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang);
+                            String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang );
 
-    public Long addHoaDonVNPay(List<String> listIdString, Long tongTien, Long tongTienAndSale, Integer loaiHoaDon,
-                               String hoVaTen, String soDienThoai, String tienShip, String tienGiam,
-                               String email, String voucher, String diaChiCuThe, String ghiChu,
-                               TaiKhoan khachHang, String phuongXaID, String quanHuyenID,
-                               String thanhPhoID, Long idGioHang, Integer trangThai);
+
 
 
 

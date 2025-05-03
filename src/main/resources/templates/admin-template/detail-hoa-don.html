@@ -553,6 +553,26 @@
                                                                                   th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
                                                                         </div>
                                                                     </div>
+                                                                    <div th:if="${listLichSuHoaDon.size()==4}">
+                                                                        <div th:each="lshd, iterStat : ${listLichSuHoaDon}"
+                                                                             th:class="'image-order-status image-order-status-' +
+                                                              (${iterStat.index} == 0 ? 'new' :
+                                                               (${iterStat.index} == 1 ? 'active' :
+                                                                (${iterStat.index} == 2 ? 'intransit' :
+                                                                 (${iterStat.index} == 3 ? 'cancel' : '')))) +
+                                                              ' img-circle'">
+                                                                            <div class="icon"></div>
+                                                                            <span class="status"
+                                                                                  th:switch="${lshd.trangThai}">
+                                                                                <span th:case="0">Đã Đặt Hàng</span>
+                                                                                <span th:case="1">Đã Xác Nhận</span>
+                                                                                <span th:case="2">Đã giao cho ĐVVC</span>
+                                                                                <span th:case="5">Đã Hủy</span>
+                                                                            </span>
+                                                                            <span class="status-end"
+                                                                                  th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -692,6 +712,26 @@
                                                                               th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
                                                                     </div>
                                                                 </div>
+                                                                <div th:if="${listLichSuHoaDon.size()==4}">
+                                                                    <div th:each="lshd, iterStat : ${listLichSuHoaDon}"
+                                                                         th:class="'image-order-status image-order-status-' +
+          (${iterStat.index} == 0 ? 'new' :
+           (${iterStat.index} == 1 ? 'active' :
+            (${iterStat.index} == 2 ? 'delivered' :
+             (${iterStat.index} == 3 ? 'cancel3' : '')))) +
+          ' img-circle'">
+                                                                        <div class="icon"></div>
+                                                                        <span class="status"
+                                                                              th:switch="${lshd.trangThai}">
+                                                                                <span th:case="0">Đã Đặt Hàng</span>
+                                                                                <span th:case="1">Đã Xác Nhận</span>
+                                                                                <span th:case="2">Đã giao cho ĐVVC</span>
+                                                                                <span th:case="5">Đã Hủy</span>
+                                                                            </span>
+                                                                        <span class="status-end"
+                                                                              th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <!--trạng thái hủy-->
 
@@ -786,7 +826,7 @@
                                     <!-- <button th:if="${hoaDon.trangThai!=0&&hoaDon.trangThai>0&&hoaDon.trangThai!=6&&checkRollback!=8}"
                                         data-bs-toggle="modal" data-bs-target="#rollback" type="button"
                                         class="btn btn-primary">Hoàn tác</button> -->
-                                    <button th:if="${hoaDon.trangThai==0||hoaDon.trangThai==1}" type="button"
+                                    <button th:if="${hoaDon.trangThai==0||hoaDon.trangThai==1 ||hoaDon.trangThai==2 }" type="button"
                                             class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#ghiChuHuyModal">Hủy</button>
 
@@ -2174,26 +2214,15 @@
 
                                                             <div class="ngan-cach"></div>
 
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <h6>Khách đã thanh toán:</h6>
-                                                                </div>
-                                                                <div class="col">
-                                                                    <h6 id="moneyPaid" class="thong-tin-gia">
-                                                                        <span th:text="${#numbers.formatDecimal(hoaDon.tongTienHoaDonKhiGiam(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
-                                                                    </h6>
-                                                                </div>
-                                                            </div>
 
-                                                            <div class="ngan-cach"></div>
 
                                                             <div class="row">
                                                                 <div class="col">
-                                                                    <h6>Tổng tiền thanh toán:</h6>
+                                                                    <h6>Tổng tiền :</h6>
                                                                 </div>
                                                                 <div class="col">
                                                                     <h6 class="thong-tin-gia" id="tongGiaH6">
-                                                                        <span th:text="${#numbers.formatDecimal((hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam) - hoaDon.tongTienHoaDonKhiGiam(), 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
+                                                                        <span th:text="${#numbers.formatDecimal((hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam) , 0, 'POINT', 0, 'NONE')} + ' VND'"></span>
                                                                     </h6>
                                                                 </div>
                                                             </div>
@@ -2425,13 +2454,6 @@
             </span>
                 </p>
 
-                <p><span class="info-label">Khách đã thanh toán:</span>
-                    <span class="info-value">
-                <span>
-                    [[${#numbers.formatDecimal(hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam, 0, 'POINT', 0, 'NONE')}]]
-                </span> VND
-            </span>
-                </p>
 
                 <p th:if="${hoaDon.trangThai==6}">
                     <span class="info-label">Tổng tiền hoàn trả:</span>
@@ -2445,7 +2467,7 @@
             </span>
                 </p>
 
-                <p><span class="info-label">Tổng tiền thanh toán:</span>
+                <p><span class="info-label">Tổng tiền :</span>
                     <span class="info-value">
                 <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" id="thanhTienIn">
                     [[${#numbers.formatDecimal(hoaDon.tongTien + hoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]]

@@ -2,11 +2,9 @@ package com.example.datn_teehaven.service.impl;
 
 
 import com.example.datn_teehaven.entyti.*;
-import com.example.datn_teehaven.repository.ChiTietSanPhamRepository;
 import com.example.datn_teehaven.repository.GioHangChiTietRepository;
 import com.example.datn_teehaven.repository.HoaDonChiTietRepository;
 import com.example.datn_teehaven.repository.HoaDonRepository;
-import com.example.datn_teehaven.repository.LichSuHoaDonRepository;
 import com.example.datn_teehaven.service.GioHangChiTietService;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +27,7 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
     private HoaDonChiTietRepository repositoryHoaDonChiTiet;
 
     @Autowired
-    private GioHangChiTietRepository gioHangChiTietRepository;
-    @Autowired
     private LichSuHoaDonService lichSuHoaDonService;
-
-    @Autowired
-    private LichSuHoaDonRepository lichSuHoaDonRepository;
-    @Autowired
-    private ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Override
     public GioHangChiTiet fillByIdCTSP(Long idCTSP) {
@@ -50,16 +41,12 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
     @Override
     public Integer soLuongSPGioHangCT(Long idGioHang) {
-
         return repository.soLuongSpTrongGioHangCT(idGioHang);
-
     }
 
     @Override
     public List<GioHangChiTiet> findAllByIdGioHang(Long idGioHang) {
-
         return repository.getfindAllByIdGioHang(idGioHang);
-
     }
 
     @Override
@@ -106,23 +93,17 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
     @Override
     public GioHangChiTiet fillById(Long id) {
-
         return repository.findById(id).get();
-
     }
 
     @Override
     public void deleteById(Long id) {
-
         repository.deleteById(id);
-
     }
 
     @Override
     public GioHangChiTiet update(GioHangChiTiet gioHangChiTiet) {
-
         return repository.save(gioHangChiTiet);
-
     }
 
     @Override
@@ -139,7 +120,6 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         }
 
         return repository.findAllByIdGHCT(listIdLong, idGioHang);
-
     }
 
     @Override
@@ -164,7 +144,7 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         hoaDon.setPhuongXa(phuongXaID);
         hoaDon.setQuanHuyen(quanHuyenID);
         hoaDon.setThanhPho(thanhPhoID);
-        if (voucher != "") {
+        if (voucher != null && !voucher.isEmpty()) {
             hoaDon.setVoucher(Voucher.builder().id(Long.valueOf(voucher)).build());
         }
 
@@ -180,10 +160,9 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
                 .build());
 
         hoaDon.setMaHoaDon("HD" + hoaDon.getId());
-
         repositoryHoaDon.save(hoaDon);
 
-
+        // Only process the selected items
         List<GioHangChiTiet> listGioHangChiTiet = this.findAllById(listStringIdGioHangCT, idGioHang);
 
         for (GioHangChiTiet gioHangChiTiet : listGioHangChiTiet) {
@@ -195,100 +174,11 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
             hoaDonChiTiet.setTrangThai(0);
             hoaDonChiTiet.setNgayTao(new Date());
             repositoryHoaDonChiTiet.save(hoaDonChiTiet);
+
+            // Only delete the items that were processed
             repository.delete(gioHangChiTiet);
         }
 
         return null;
-
-    }
-
-    public Long addHoaDonVNPay(List<String> listIdString, Long tongTien, Long tongTienAndSale, Integer loaiHoaDon,
-                               String hoVaTen, String soDienThoai, String tienShip, String tienGiam,
-                               String email, String voucher, String diaChiCuThe, String ghiChu,
-                               TaiKhoan khachHang, String phuongXaID, String quanHuyenID,
-                               String thanhPhoID, Long idGioHang, Integer trangThai) {
-        // Create a new order with the specified status
-        HoaDon hoaDon = new HoaDon();
-        hoaDon.setMaHoaDon("HD" + hoaDon.getId());
-        hoaDon.setNgayTao(new Date());
-        hoaDon.setLoaiHoaDon(1);
-        hoaDon.setTongTien(tongTien);
-        hoaDon.setTongTienKhiGiam(tongTienAndSale);
-
-        // Xử lý phí ship
-        if (tienShip != null && !tienShip.isEmpty()) {
-            try {
-                hoaDon.setPhiShip(Long.valueOf(tienShip));
-            } catch (NumberFormatException e) {
-                hoaDon.setPhiShip(0L);
-            }
-        } else {
-            hoaDon.setPhiShip(0L);
-        }
-
-        // Xử lý tiền giảm từ voucher
-        if (tienGiam != null && !tienGiam.isEmpty()) {
-            try {
-                hoaDon.setTienGiam(Long.valueOf(tienGiam));
-            } catch (NumberFormatException e) {
-                hoaDon.setTienGiam(0L);
-            }
-        } else {
-            hoaDon.setTienGiam(0L);
-        }
-
-        hoaDon.setNguoiNhan(hoVaTen);
-        hoaDon.setSdtNguoiNhan(soDienThoai);
-        hoaDon.setEmailNguoiNhan(email);
-        hoaDon.setDiaChiNguoiNhan(diaChiCuThe);
-        hoaDon.setPhuongXa(phuongXaID);
-        hoaDon.setQuanHuyen(quanHuyenID);
-        hoaDon.setThanhPho(thanhPhoID);
-        hoaDon.setGhiChu(ghiChu);
-        hoaDon.setTrangThai(trangThai); // Set the specified status
-        hoaDon.setTaiKhoan(khachHang);
-
-        // Save voucher if provided
-        if (voucher != null && !voucher.isEmpty() && !voucher.equals("null")) {
-            hoaDon.setVoucher(Voucher.builder().id(Long.valueOf(voucher)).build());
-        }
-
-        // Save the order
-        hoaDon = repositoryHoaDon.save(hoaDon);
-        hoaDon.setMaHoaDon("HD" + hoaDon.getId());
-        repositoryHoaDon.save(hoaDon);
-
-        // Create order details
-        for (String id : listIdString) {
-            GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findById(Long.valueOf(id)).orElse(null);
-            if (gioHangChiTiet != null) {
-                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
-                hoaDonChiTiet.setHoaDon(hoaDon);
-                hoaDonChiTiet.setChiTietSanPham(gioHangChiTiet.getChiTietSanPham());
-                hoaDonChiTiet.setSoLuong(gioHangChiTiet.getSoLuong());
-                hoaDonChiTiet.setDonGia(gioHangChiTiet.getChiTietSanPham().getGiaHienHanh());
-                hoaDonChiTiet.setNgayTao(new Date());
-                repositoryHoaDonChiTiet.save(hoaDonChiTiet);
-
-                // Reduce product quantity
-                ChiTietSanPham chiTietSanPham = gioHangChiTiet.getChiTietSanPham();
-                chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - gioHangChiTiet.getSoLuong());
-                chiTietSanPhamRepository.save(chiTietSanPham);
-
-                // Delete cart item
-                gioHangChiTietRepository.deleteById(gioHangChiTiet.getId());
-            }
-        }
-
-        // Create order history
-        LichSuHoaDon lichSuHoaDon = new LichSuHoaDon();
-        lichSuHoaDon.setHoaDon(hoaDon);
-        lichSuHoaDon.setTrangThai(trangThai);
-        lichSuHoaDon.setGhiChu("Đơn hàng đang chờ thanh toán VNPay");
-        lichSuHoaDon.setNgayTao(new Date());
-        lichSuHoaDon.setNgaySua(new Date());
-        lichSuHoaDonRepository.save(lichSuHoaDon);
-
-        return hoaDon.getId();
     }
 }

@@ -391,10 +391,18 @@ public class HoaDonController {
         if (hd.getTrangThai() == 1) {
             updateSoLuongRollBack(id);
         }
-        hd.setTrangThai(5);
 
+        Integer oldStatus = hd.getTrangThai();
+        Integer newStatus = 5; // Status for canceled orders
+
+        hd.setTrangThai(newStatus);
         hoaDonService.saveOrUpdate(hd);
-        addLichSuHoaDon(id, ghiChu, 5);
+
+        // Only add history if status actually changed
+        if (!oldStatus.equals(newStatus)) {
+            addLichSuHoaDon(id, ghiChu, newStatus);
+        }
+
         thongBao(redirectAttributes, "Thành công", 1);
         if (hd.getTrangThai() == -1) {
             return "redirect:/hoa-don/" + id;

@@ -1458,6 +1458,8 @@
                                           class="form-control" placeholder="Viết ghi chú của bạn ở đây..."></textarea>
                             </div>
 
+                            <input type="hidden" id="paymentMethodInput" name="paymentMethod" value="COD">
+
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label class="text-black">Phương thức thanh toán</label>
@@ -2152,13 +2154,14 @@
 
                                         function buttonDatHang() {
                                             // Check spam submit
-                                            var btnDatHang2 = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChi\'}"]');
+                                            var btnDatHang2 = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChi\'
+                                            var btnDatHang2 = document.querySelector('button[th\:if="${checkDiaChi==\'DiaChi\'}"]');
                                             setTimeout(function () {
                                                 btnDatHang2.disabled = false;
                                             }, 2000); // 2000 miligiây = 2 giây
 
                                             // Check spam submit
-                                            var btnDatHang = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChiNull\'}"]');
+                                            var btnDatHang = document.querySelector('button[th\:if="${checkDiaChi==\'DiaChiNull\'}"]');
                                             setTimeout(function () {
                                                 btnDatHang.disabled = false;
                                             }, 2000); // 2000 miligiây = 2 giây
@@ -2212,7 +2215,6 @@
                                                 // Hiển thị modal
                                                 $('#xacNhanDatHang').modal('show');
                                             }
-                                            return isValid;
                                         }
 
                                         function checkFormDatHangNoDC() {
@@ -2295,7 +2297,6 @@
                                                 // Hiển thị modal
                                                 $('#xacNhanDatHang').modal('show');
                                             }
-                                            return isValid;
                                         }
 
                                     </script>
@@ -2386,61 +2387,235 @@
 <script src="../../static/js/aos.js"></script>
 
 <script src="../../static/js/main.js"></script>
-
 <script>
-    function handleVNPayPayment() {
-        // Submit the form with VNPay payment method
-        const form = document.getElementById('form1');
-
-        // Validate the form first
-        if (document.getElementById('checkDiaChi').value === 'DiaChi') {
-            if (!checkFormDatHang()) {
-                return false;
-            }
-        } else {
-            if (!checkFormDatHangNoDC()) {
-                return false;
-            }
-        }
-
-        // Submit the form
-        form.submit();
-    }
-
     document.addEventListener('DOMContentLoaded', function () {
         const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
+        const paymentMethodInput = document.getElementById('paymentMethodInput');
         const checkoutButton = document.getElementById('checkoutButton');
         const checkoutButtonNoDC = document.getElementById('checkoutButtonNoDC');
 
         paymentMethodRadios.forEach(radio => {
             radio.addEventListener('change', function () {
+                paymentMethodInput.value = this.value;
+
                 if (this.value === 'VNPAY') {
                     if (checkoutButton) {
-                        checkoutButton.textContent = 'Thanh toán';
+                        checkoutButton.textContent = 'Thanh toán qua VNPay';
+                        checkoutButton.onclick = function () {
+                            if (checkFormDatHang()) {
+                                handleVNPayPayment();
+                            }
+                            return false;
+                        };
+                    }
+
+                    if (checkoutButtonNoDC) {
+                        checkoutButtonNoDC.textContent = 'Thanh toán qua VNPay';
+                        checkoutButtonNoDC.onclick = function () {
+                            if (checkFormDatHangNoDC()) {
+                                handleVNPayPayment();
+                            }
+                            return false;
+                        };
+                    }
+                } else {
+                    // Reset to default behavior for COD
+                    if (checkoutButton) {
+                        checkoutButton.textContent = 'Đặt hàng';
                         checkoutButton.onclick = function () {
                             return checkFormDatHang();
                         };
                     }
 
                     if (checkoutButtonNoDC) {
-                        checkoutButtonNoDC.textContent = 'Thanh toán';
+                        checkoutButtonNoDC.textContent = 'Đặt hàng';
                         checkoutButtonNoDC.onclick = function () {
                             return checkFormDatHangNoDC();
                         };
-                    }
-                } else {
-                    if (checkoutButton) {
-                        checkoutButton.textContent = 'Đặt hàng';
-                        checkoutButton.onclick = function () { return checkFormDatHang(); };
-                    }
-                    if (checkoutButtonNoDC) {
-                        checkoutButtonNoDC.textContent = 'Đặt hàng';
-                        checkoutButtonNoDC.onclick = function () { return checkFormDatHangNoDC(); };
                     }
                 }
             });
         });
     });
+
+    function handleVNPayPayment() {
+        // Kiểm tra địa chỉ giao hàng
+        const checkboxes = document.querySelectorAll('input[name="chonDiaChi"]:checked');
+        if (document.getElementById('defaultRadio') && checkboxes.length === 0) {
+            alert('Vui lòng chọn địa chỉ giao hàng');
+            return false;
+        }
+
+        // Lấy tất cả các mục giỏ hàng đã chọn
+        const allIDGioHangCT = document.getElementsByName('allIDGioHangCT');
+        const selectedIds = [];
+
+        for (let i = 0; i < allIDGioHangCT.length; i++) {
+            selectedIds.push(allIDGioHangCT[i].value);
+        }
+
+        if (selectedIds.length === 0) {
+            alert('Không có sản phẩm nào được chọn để thanh toán');
+            return false;
+        }
+
+        // Lấy thông tin thanh toán
+        const amountElement = document.getElementById('tongTienAndSale');
+        const amount = parseInt(amountElement.value);
+        const orderInfo = 'Thanh toan don hang TeeHaven';
+        const encodedOrderInfo = encodeURIComponent(orderInfo);
+
+        // Lấy thông tin voucher và phí ship
+        const voucherId = document.getElementById('voucherID').value;
+        const tienShip = document.getElementById('tienShip').value;
+        const tienGiam = document.getElementById('tienGiam').value;
+
+        // Tạo URL thanh toán VNPay với tất cả tham số
+        let paymentUrl = '/vnpay-payment?amount=' + amount +
+            '&orderInfo=' + encodedOrderInfo +
+            '&selectedItems=' + selectedIds.join(',');
+
+        if (voucherId) {
+            paymentUrl += '&voucherId=' + voucherId;
+        }
+        if (tienShip) {
+            paymentUrl += '&tienShip=' + tienShip;
+        }
+        if (tienGiam) {
+            paymentUrl += '&tienGiam=' + tienGiam;
+        }
+
+        window.location.href = paymentUrl;
+        return false;
+    }
+</script>
+<script>
+    function handleVNPayPayment() {
+        const amountElement = document.getElementById('tongTienAndSale');
+        const amount = parseInt(amountElement.value.replace(/[^\d]/g, ''));
+        const orderInfo = 'Thanh toan don hang TeeHaven';
+        const encodedOrderInfo = encodeURIComponent(orderInfo);
+
+        // Get voucher and shipping information
+        const voucherId = document.getElementById('voucherID').value;
+        const tienShip = document.getElementById('tienShip').value;
+        const tienGiam = document.getElementById('tienGiam').value;
+
+        // Build the VNPay payment URL with all parameters
+        let paymentUrl = '/vnpay-payment?amount=' + amount +
+            '&orderInfo=' + encodedOrderInfo;
+
+        if (voucherId) {
+            paymentUrl += '&voucherId=' + voucherId;
+        }
+        if (tienShip) {
+            paymentUrl += '&tienShip=' + tienShip;
+        }
+        if (tienGiam) {
+            paymentUrl += '&tienGiam=' + tienGiam;
+        }
+
+        window.location.href = paymentUrl;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
+        const paymentMethodInput = document.getElementById('paymentMethodInput');
+        const checkoutButton = document.getElementById('checkoutButton');
+        const checkoutButtonNoDC = document.getElementById('checkoutButtonNoDC');
+
+        paymentMethodRadios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                paymentMethodInput.value = this.value;
+
+                if (this.value === 'VNPAY') {
+                    if (checkoutButton) {
+                        checkoutButton.textContent = 'Thanh toán';
+                        checkoutButton.onclick = function () {
+                            handleVNPayPayment();
+                            return false;
+                        };
+                    }
+
+                    if (checkoutButtonNoDC) {
+                        checkoutButtonNoDC.textContent = 'Thanh toán';
+                        checkoutButtonNoDC.onclick = function () {
+                            handleVNPayPayment();
+                            return false;
+                        };
+                    }
+                } else {
+                    // Reset to default behavior for COD
+                    if (checkoutButton) {
+                        checkoutButton.textContent = 'Đặt hàng';
+                        checkoutButton.onclick = function () {
+                            return checkFormDatHang();
+                        };
+                    }
+
+                    if (checkoutButtonNoDC) {
+                        checkoutButtonNoDC.textContent = 'Đặt hàng';
+                        checkoutButtonNoDC.onclick = function () {
+                            return checkFormDatHangNoDC();
+                        };
+                    }
+                }
+            });
+        });
+    });
+
+    function handleVNPayPayment() {
+        // Get selected items from the cart
+        const selectedItems = [];
+        const checkboxes = document.querySelectorAll('input[name="chonDiaChi"]:checked');
+
+        if (checkboxes.length === 0) {
+            alert('Vui lòng chọn địa chỉ giao hàng');
+            return false;
+        }
+
+        // Get all the selected cart items
+        const allIDGioHangCT = document.getElementsByName('allIDGioHangCT');
+        const selectedIds = [];
+
+        for (let i = 0; i < allIDGioHangCT.length; i++) {
+            selectedIds.push(allIDGioHangCT[i].value);
+        }
+
+        if (selectedIds.length === 0) {
+            alert('Không có sản phẩm nào được chọn để thanh toán');
+            return false;
+        }
+
+        // Get payment information
+        const amountElement = document.getElementById('tongTienAndSale');
+        const amount = parseInt(amountElement.value);
+        const orderInfo = 'Thanh toan don hang TeeHaven';
+        const encodedOrderInfo = encodeURIComponent(orderInfo);
+
+        // Get voucher and shipping information
+        const voucherId = document.getElementById('voucherID').value;
+        const tienShip = document.getElementById('tienShip').value;
+        const tienGiam = document.getElementById('tienGiam').value;
+
+        // Build the VNPay payment URL with all parameters
+        let paymentUrl = '/vnpay-payment?amount=' + amount +
+            '&orderInfo=' + encodedOrderInfo +
+            '&selectedItems=' + selectedIds.join(',');
+
+        if (voucherId) {
+            paymentUrl += '&voucherId=' + voucherId;
+        }
+        if (tienShip) {
+            paymentUrl += '&tienShip=' + tienShip;
+        }
+        if (tienGiam) {
+            paymentUrl += '&tienGiam=' + tienGiam;
+        }
+
+        window.location.href = paymentUrl;
+        return false;
+    }
 </script>
 
 
