@@ -461,7 +461,8 @@
                                     <!-- form thêm thuộc tính -->
                                     <form th:action="@{/admin/thuong-hieu/add}" method="post"
                                           enctype="multipart/form-data"
-                                          th:object="${thuongHieu}">
+                                          th:object="${thuongHieu}"
+                                          onsubmit="return validateThuongHieu()">
 
 
                                         <div class="modal-body">
@@ -471,10 +472,10 @@
                                                     Hiệu</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control" id="themThuongHieu"
-                                                           placeholder="Nhập thương hiệu" th:field="*{ten}">
+                                                           placeholder="Nhập thương hiệu" th:field="*{ten}" onkeyup="validateThuongHieuInput(this)">
                                                     <span class="check-loi" th:errors="*{ten}"></span>
                                                     <span class="check-loi" th:text="${checkTenTrungDiaChi}"></span>
-
+                                                    <span class="check-loi" id="thuongHieuError"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -724,6 +725,40 @@
 
 <!-- Vendor JS Files -->
 <div th:replace="~{admin-template/fragment/script :: script}"></div>
+
+<script>
+function validateThuongHieuInput(input) {
+    const value = input.value;
+    const errorElement = document.getElementById('thuongHieuError');
+    
+    // Kiểm tra khoảng trống ở đầu và cuối
+    if (value.trim() !== value) {
+        errorElement.textContent = 'Không được chứa khoảng trống ở đầu hoặc cuối';
+        return false;
+    }
+    
+    // Kiểm tra ký tự đặc biệt
+    const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if (specialChars.test(value)) {
+        errorElement.textContent = 'Không được chứa ký tự đặc biệt';
+        return false;
+    }
+    
+    // Kiểm tra khoảng trống liên tiếp
+    if (value.includes('  ')) {
+        errorElement.textContent = 'Không được chứa khoảng trống liên tiếp';
+        return false;
+    }
+    
+    errorElement.textContent = '';
+    return true;
+}
+
+function validateThuongHieu() {
+    const input = document.getElementById('themThuongHieu');
+    return validateThuongHieuInput(input);
+}
+</script>
 
 </body>
 
