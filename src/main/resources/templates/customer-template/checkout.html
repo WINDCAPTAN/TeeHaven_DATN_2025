@@ -2166,11 +2166,26 @@
                                         }
 
                                         function isValidPhoneNumber(phoneNumber) {
-                                            // Biểu thức chính quy kiểm tra số điện thoại
-                                            var phoneRegex = /^(0[35789][0-9]{8,9})$/;
+                                            // Remove any spaces or special characters
+                                            phoneNumber = phoneNumber.replace(/\s+/g, '').replace(/[^\d]/g, '');
+                                            
+                                            // Vietnamese phone number patterns:
+                                            // - Mobile: 03, 05, 07, 08, 09 followed by 8 digits
+                                            // - Landline: 02 followed by 9 digits
+                                            // - New mobile: 08 followed by 9 digits
+                                            var mobilePattern = /^(03[2-9]|05[6-9]|07[0-9]|08[1-9]|09[0-9])[0-9]{7}$/;
+                                            var landlinePattern = /^(02[0-9])[0-9]{8}$/;
+                                            var newMobilePattern = /^(08[0-9])[0-9]{8}$/;
+                                            
+                                            return mobilePattern.test(phoneNumber) || 
+                                                   landlinePattern.test(phoneNumber) || 
+                                                   newMobilePattern.test(phoneNumber);
+                                        }
 
-                                            // Kiểm tra xem số điện thoại có khớp với biểu thức chính quy hay không
-                                            return phoneRegex.test(phoneNumber);
+                                        function isValidName(name) {
+                                            // Chỉ cho phép chữ cái, dấu cách và dấu tiếng Việt
+                                            var nameRegex = /^[a-zA-ZÀ-ỹ\s]+$/;
+                                            return nameRegex.test(name);
                                         }
 
                                         function checkFormDatHang() {
@@ -2189,6 +2204,12 @@
                                                 checkTen.innerHTML = ''
                                                 checkTen.style.display = 'block'
                                                 checkTen.innerText = "Chưa nhập tên"
+                                                isValid = false;
+                                            } else if (!isValidName(ten.value.trim())) {
+                                                console.log("Tên không hợp lệ")
+                                                checkTen.innerHTML = ''
+                                                checkTen.style.display = 'block'
+                                                checkTen.innerText = "Tên không được chứa ký tự đặc biệt hoặc số"
                                                 isValid = false;
                                             }
                                             var sdt = document.getElementById("c_companyname");
@@ -2230,6 +2251,12 @@
                                                 checkTen.innerHTML = ''
                                                 checkTen.style.display = 'block'
                                                 checkTen.innerText = "Chưa nhập tên"
+                                                isValid = false;
+                                            } else if (!isValidName(ten.value.trim())) {
+                                                console.log("Tên không hợp lệ")
+                                                checkTen.innerHTML = ''
+                                                checkTen.style.display = 'block'
+                                                checkTen.innerText = "Tên không được chứa ký tự đặc biệt hoặc số"
                                                 isValid = false;
                                             }
                                             var sdt = document.getElementById("c_companyname");
@@ -2387,6 +2414,40 @@
 
 <script>
     function handleVNPayPayment() {
+        // Validate name first
+        var ten = document.getElementById("c_fname");
+        var checkTen = document.getElementById("checkLoiHoTen");
+        checkTen.style.display = 'none';
+        
+        if (ten.value.trim() === '' || ten.value.trim() === " ") {
+            checkTen.innerHTML = '';
+            checkTen.style.display = 'block';
+            checkTen.innerText = "Vui lòng nhập họ và tên";
+            return false;
+        } else if (!isValidName(ten.value.trim())) {
+            checkTen.innerHTML = '';
+            checkTen.style.display = 'block';
+            checkTen.innerText = "Họ và tên không được chứa ký tự đặc biệt hoặc số";
+            return false;
+        }
+
+        // Validate phone number first
+        var sdt = document.getElementById("c_companyname");
+        var checkSDT = document.getElementById("checkLoiSDT");
+        checkSDT.style.display = 'none';
+        
+        if (sdt.value.trim() == '') {
+            checkSDT.innerHTML = '';
+            checkSDT.style.display = 'block';
+            checkSDT.innerText = "Chưa nhập số điện thoại";
+            return false;
+        } else if (!isValidPhoneNumber(sdt.value.trim())) {
+            checkSDT.innerHTML = '';
+            checkSDT.style.display = 'block';
+            checkSDT.innerText = "Số điện thoại không hợp lệ";
+            return false;
+        }
+
         // Get the total amount after voucher discount
         const amountElement = document.getElementById('tongTienAndSale');
         const amount = parseInt(amountElement.value.replace(/[^\d]/g, ''));
@@ -2406,9 +2467,14 @@
         const tienShip = document.getElementById('tienShip').value;
         const tienGiam = document.getElementById('tienGiam').value;
 
+        // Get selected cart items
+        const hiddenInputs = document.querySelectorAll('input[name="allIDGioHangCT"]');
+        const selectedCartItems = Array.from(hiddenInputs).map(input => input.value).join(',');
+
         // Build the VNPay payment URL with all parameters
         let paymentUrl = '/vnpay-payment?amount=' + totalAmount +
-            '&orderInfo=' + encodedOrderInfo;
+            '&orderInfo=' + encodedOrderInfo +
+            '&selectedCartItems=' + selectedCartItems;
 
         if (voucherId) {
             paymentUrl += '&voucherId=' + voucherId;
@@ -2444,6 +2510,20 @@
                         checkoutButtonNoDC.onclick = function () {
                             handleVNPayPayment();
                             return false;
+                        };
+                    }
+                } else if (this.value === 'COD') {
+                    if (checkoutButton) {
+                        checkoutButton.textContent = 'Đặt hàng';
+                        checkoutButton.onclick = function () {
+                            return checkFormDatHang();
+                        };
+                    }
+
+                    if (checkoutButtonNoDC) {
+                        checkoutButtonNoDC.textContent = 'Đặt hàng';
+                        checkoutButtonNoDC.onclick = function () {
+                            return checkFormDatHangNoDC();
                         };
                     }
                 }

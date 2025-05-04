@@ -709,7 +709,11 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2">Phương thức Thanh toán</td>
-                                        <td class="tien-table">Thanh toán khi nhận hàng</td>
+                                        <td class="tien-table">
+                                            <span th:if="${byHoaDon.phuongThucThanhToan != null && byHoaDon.phuongThucThanhToan.id == 1}">Thanh toán khi nhận hàng (COD)</span>
+                                            <span th:if="${byHoaDon.phuongThucThanhToan != null && byHoaDon.phuongThucThanhToan.id == 2}">Đã thanh toán qua VNPay</span>
+                                            <span th:if="${byHoaDon.phuongThucThanhToan == null}">Thanh toán khi nhận hàng (COD)</span>
+                                        </td>
                                     </tr>
                                     </tbody>
 
@@ -753,7 +757,11 @@
 
                                     <tr>
                                         <td colspan="2">Phương thức Thanh toán</td>
-                                        <td class="tien-table">Thanh toán khi nhận hàng</td>
+                                        <td class="tien-table">
+                                            <span th:if="${byHoaDon.phuongThucThanhToan != null && byHoaDon.phuongThucThanhToan.id == 1}">Thanh toán khi nhận hàng (COD)</span>
+                                            <span th:if="${byHoaDon.phuongThucThanhToan != null && byHoaDon.phuongThucThanhToan.id == 2}">Đã thanh toán qua VNPay</span>
+                                            <span th:if="${byHoaDon.phuongThucThanhToan == null}">Thanh toán khi nhận hàng (COD)</span>
+                                        </td>
                                     </tr>
                                     </tbody>
 

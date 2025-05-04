@@ -20,10 +20,8 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     @Override
     public List<SanPham> getAll() {
-        Sort sort = Sort.by(Sort.Direction.DESC, "ngaySua");
-
+        Sort sort = Sort.by(Sort.Direction.DESC, "ngayTao");
         return sanPhamRepo.findAll(sort);
-
     }
 
     @Override
