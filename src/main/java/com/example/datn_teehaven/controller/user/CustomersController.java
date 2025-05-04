@@ -19,13 +19,13 @@ import com.example.datn_teehaven.service.MauSacService;
 import com.example.datn_teehaven.service.TaiKhoanService;
 import com.example.datn_teehaven.service.TayAoService;
 import com.example.datn_teehaven.service.ThuongHieuService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -103,12 +103,6 @@ public class CustomersController {
     public String shopSingle(
             @PathVariable("id") String id,
             Model model) {
-        if (principalCustom.getCurrentUserNameCustomer() != null) {
-            TaiKhoan taiKhoan = taiKhoanService.getTaiKhoanByName(principalCustom.getCurrentUserNameCustomer());
-            idTaiKhoan = taiKhoan.getId();
-        } else {
-            idTaiKhoan = null;
-        }
         ChiTietSanPham ChiTietSanPham = chiTietSanPhamSerivce.getAllById(Long.valueOf(id)).get(0);
         List<ChiTietSanPham> listChiTietSanPham = chiTietSanPhamSerivce.getAllById(Long.valueOf(id));
         TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
@@ -117,15 +111,6 @@ public class CustomersController {
         model.addAttribute("chiTietSp", ChiTietSanPham);
         model.addAttribute("listChiTietSp", listChiTietSanPham);
         model.addAttribute("listTop5HDCT", hoaDonChiTietService.finTop5HDCT());
-
-        if (principalCustom.getCurrentUserNameCustomer() != null) {
-            TaiKhoan k = khachHangService.getById(idTaiKhoan);
-            model.addAttribute("checkDangNhap", "true");
-            model.addAttribute("soLuongSPGioHangCT",
-                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
-        } else {
-            model.addAttribute("checkDangNhap", "false");
-        }
         return "/customer-template/shop-single";
     }
 
@@ -317,39 +302,35 @@ public class CustomersController {
         }
         return "/customer-template/checkout";
     }
-    // Chỉ hiển thị phần cần thay đổi
     @PostMapping("/user/checkout/add")
-    public String addHoaDon(Model model,
-                            @RequestParam("idGioHangChiTiet") String idGioHangChiTiet,
-                            @RequestParam("tongTien") String tongTien,
-                            @RequestParam("tienGiam") String tienGiam,
-                            @RequestParam("tongTienAndSale") String tongTienAndSale,
-                            @RequestParam("hoVaTen") String hoVaTen,
-                            @RequestParam("soDienThoai") String soDienThoai,
-                            @RequestParam("tienShip") String tienShip,
-                            @RequestParam("email") String email,
-                            @RequestParam("voucher") String voucher,
-                            @RequestParam("diaChiCuThe") String diaChiCuThe,
-                            @RequestParam("ghiChu") String ghiChu,
-                            @RequestParam("phuongXaID") String phuongXaID,
-                            @RequestParam("quanHuyenID") String quanHuyenID,
-                            @RequestParam("thanhPhoID") String thanhPhoID,
-                            @RequestParam("trangThaiLuuDC") String trangThaiLuuDC,
-                            @RequestParam("paymentMethod") String paymentMethod,
-                            RedirectAttributes redirectAttributes,
-                            HttpServletRequest request) {
-
+    public String addHoaDon(
+            @RequestParam("idGioHangChiTiet") String idGioHangChiTiet,
+            @RequestParam("tongTien") String tongTien,
+            @RequestParam("tienGiam") String tienGiam,
+            @RequestParam("tongTienAndSale") String tongTienAndSale,
+            @RequestParam("hoVaTen") String hoVaTen,
+            @RequestParam("soDienThoai") String soDienThoai,
+            @RequestParam("tienShip") String tienShip,
+            @RequestParam("email") String email,
+            @RequestParam("voucher") String voucher,
+            @RequestParam("diaChiCuThe") String diaChiCuThe,
+            @RequestParam("ghiChu") String ghiChu,
+            @RequestParam("phuongXaID") String phuongXaID,
+            @RequestParam("quanHuyenID") String quanHuyenID,
+            @RequestParam("thanhPhoID") String thanhPhoID,
+            @RequestParam("trangThaiLuuDC") String trangThaiLuuDC,
+            @RequestParam("paymentMethod") String paymentMethod,
+            RedirectAttributes redirectAttributes, ModelMap modelMap, Model model) {
         String[] optionArray = idGioHangChiTiet.split(",");
+
         TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
         List<String> listIdString = Arrays.asList(optionArray);
-
         for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
             if (gioHangChiTiet.getSoLuong() > chiTietSanPhamSerivce.getById(gioHangChiTiet.getChiTietSanPham().getId()).getSoLuong()) {
-                redirectAttributes.addFlashAttribute("checkSoLuongDB", "true");
-                return "redirect:/user/checkout?options=" + idGioHangChiTiet;
+                redirectAttributes.addFlashAttribute("checkSoLuongDB","true");
+                return "redirect:/user/checkout?options="+idGioHangChiTiet;
             }
         }
-
         if (trangThaiLuuDC.equals("0")) {
             Date date = new Date();
             DiaChi diaChi = new DiaChi();
@@ -363,8 +344,6 @@ public class CustomersController {
             diaChi.setTaiKhoan(TaiKhoan.builder().id(idTaiKhoan).build());
             diaChiService.save(diaChi);
         }
-
-        // Nếu là thanh toán VNPay, chuyển hướng đến trang thanh toán VNPay
         if ("2".equals(paymentMethod)) {
             long totalAmount = Long.parseLong(tongTienAndSale);
             return "redirect:/vnpay-payment?amount=" + totalAmount +
@@ -374,32 +353,19 @@ public class CustomersController {
                     "&tienGiam=" + tienGiam +
                     "&selectedItems=" + idGioHangChiTiet;
         }
-
-        // Nếu là COD, xử lý đơn hàng ngay
-        gioHangChiTietService.addHoaDon(
-                listIdString,
-                Long.valueOf(tongTien),
-                Long.valueOf(tongTienAndSale),
-                hoVaTen,
-                soDienThoai,
-                tienShip,
-                tienGiam,
-                email,
-                voucher,
-                diaChiCuThe,
-                ghiChu,
-                khachHang,
-                phuongXaID,
-                quanHuyenID,
-                thanhPhoID,
-                khachHang.getGioHang().getId(),
-                paymentMethod
-        );
+//        // Trừ số lượng sản phẩm trong kho
+//        for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
+//            ChiTietSanPham chiTietSanPham = chiTietSanPhamSerivce.getById(gioHangChiTiet.getChiTietSanPham().getId());
+//            chiTietSanPham.setSoLuong(chiTietSanPham.getSoLuong() - gioHangChiTiet.getSoLuong());
+//            chiTietSanPhamSerivce.update(chiTietSanPham);
+//        }
+//
+        gioHangChiTietService.addHoaDon(listIdString, Long.valueOf(tongTien), Long.valueOf(tongTienAndSale), hoVaTen,
+                soDienThoai, tienShip,tienGiam, email, voucher, diaChiCuThe, ghiChu, khachHang, phuongXaID, quanHuyenID,
+                thanhPhoID, khachHang.getGioHang().getId(),paymentMethod);
         model.addAttribute("checkDangNhap", "false");
-
         return "redirect:/user/thankyou";
     }
-
     @GetMapping("/user/thankyou")
     public String thankYou(
             Model model) {
@@ -515,19 +481,13 @@ public class CustomersController {
         TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
         model.addAttribute("soLuongSPGioHangCT",
                 gioHangChiTietService.soLuongSPGioHangCT((khachHang.getGioHang() != null ? khachHang.getGioHang().getId() : null)));
-
-        // Lấy danh sách hóa đơn đã được sắp xếp từ mới nhất đến cũ nhất
-        List<HoaDon> allHoaDon = hoaDonService.getAllHoaDonByTaiKhoanOrderByNgaySua(idTaiKhoan);
-        model.addAttribute("listAllHoaDon", allHoaDon);
-
-        // Lấy danh sách hóa đơn theo trạng thái, đã được sắp xếp từ mới nhất đến cũ nhất
+        model.addAttribute("listAllHoaDon", hoaDonService.getAllHoaDonByTaiKhoanOrderByNgaySua(idTaiKhoan));
         model.addAttribute("listHDChoXacNhan", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 0));
         model.addAttribute("listHDChoGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 1));
         model.addAttribute("listHDDangGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 2));
         model.addAttribute("listHDHoanThanh", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 3));
         model.addAttribute("listHDDaHuy", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 5));
         model.addAttribute("listHDTraHang", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idTaiKhoan, 6));
-
         return "customer-template/don-mua";
     }
 
@@ -573,7 +533,7 @@ public class CustomersController {
 
         model.addAttribute("soLuongSPGioHangCT",
                 gioHangChiTietService.soLuongSPGioHangCT(null));
-        model.addAttribute("checkDangNhap", "false");
+
         model.addAttribute("byHoaDon", hoaDonService.findById(idHoaDon));
         model.addAttribute("listLichSuHoaDon", lichSuHoaDonService.findByIdhdNgaySuaAsc(idHoaDon));
 

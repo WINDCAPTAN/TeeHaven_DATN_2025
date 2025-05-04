@@ -126,8 +126,12 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
     public HoaDonChiTiet addHoaDon(List<String> listStringIdGioHangCT, Long tongTien, Long tongTienSale,
                                    String hoVaTen, String soDienThoai, String tienShip, String tienGiam, String email,
                                    String voucher, String diaChiCuThe, String ghiChu, TaiKhoan taiKhoan,
+
                                    String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang,
                                    String phuongThucThanhToanId) {
+
+
+
 
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMaHoaDon("HD" + hoaDon.getId());
@@ -153,6 +157,8 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
             hoaDon.setVoucher(Voucher.builder().id(Long.valueOf(voucher)).build());
         }
 
+
+        hoaDon.setTaiKhoan(taiKhoan);
         // SET PHƯƠNG THỨC THANH TOÁN
         if (phuongThucThanhToanId != null && !phuongThucThanhToanId.isEmpty()) {
             try {
