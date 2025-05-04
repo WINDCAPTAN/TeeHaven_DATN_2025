@@ -335,7 +335,7 @@ public class CustomersController {
                             @RequestParam("quanHuyenID") String quanHuyenID,
                             @RequestParam("thanhPhoID") String thanhPhoID,
                             @RequestParam("trangThaiLuuDC") String trangThaiLuuDC,
-                            @RequestParam(value = "paymentMethod", required = false) String paymentMethod,
+                            @RequestParam("paymentMethod") String paymentMethod,
                             RedirectAttributes redirectAttributes,
                             HttpServletRequest request) {
 
@@ -364,17 +364,18 @@ public class CustomersController {
             diaChiService.save(diaChi);
         }
 
-        if ("vnpay".equals(paymentMethod)) {
+        // Nếu là thanh toán VNPay, chuyển hướng đến trang thanh toán VNPay
+        if ("2".equals(paymentMethod)) {
             long totalAmount = Long.parseLong(tongTienAndSale);
             return "redirect:/vnpay-payment?amount=" + totalAmount +
                     "&orderInfo=Thanh toan don hang" +
                     "&voucherId=" + voucher +
                     "&tienShip=" + tienShip +
                     "&tienGiam=" + tienGiam +
-                    "&selectedItems=" + idGioHangChiTiet +
-                    "&paymentMethod=" + paymentMethod;
+                    "&selectedItems=" + idGioHangChiTiet;
         }
 
+        // Nếu là COD, xử lý đơn hàng ngay
         gioHangChiTietService.addHoaDon(
                 listIdString,
                 Long.valueOf(tongTien),
@@ -392,7 +393,7 @@ public class CustomersController {
                 quanHuyenID,
                 thanhPhoID,
                 khachHang.getGioHang().getId(),
-                paymentMethod // truyền phương thức thanh toán
+                paymentMethod
         );
         model.addAttribute("checkDangNhap", "false");
 

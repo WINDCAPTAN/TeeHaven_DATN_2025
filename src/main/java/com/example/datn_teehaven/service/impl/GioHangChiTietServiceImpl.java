@@ -127,10 +127,10 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
                                    String hoVaTen, String soDienThoai, String tienShip, String tienGiam, String email,
                                    String voucher, String diaChiCuThe, String ghiChu, TaiKhoan taiKhoan,
                                    String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang,
-                                   String phuongThucThanhToanId) { // <- THÊM THAM SỐ NÀY
+                                   String phuongThucThanhToanId) {
 
         HoaDon hoaDon = new HoaDon();
-
+        hoaDon.setMaHoaDon("HD" + hoaDon.getId());
         hoaDon.setLoaiHoaDon(1);
         hoaDon.setPhiShip(Long.valueOf(tienShip));
         hoaDon.setTienGiam(Long.valueOf(tienGiam));
@@ -149,14 +149,26 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         hoaDon.setTaiKhoan(taiKhoan);
 
         // SET VOUCHER (nếu có)
-        if (voucher != null && !voucher.isEmpty()) {
+        if (voucher != null && !voucher.isEmpty() && !voucher.equals("null")) {
             hoaDon.setVoucher(Voucher.builder().id(Long.valueOf(voucher)).build());
         }
 
-        // SET PHƯƠNG THỨC THANH TOÁN (nếu có)
+        // SET PHƯƠNG THỨC THANH TOÁN
         if (phuongThucThanhToanId != null && !phuongThucThanhToanId.isEmpty()) {
+            try {
+                hoaDon.setPhuongThucThanhToan(PhuongThucThanhToan.builder()
+                        .id(Long.valueOf(phuongThucThanhToanId))
+                        .build());
+            } catch (NumberFormatException e) {
+                // Nếu phuongThucThanhToanId không phải là số hợp lệ, gán giá trị mặc định (COD)
+                hoaDon.setPhuongThucThanhToan(PhuongThucThanhToan.builder()
+                        .id(1L) // ID 1 cho COD
+                        .build());
+            }
+        } else {
+            // Mặc định là COD nếu không có phương thức thanh toán
             hoaDon.setPhuongThucThanhToan(PhuongThucThanhToan.builder()
-                    .id(Long.valueOf(phuongThucThanhToanId))
+                    .id(1L) // ID 1 cho COD
                     .build());
         }
 
@@ -195,5 +207,6 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
         return null;
     }
+
 
 }
