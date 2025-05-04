@@ -1,8 +1,5 @@
 package com.example.datn_teehaven.service.impl;
 
-
-
-
 import com.example.datn_teehaven.entyti.ChiTietSanPham;
 import com.example.datn_teehaven.entyti.HoaDon;
 import com.example.datn_teehaven.entyti.HoaDonChiTiet;
@@ -17,11 +14,14 @@ import com.example.datn_teehaven.entyti.HoaDon;
 import com.example.datn_teehaven.repository.HoaDonRepository;
 import com.example.datn_teehaven.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,7 +37,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     private HoaDonChiTietRepository chiTietHoaDonRepository;
     @Override
     public List<HoaDon> findAll() {
-        return hoaDonRepository.findAll();
+        return hoaDonRepository.findAll(Sort.by(Sort.Direction.DESC, "ngaySua", "ngayTao"));
     }
 
     @Override
@@ -89,9 +89,7 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     public List<HoaDon> getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(Long idTaiKhoan, Integer trangThai) {
-
         return hoaDonRepository.findAllHoaDonByTaiKhoanAndTrangThaiOrderByNgaySua(idTaiKhoan, trangThai);
-
     }
 
     @Override
@@ -101,9 +99,7 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     public List<HoaDon> getAllHoaDonByTaiKhoanOrderByNgaySua(Long idTaiKhoan) {
-
         return hoaDonRepository.findAllHoaDonByTaiKhoanOrderByNgaySua(idTaiKhoan);
-
     }
 
 
@@ -161,6 +157,4 @@ public class HoaDonServiceImpl implements HoaDonService {
     public Long sumGiaTriHoaDonAll() {
         return hoaDonRepository.sumGiaTriHoaDonAll();
     }
-
-
 }

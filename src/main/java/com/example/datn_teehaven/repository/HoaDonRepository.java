@@ -1,5 +1,6 @@
 package com.example.datn_teehaven.repository;
 
+
 import com.example.datn_teehaven.entyti.HoaDon;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -41,10 +42,10 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, Long> {
     @Query(value = "select hoa_don.id from hoa_don where trang_thai = 3", nativeQuery = true)
     List<Long> fillAllIdHoaDonTrangThaiHoanThanh();
 
-    @Query(value = "select * from hoa_don where tai_khoan_id = :idTaiKhoan and trang_thai != -1 order by ngay_sua desc", nativeQuery = true)
+    @Query(value = "select * from hoa_don where tai_khoan_id = :idTaiKhoan and trang_thai != -1 order by ngay_sua desc, ngay_tao desc", nativeQuery = true)
     List<HoaDon> findAllHoaDonByTaiKhoanOrderByNgaySua(@Param("idTaiKhoan") Long idTaiKhoan);
 
-    @Query(value = "select * from hoa_don where tai_khoan_id = :idTaiKhoan and trang_thai = :trangThai order by ngay_sua desc", nativeQuery = true)
+    @Query(value = "select * from hoa_don where tai_khoan_id = :idTaiKhoan and trang_thai = :trangThai order by ngay_sua desc, ngay_tao desc", nativeQuery = true)
     List<HoaDon> findAllHoaDonByTaiKhoanAndTrangThaiOrderByNgaySua(@Param("idTaiKhoan") Long idTaiKhoan, @Param("trangThai") Integer trangThai);
 
     @Query("select SUM(hd.tongTienKhiGiam) from HoaDon hd where (hd.trangThai = 3 or hd.trangThai = 6) and CAST(hd.ngayTao AS DATE) = :ngayTao")
