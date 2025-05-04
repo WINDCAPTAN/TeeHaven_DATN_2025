@@ -20,13 +20,16 @@ import java.util.Date;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.example.datn_teehaven.entyti.LichSuHoaDon;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
 
 @Controller
 public class VNPayController {
+    //04/05
     private static final Logger logger = LoggerFactory.getLogger(VNPayController.class);
+    private static final String PHONE_NUMBER_PATTERN = "^(0[35789][0-9]{8,9})$";
 
     @Autowired
     private VNPayService vnPayService;
@@ -46,15 +49,18 @@ public class VNPayController {
     private PrincipalCustom principalCustom = new PrincipalCustom();
 
     @GetMapping("/vnpay-payment")
-    public String submitOrder(@RequestParam("amount") int amount, @RequestParam("orderInfo") String orderInfo, @RequestParam(value = "bankCode", required = false) String bankCode, @RequestParam(value = "voucherId", required = false) String voucherId, @RequestParam(value = "tienShip", required = false, defaultValue = "0") String tienShip, @RequestParam(value = "tienGiam", required = false, defaultValue = "0") String tienGiam, HttpServletRequest request) {
+    public String submitOrder(@RequestParam("amount") int amount, @RequestParam("orderInfo") String orderInfo, @RequestParam(value = "bankCode", required = false) String bankCode, @RequestParam(value = "voucherId", required = false) String voucherId, @RequestParam(value = "tienShip", required = false, defaultValue = "0") String tienShip, @RequestParam(value = "tienGiam", required = false, defaultValue = "0") String tienGiam, @RequestParam(value = "selectedCartItems", required = false) String selectedCartItems, HttpServletRequest request) {
         try {
             logger.info("Initiating VNPay payment - Amount: {}, OrderInfo: {}, BankCode: {}, VoucherId: {}, TienShip: {}, TienGiam: {}", amount, orderInfo, bankCode, voucherId, tienShip, tienGiam);
 
-            // Lưu thông tin vào session (chuyển về dạng số nếu cần xử lý về sau)
+            // Lưu thông tin vào session
             HttpSession session = request.getSession();
             session.setAttribute("voucherId", voucherId);
             session.setAttribute("tienShip", tienShip);
             session.setAttribute("tienGiam", tienGiam);
+            session.setAttribute("selectedCartItems", selectedCartItems);
+            // Thêm phương thức thanh toán mặc định cho VNPay
+            session.setAttribute("phuongThucThanhToanId", "2");
 
             String baseUrl = String.format("%s://%s:%d", request.getScheme(), request.getServerName(), request.getServerPort());
             String vnpayUrl = vnPayService.createOrder(amount, orderInfo, baseUrl, bankCode, voucherId, tienShip, tienGiam);
@@ -90,9 +96,11 @@ public class VNPayController {
             String orderInfo = fields.get("vnp_OrderInfo");
 
             // Lấy thông tin voucher và shipping từ session
+            String phuongThucThanhToanId = "2"; // Giá trị 2 cho VNPay
             String voucherId = (String) request.getSession().getAttribute("voucherId");
             String tienShip = (String) request.getSession().getAttribute("tienShip");
             String tienGiam = (String) request.getSession().getAttribute("tienGiam");
+            String selectedCartItems = (String) request.getSession().getAttribute("selectedCartItems");
 
             // Kiểm tra và xử lý giá trị null
             if (voucherId == null) voucherId = "";
@@ -118,17 +126,15 @@ public class VNPayController {
                     // Get user's account
                     var taiKhoan = taiKhoanService.getTaiKhoanByName(username);
                     if (taiKhoan != null && taiKhoan.getGioHang() != null) {
-                        // Get cart items
-                        var cartItems = gioHangChiTietService.findAllByIdGioHang(taiKhoan.getGioHang().getId());
-
-                        // Create list of cart item IDs
+                        // Get selected cart items
                         List<String> listIdString = new ArrayList<>();
-                        for (var item : cartItems) {
-                            listIdString.add(item.getId().toString());
+                        if (selectedCartItems != null && !selectedCartItems.isEmpty()) {
+                            listIdString = Arrays.asList(selectedCartItems.split(","));
                         }
 
                         // Calculate total amount
                         long tongTien = 0;
+                        var cartItems = gioHangChiTietService.findAllById(listIdString, taiKhoan.getGioHang().getId());
                         for (var item : cartItems) {
                             tongTien += item.tongTien();
                         }
@@ -149,9 +155,10 @@ public class VNPayController {
 
                         // Lấy ID đơn hàng từ session nếu có
                         Long pendingOrderId = (Long) request.getSession().getAttribute("pendingOrderId");
+                        HoaDon hoaDon = null;
                         if (pendingOrderId != null) {
                             // Cập nhật trạng thái đơn hàng đã tồn tại
-                            HoaDon hoaDon = hoaDonService.findById(pendingOrderId);
+                            hoaDon = hoaDonService.findById(pendingOrderId);
                             if (hoaDon != null) {
                                 hoaDon.setTrangThai(0); // Chuyển sang trạng thái đã thanh toán
                                 hoaDon.setNgayThanhToan(new Date());
@@ -171,18 +178,19 @@ public class VNPayController {
                             gioHangChiTietService.addHoaDon(listIdString, tongTien, // tongTien
                                     tongTien - Long.parseLong(tienGiam), // tongTienAndSale
                                     taiKhoan.getHoVaTen(), // hoVaTen
-                                    taiKhoan.getSoDienThoai(), // soDienThoai
+                                    taiKhoan.getSoDienThoai(),// soDienThoai
                                     tienShip, // tienShip
                                     tienGiam, // tienGiam
                                     taiKhoan.getEmail(), // email
                                     voucherId, // voucher
                                     diaChiCuThe, // diaChiCuThe
-                                    "", // ghiChu
+                                    "Thanh toán VN Pay", // ghiChu
                                     taiKhoan, // taiKhoan
                                     phuongXaID, // phuongXaID
                                     quanHuyenID, // quanHuyenID
                                     thanhPhoID, // thanhPhoID
-                                    taiKhoan.getGioHang().getId() // idGioHang
+                                    taiKhoan.getGioHang().getId(),
+                                    phuongThucThanhToanId    // idGioHang
                             );
                         }
 
@@ -191,6 +199,7 @@ public class VNPayController {
                         request.getSession().removeAttribute("tienShip");
                         request.getSession().removeAttribute("tienGiam");
                         request.getSession().removeAttribute("pendingOrderId");
+                        request.getSession().removeAttribute("selectedCartItems");
                     }
                 }
 
@@ -247,6 +256,7 @@ public class VNPayController {
                 request.getSession().removeAttribute("tienShip");
                 request.getSession().removeAttribute("tienGiam");
                 request.getSession().removeAttribute("pendingOrderId");
+                request.getSession().removeAttribute("selectedCartItems");
 
                 return "customer-template/payment-failed";
             }

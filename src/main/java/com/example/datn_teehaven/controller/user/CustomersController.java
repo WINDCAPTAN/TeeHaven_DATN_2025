@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -318,7 +319,8 @@ public class CustomersController {
             @RequestParam("quanHuyenID") String quanHuyenID,
             @RequestParam("thanhPhoID") String thanhPhoID,
             @RequestParam("trangThaiLuuDC") String trangThaiLuuDC,
-            RedirectAttributes redirectAttributes) {
+            @RequestParam("paymentMethod") String paymentMethod,
+            RedirectAttributes redirectAttributes, ModelMap modelMap, Model model) {
         String[] optionArray = idGioHangChiTiet.split(",");
 
         TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
@@ -342,7 +344,15 @@ public class CustomersController {
             diaChi.setTaiKhoan(TaiKhoan.builder().id(idTaiKhoan).build());
             diaChiService.save(diaChi);
         }
-
+        if ("2".equals(paymentMethod)) {
+            long totalAmount = Long.parseLong(tongTienAndSale);
+            return "redirect:/vnpay-payment?amount=" + totalAmount +
+                    "&orderInfo=Thanh toan don hang" +
+                    "&voucherId=" + voucher +
+                    "&tienShip=" + tienShip +
+                    "&tienGiam=" + tienGiam +
+                    "&selectedItems=" + idGioHangChiTiet;
+        }
 //        // Trừ số lượng sản phẩm trong kho
 //        for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
 //            ChiTietSanPham chiTietSanPham = chiTietSanPhamSerivce.getById(gioHangChiTiet.getChiTietSanPham().getId());
@@ -352,7 +362,8 @@ public class CustomersController {
 //
         gioHangChiTietService.addHoaDon(listIdString, Long.valueOf(tongTien), Long.valueOf(tongTienAndSale), hoVaTen,
                 soDienThoai, tienShip,tienGiam, email, voucher, diaChiCuThe, ghiChu, khachHang, phuongXaID, quanHuyenID,
-                thanhPhoID, khachHang.getGioHang().getId());
+                thanhPhoID, khachHang.getGioHang().getId(),paymentMethod);
+        model.addAttribute("checkDangNhap", "false");
         return "redirect:/user/thankyou";
     }
     @GetMapping("/user/thankyou")

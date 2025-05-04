@@ -126,7 +126,13 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
     public HoaDonChiTiet addHoaDon(List<String> listStringIdGioHangCT, Long tongTien, Long tongTienSale,
                                    String hoVaTen, String soDienThoai, String tienShip, String tienGiam, String email,
                                    String voucher, String diaChiCuThe, String ghiChu, TaiKhoan taiKhoan,
-                                   String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang) {
+
+                                   String phuongXaID, String quanHuyenID, String thanhPhoID, Long idGioHang,
+                                   String phuongThucThanhToanId) {
+
+
+
+
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMaHoaDon("HD" + hoaDon.getId());
         hoaDon.setLoaiHoaDon(1);
@@ -144,13 +150,38 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         hoaDon.setPhuongXa(phuongXaID);
         hoaDon.setQuanHuyen(quanHuyenID);
         hoaDon.setThanhPho(thanhPhoID);
-        if (voucher != null && !voucher.isEmpty()) {
+        hoaDon.setTaiKhoan(taiKhoan);
+
+        // SET VOUCHER (nếu có)
+        if (voucher != null && !voucher.isEmpty() && !voucher.equals("null")) {
             hoaDon.setVoucher(Voucher.builder().id(Long.valueOf(voucher)).build());
         }
 
+
         hoaDon.setTaiKhoan(taiKhoan);
+        // SET PHƯƠNG THỨC THANH TOÁN
+        if (phuongThucThanhToanId != null && !phuongThucThanhToanId.isEmpty()) {
+            try {
+                hoaDon.setPhuongThucThanhToan(PhuongThucThanhToan.builder()
+                        .id(Long.valueOf(phuongThucThanhToanId))
+                        .build());
+            } catch (NumberFormatException e) {
+                // Nếu phuongThucThanhToanId không phải là số hợp lệ, gán giá trị mặc định (COD)
+                hoaDon.setPhuongThucThanhToan(PhuongThucThanhToan.builder()
+                        .id(1L) // ID 1 cho COD
+                        .build());
+            }
+        } else {
+            // Mặc định là COD nếu không có phương thức thanh toán
+            hoaDon.setPhuongThucThanhToan(PhuongThucThanhToan.builder()
+                    .id(1L) // ID 1 cho COD
+                    .build());
+        }
+
+        // Save lần 1 để lấy ID (phục vụ set mã hóa đơn)
         repositoryHoaDon.save(hoaDon);
 
+        // Tạo lịch sử hóa đơn
         lichSuHoaDonService.saveOrUpdate(LichSuHoaDon.builder()
                 .ghiChu(ghiChu)
                 .ngayTao(new Date())
@@ -159,10 +190,11 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
                 .hoaDon(hoaDon)
                 .build());
 
+        // Gán mã hóa đơn sau khi có ID
         hoaDon.setMaHoaDon("HD" + hoaDon.getId());
-        repositoryHoaDon.save(hoaDon);
+        repositoryHoaDon.save(hoaDon); // Save lần 2
 
-        // Only process the selected items
+        // Xử lý các sản phẩm trong giỏ hàng
         List<GioHangChiTiet> listGioHangChiTiet = this.findAllById(listStringIdGioHangCT, idGioHang);
 
         for (GioHangChiTiet gioHangChiTiet : listGioHangChiTiet) {
@@ -175,10 +207,12 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
             hoaDonChiTiet.setNgayTao(new Date());
             repositoryHoaDonChiTiet.save(hoaDonChiTiet);
 
-            // Only delete the items that were processed
+            // Xóa khỏi giỏ hàng
             repository.delete(gioHangChiTiet);
         }
 
         return null;
     }
+
+
 }

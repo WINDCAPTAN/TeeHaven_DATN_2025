@@ -19,10 +19,10 @@ public interface SanPhamRepository extends JpaRepository<SanPham,Long> {
             "AND (sp.trang_thai = ?2 OR ?2 IS NULL OR ?2 LIKE '')",nativeQuery = true)
     Page<SanPham> search(String ten, Boolean trangThai, Pageable pageable);
 
-    @Query(value = "select * from san_pham where trang_thai = 0",nativeQuery = true)
+    @Query(value = "select * from san_pham where trang_thai = 0 ORDER BY ngay_tao DESC" ,nativeQuery = true)
     List<SanPham> fillAllDangHoatDong();
 
-    @Query(value = "select * from san_pham where trang_thai = 1",nativeQuery = true)
+    @Query(value = "select * from san_pham where trang_thai = 1 ORDER BY ngay_tao DESC",nativeQuery = true)
     List<SanPham> fillAllNgungHoatDong();
 
     @Query(value = "SELECT COALESCE(SUM(ctsp.so_luong), 0) FROM chi_tiet_san_pham ctsp WHERE ctsp.san_pham_id = ?1", nativeQuery = true)
