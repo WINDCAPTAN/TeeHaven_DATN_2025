@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class KichCoServiceImpl implements KichCoService {
@@ -83,7 +84,16 @@ public class KichCoServiceImpl implements KichCoService {
 
     @Override
     public boolean isTenValid(String ten) {
-        return ten != null && ten.matches("^[a-zA-Z0-9\\s]+$");
+        // Kiểm tra null hoặc rỗng
+        if (ten == null || ten.trim().isEmpty()) {
+            return false;
+        }
+
+        // Regex cho phép chữ cái tiếng Việt có dấu và khoảng trắng
+        // Không cho phép số và ký tự đặc biệt
+        String vietnameseRegex = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
+
+        return Pattern.matches(vietnameseRegex, ten);
     }
 
 }

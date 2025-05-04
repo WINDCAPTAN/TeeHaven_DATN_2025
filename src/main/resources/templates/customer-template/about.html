@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Tee Haven</title>
+  <title>Tee Haven | Về Chúng Tôi</title>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
   <link href="../../static/img/logo_teehaven.png" rel="icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
   <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
 
   <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+  <link href="../../../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
   <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
   <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
   <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
-
   <link rel="stylesheet" href="../../static/css/aos.css"/>
 
   <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
@@ -30,8 +30,7 @@
           <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
             <form action="" class="site-block-top-search">
               <span class="icon icon-search2"></span>
-              <input type="text" class="form-control border-0" id="timKiemAll"
-                     placeholder="Tìm kiếm theo tên sản phẩm"/>
+              <input type="text" class="form-control border-0" id="timKiemAll" placeholder="Tìm kiếm theo tên sản phẩm"/>
               <script>
                 var inputElementTimKiemAll = document.getElementById('timKiemAll');
 
@@ -48,8 +47,6 @@
                   }
 
                   window.location.href = fullUrl
-
-
                 });
 
                 // Hàm cập nhật giá trị của query parameter trong URL
@@ -101,7 +98,8 @@
                     <i class="fa-solid fa-user"></i>
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của Tôi</a>
+                    <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
+                      Tôi</a>
                     </li>
                     <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
                     <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
@@ -120,8 +118,6 @@
 
                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
                   <a class="site-cart" href="/user/cart">
-                    <span class="icon icon-shopping_cart"></span>
-                    <span class="count" th:if="${checkDangNhap=='true'}" th:text="${soLuongSPGioHangCT}"></span>
                     <!-- Updated shopping cart icon -->
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span class="count" th:if="${checkDangNhap=='true'}"
@@ -137,17 +133,11 @@
     <nav class="site-navigation text-right text-md-center" role="navigation">
       <div class="container">
         <ul class="site-menu js-clone-nav d-none d-md-block">
-          <li>
-            <a href="/home">Trang chủ</a>
-
-          </li>
-
-
+          <li><a href="/home">Trang chủ</a></li>
           <li><a href="/shop">Sản phẩm</a></li>
-          <li><a href="/about">Về chúng tôi</a></li>
+          <li class="active"><a href="/about">Về chúng tôi</a></li>
           <li><a href="/lien-he">Liên hệ</a></li>
           <li><a href="/chinh-sach">Chính Sách</a></li>
-<!--          <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>-->
         </ul>
       </div>
     </nav>
@@ -158,71 +148,160 @@
       <div class="row">
         <div class="col-md-12 mb-0">
           <a href="/home">Home</a> <span class="mx-2 mb-0">/</span>
-          <strong class="text-black">About</strong>
+          <strong class="text-black">Về chúng tôi</strong>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="site-section border-bottom" data-aos="fade">
+  <div class="about-section py-5">
+    <div class="container">
+      <div class="row mb-5">
+        <div class="col-md-12 text-center">
+          <h2 class="display-5 mb-3">Về Tee Haven</h2>
+          <p class="lead">Chúng tôi là thương hiệu thời trang chuyên cung cấp các sản phẩm áo thun chất lượng
+            cao với thiết kế độc đáo.</p>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <div class="about-img">
+            <img src="../../static/img/logo_teehaven.png" alt="Tee Haven" class="img-fluid">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="about-content">
+            <h3 class="mb-4">Câu Chuyện Của Chúng Tôi</h3>
+            <p>Tee Haven được thành lập với mục tiêu mang đến những sản phẩm áo thun chất lượng cao, thiết kế
+              độc đáo và phù hợp với xu hướng thời trang hiện đại.</p>
+            <p>Chúng tôi tin rằng mỗi chiếc áo không chỉ là một món đồ mặc hàng ngày mà còn là cách để bạn
+              thể hiện cá tính và phong cách riêng của mình.</p>
+            <p>Với đội ngũ thiết kế tài năng và đam mê, chúng tôi không ngừng sáng tạo và cập nhật các mẫu
+              áo mới, đáp ứng nhu cầu đa dạng của khách hàng.</p>
+            <div class="mt-4">
+              <a href="/shop" class="btn btn-primary">Khám Phá Sản Phẩm</a>
+              <a href="/lien-he" class="btn btn-outline-primary ms-2">Liên Hệ Với Chúng Tôi</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-5">
+        <div class="col-md-12 text-center">
+          <h3 class="h3 mb-4">Giá Trị Cốt Lõi</h3>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="values-card">
+            <div class="values-icon">
+              <i class="fa-solid fa-gem"></i>
+            </div>
+            <h4 class="h5 mb-3">Chất Lượng</h4>
+            <p>Chúng tôi cam kết sử dụng những chất liệu tốt nhất và quy trình sản xuất nghiêm ngặt để đảm
+              bảo mỗi sản phẩm đều đạt chất lượng cao nhất.</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="values-card">
+            <div class="values-icon">
+              <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <h4 class="h5 mb-3">Sáng Tạo</h4>
+            <p>Không ngừng đổi mới và sáng tạo trong thiết kế, mang đến những sản phẩm độc đáo và phù hợp
+              với xu hướng thời trang hiện đại.</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="values-card">
+            <div class="values-icon">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+            <h4 class="h5 mb-3">Khách Hàng</h4>
+            <p>Đặt khách hàng làm trung tâm, lắng nghe và đáp ứng nhu cầu của khách hàng là ưu tiên hàng đầu
+              của chúng tôi.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="team-section py-5 bg-light">
     <div class="container">
       <div class="row justify-content-center mb-5">
-        <div class="col-md-7 site-section-heading text-center pt-4">
-          <h2>Đội ngũ</h2>
+        <div class="col-md-7 text-center">
+          <h2 class="h2 mb-3">Đội Ngũ Của Chúng Tôi</h2>
+          <p class="lead">Những con người tài năng và đam mê đứng sau thương hiệu Tee Haven</p>
         </div>
       </div>
-<!--      <div class="row">-->
-<!--        <div class="col-md-6">-->
-<!--          <div class="block-38 text-center">-->
-<!--            <div class="block-38-img">-->
-<!--              <div class="block-38-header">-->
-<!--                <img src="../../static/img/ImgShoe/adidas10_NMD_R1.jpg" alt="Image placeholder" class="mb-4"/>-->
-<!--                <h3 class="block-38-heading h4">Chat GPT</h3>-->
-<!--                <p class="block-38-subheading">Thành Viên Tay To Nhất Team</p>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-        <div class="col-md-6">
-          <div class="block-38 text-center">
-            <div class="block-38-img">
-              <div class="block-38-header">
-                <img src="../../static/img/" alt="Image placeholder" class="mb-4"/>
-                <h3 class="block-38-heading h4">Nguyễn Quang Dương</h3>
-                <p class="block-38-subheading">Thành Viên</p>
+
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="team-card">
+            <div class="text-center">
+<!--              <link href="../../static/img/Screenshot_4.png">-->
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">Nguyễn Hồng Phong</h3>
+              <p class="team-role">Trưởng Nhóm</p>
+              <div class="team-social">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="block-38 text-center">
-            <div class="block-38-img"style="margin-top: 15%">
-              <div class="block-38-header">
-                <img src="../../static/img/" alt="Image placeholder" class="mb-4"/>
-                <h3 class="block-38-heading h4">Bạch Công Dũng</h3>
-                <p class="block-38-subheading">Thành Viên</p>
+
+        <div class="col-md-4 mb-4">
+          <div class="team-card">
+            <div class="text-center">
+<!--              <img src="/img/Screenshot_2.png" alt="Team Member" class="team-img">-->
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">Nguyễn Quang Dương</h3>
+              <p class="team-role">Thành Viên</p>
+              <div class="team-social">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="block-38 text-center">
-            <div class="block-38-img" style="margin-top: 15%">
-              <div class="block-38-header">
-                <img src="../../static/img/" alt="Image placeholder" class="mb-4"/>
-                <h3 class="block-38-heading h4">Đỗ Viết Lưu Huỳnh</h3>
-                <p class="block-38-subheading">Thành Viên</p>
+
+        <div class="col-md-4 mb-4">
+          <div class="team-card">
+            <div class="text-center">
+<!--              <img src="/img/Screenshot_3.png" alt="Team Member" class="team-img">-->
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">Bạch Công Dũng</h3>
+              <p class="team-role">Thành Viên</p>
+              <div class="team-social">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-md-12">
-          <div class="block-38 text-center">
-            <div class="block-38-img" style="margin-top: -30%">
-              <div class="block-38-header">
-                <img src="../../static/img/" alt="Image placeholder" class="mb-4"/>
-                <h3 class="block-38-heading h4">Nguyễn Hồng Phong</h3>
-                <p class="block-38-subheading">Trưởng nhóm</p>
+
+        <div class="col-md-4 mb-4 mx-auto">
+          <div class="team-card">
+            <div class="text-center">
+<!--              <img src="/img/Screenshot_1.png" alt="Team Member" class="team-img">-->
+            </div>
+            <div class="team-info">
+              <h3 class="team-name">Đỗ Viết Lưu Huỳnh</h3>
+              <p class="team-role">Thành Viên</p>
+              <div class="team-social">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
               </div>
             </div>
           </div>
@@ -230,52 +309,6 @@
       </div>
     </div>
   </div>
-
-  <!--    <div class="site-section site-section-sm site-blocks-1 border-0" data-aos="fade">-->
-  <!--        <div class="container">-->
-  <!--            <div class="row">-->
-  <!--                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="">-->
-  <!--                    <div class="icon mr-4 align-self-start">-->
-  <!--                        <span class="icon-truck"></span>-->
-  <!--                    </div>-->
-  <!--                    <div class="text">-->
-  <!--                        <h2 class="text-uppercase">Free Shipping</h2>-->
-  <!--                        <p>-->
-  <!--                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.-->
-  <!--                            Phasellus at iaculis quam. Integer accumsan tincidunt-->
-  <!--                            fringilla.-->
-  <!--                        </p>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="100">-->
-  <!--                    <div class="icon mr-4 align-self-start">-->
-  <!--                        <span class="icon-refresh2"></span>-->
-  <!--                    </div>-->
-  <!--                    <div class="text">-->
-  <!--                        <h2 class="text-uppercase">Free Returns</h2>-->
-  <!--                        <p>-->
-  <!--                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.-->
-  <!--                            Phasellus at iaculis quam. Integer accumsan tincidunt-->
-  <!--                            fringilla.-->
-  <!--                        </p>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="200">-->
-  <!--                    <div class="icon mr-4 align-self-start">-->
-  <!--                        <span class="icon-help"></span>-->
-  <!--                    </div>-->
-  <!--                    <div class="text">-->
-  <!--                        <h2 class="text-uppercase">Customer Support</h2>-->
-  <!--                        <p>-->
-  <!--                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.-->
-  <!--                            Phasellus at iaculis quam. Integer accumsan tincidunt-->
-  <!--                            fringilla.-->
-  <!--                        </p>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--            </div>-->
-  <!--        </div>-->
-  <!--    </div>-->
 
   <footer class="site-footer border-top">
     <div class="container">
@@ -287,23 +320,22 @@
             </div>
             <div class="col-md-6 col-lg-4">
               <ul class="list-unstyled">
-                <li><a href="#">Vận chuyển</a></li>
-                <li><a href="#">Khu vực</a></li>
-                <li><a href="#">Kênh bán hàng</a></li>
+                <li><a href="#"><i class="fa-solid fa-truck me-2"></i>Vận chuyển</a></li>
+                <li><a href="#"><i class="fa-solid fa-map-marker-alt me-2"></i>Khu vực</a></li>
+                <li><a href="#"><i class="fa-solid fa-store me-2"></i>Kênh bán hàng</a></li>
               </ul>
             </div>
             <div class="col-md-6 col-lg-4">
               <ul class="list-unstyled">
-                <li><a href="/about">Đội ngũ</a></li>
-
-                <li><a href="#">Bảo mật</a></li>
+                <li><a href="/about"><i class="fa-solid fa-users me-2"></i>Đội ngũ</a></li>
+                <li><a href="#"><i class="fa-solid fa-shield-alt me-2"></i>Bảo mật</a></li>
               </ul>
             </div>
             <div class="col-md-6 col-lg-4">
               <ul class="list-unstyled">
-                <li><a href="/lien-he">Liên hệ</a></li>
-                <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
-                <li><a href="/lien-he">Phản hồi</a></li>
+                <li><a href="/lien-he"><i class="fa-solid fa-envelope me-2"></i>Liên hệ</a></li>
+                <li><a href="/lien-he"><i class="fa-solid fa-headset me-2"></i>Chăm sóc khách hàng</a></li>
+                <li><a href="/lien-he"><i class="fa-solid fa-comment me-2"></i>Phản hồi</a></li>
               </ul>
             </div>
           </div>
@@ -322,36 +354,107 @@
           <div class="block-5 mb-5">
             <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
             <ul class="list-unstyled">
-              <li class="address">
-                13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+              <li class="address mb-3">
+                <i class="fa-solid fa-map-marker-alt me-2"></i>13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
               </li>
-              <li class="phone">
-                <a href="tel://23923929210">0867431821
+              <li class="phone mb-3">
+                <i class="fa-solid fa-phone-alt me-2"></i><a href="tel://0867431821">0867431821</a>
               </li>
-              <li class="email">TeeHavenshopshoes@gmail.com</li>
+              <li class="email">
+                <i class="fa-solid fa-envelope me-2"></i><a href="mailto:TeeHavenshopshoes@gmail.com">TeeHavenshopshoes@gmail.com</a>
+              </li>
             </ul>
           </div>
         </div>
       </div>
-
+      <div class="row pt-5 mt-5 text-center">
+        <div class="col-md-12">
+          <p>
+            &copy;
+            <script>document.write(new Date().getFullYear());</script>
+            Tee Haven. All Rights Reserved.
+          </p>
+        </div>
+      </div>
     </div>
   </footer>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- AOS Animation Library -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    easing: 'slide'
+  });
+</script>
+
 <script src="../../static/js/jquery-3.3.1.min.js"></script>
 <script src="../../static/js/jquery-ui.js"></script>
 <script src="../../static/js/popper.min.js"></script>
-
 <script src="../../static/js/owl.carousel.min.js"></script>
 <script src="../../static/js/jquery.magnific-popup.min.js"></script>
 <script src="../../static/js/aos.js"></script>
-
 <script src="../../static/js/main.js"></script>
-</body>
 
+<!-- Nút Lên Đầu -->
+<button onclick="scrollToTop()" id="scrollToTopBtn" title="Lên đầu">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- CSS cho nút Lên Đầu -->
+<style>
+  #scrollToTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+    font-size: 22px;
+    border: none;
+    outline: none;
+    background-color: #008CBA; /* Màu xanh */
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  #scrollToTopBtn:hover {
+    background-color: #005f75; /* Màu xanh đậm khi hover */
+    transform: scale(1.1); /* Tăng kích thước khi hover */
+  }
+
+  #scrollToTopBtn i {
+    font-size: 20px; /* Kích thước mũi tên */
+  }
+</style>
+
+<!-- JavaScript cho nút Lên Đầu -->
+<script>
+  window.onscroll = function () { scrollFunction() };
+
+  function scrollFunction() {
+    var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      scrollToTopBtn.style.display = "block";
+    } else {
+      scrollToTopBtn.style.display = "none";
+    }
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
 </html>

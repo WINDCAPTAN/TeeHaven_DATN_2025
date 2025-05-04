@@ -1,6 +1,5 @@
 package com.example.datn_teehaven.controller;
 
-
 import com.example.datn_teehaven.Config.PrincipalCustom;
 import com.example.datn_teehaven.Config.UserInfoUserDetails;
 import com.example.datn_teehaven.entyti.KichCo;
@@ -18,6 +17,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/admin/kich-co")
 public class KichCoController {
+
     @Autowired
     private KichCoService kichCoService;
 
@@ -27,7 +27,7 @@ public class KichCoController {
     public String hienThi(Model model) {
         UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
         if (name != null) {
-            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+            model.addAttribute("tenNhanVien", name.getHoVaTen());
         } else {
             return "redirect:/login";
         }
@@ -51,10 +51,10 @@ public class KichCoController {
     }
 
     @GetMapping("/view-update/{id}")
-    public String viewUpdate(Model model, @PathVariable("id") Long id) {
+    public String viewUpdate(@PathVariable("id") Long id, Model model) {
         KichCo kichCo = kichCoService.getById(id);
-        model.addAttribute("listKichCo", kichCoService.findAll());
         model.addAttribute("kichCo", kichCo);
+        model.addAttribute("listKichCo", kichCoService.findAll());
         return "/admin-template/kich_co/sua-kich-co";
     }
 
@@ -65,46 +65,26 @@ public class KichCoController {
             Model model,
             RedirectAttributes redirectAttributes
     ) {
-        // Kiểm tra trường trống
-        if (kichCo.getTen() == null || kichCo.getTen().trim().isEmpty()) {
-            result.rejectValue("ten", "error.kichCo", "Tên kích cỡ không được để trống.");
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            return "/admin-template/kich_co/sua-kich-co"; // Giữ nguyên trang
-        }
-
-        // Kiểm tra lỗi trong quá trình nhập dữ liệu
-        if (result.hasErrors()) {
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            return "/admin-template/kich_co/sua-kich-co"; // Giữ nguyên trang
-        }
-
-        // Kiểm tra ký tự đặc biệt trong tên kích cỡ
         if (!kichCoService.isTenValid(kichCo.getTen())) {
-            result.rejectValue("ten", "error.kichCo", "Tên kích cỡ không được chứa ký tự đặc biệt.");
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            return "/admin-template/kich_co/sua-kich-co"; // Giữ nguyên trang
+            result.rejectValue("ten", "error.kichCo", "Tên kích cỡ không hợp lệ. Chỉ được chứa chữ cái tiếng Việt có dấu và khoảng trắng, không ký tự đặc biệt.");
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("errorMessage", "Tên kích cỡ không hợp lệ. Chỉ được chứa chữ cái tiếng Việt có dấu và khoảng trắng, không ký tự đặc biệt.");
+            return "/admin-template/kich_co/sua-kich-co";
         }
 
-        // Kiểm tra trùng tên khi cập nhật
         if (!kichCoService.checkTenTrungSua(kichCo.getId(), kichCo.getTen())) {
             model.addAttribute("checkTenTrung", "Kích cỡ đã tồn tại");
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            return "/admin-template/kich_co/sua-kich-co"; // Giữ nguyên trang
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("errorMessage", "Tên kích cỡ đã tồn tại.");
+            return "/admin-template/kich_co/sua-kich-co";
         }
 
-        // Cập nhật dữ liệu kích cỡ
         kichCo.setNgaySua(new Date());
         kichCoService.update(kichCo);
 
-        // Lưu thông báo và chuyển hướng
-        redirectAttributes.addFlashAttribute("checkThongBaoUpdate", "thanhCongUpdate");
-        return "redirect:/admin/kich-co"; // Chuyển hướng
-    }
-
-    @GetMapping("/add")
-    public String showAddForm(Model model) {
-        model.addAttribute("kichCo", new KichCo());
-        return "/admin-template/kich_co/them-kich-co"; // Đường dẫn tới template cho form thêm
+        redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+        redirectAttributes.addFlashAttribute("successMessage", "Cập nhật kích cỡ thành công!");
+        return "redirect:/admin/kich-co";
     }
 
     @PostMapping("/add")
@@ -114,40 +94,27 @@ public class KichCoController {
             Model model,
             RedirectAttributes redirectAttributes
     ) {
-        // Kiểm tra trường trống
-        if (kichCo.getTen() == null || kichCo.getTen().trim().isEmpty()) {
-            result.rejectValue("ten", "error.kichCo", "Tên kích cỡ không được để trống.");
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            return "/admin-template/kich_co/kich-co"; // Giữ nguyên trang
-        }
-
-        // Kiểm tra lỗi trong quá trình nhập dữ liệu
-        if (result.hasErrors()) {
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            return "/admin-template/kich_co/kich-co"; // Giữ nguyên trang
-        }
-
-        // Kiểm tra ký tự đặc biệt trong tên kích cỡ
         if (!kichCoService.isTenValid(kichCo.getTen())) {
-            result.rejectValue("ten", "error.kichCo", "Tên kích cỡ không được chứa ký tự đặc biệt.");
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            return "/admin-template/kich_co/kich-co"; // Giữ nguyên trang
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("errorMessage", "Tên kích cỡ không hợp lệ. Chỉ được chứa chữ cái tiếng Việt có dấu và khoảng trắng, không ký tự đặc biệt.");
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            return "redirect:/admin/kich-co";
         }
 
-        // Kiểm tra trùng tên khi thêm
         if (!kichCoService.checkTenTrung(kichCo.getTen())) {
-            model.addAttribute("checkTenTrung", "Kích cỡ đã tồn tại");
-            model.addAttribute("listKichCo", kichCoService.findAll());
-            return "/admin-template/kich_co/them-kich-co"; // Giữ nguyên trang
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("errorMessage", "Tên kích cỡ đã tồn tại.");
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            return "redirect:/admin/kich-co";
         }
 
-        // Lưu thông báo và thêm kích cỡ
         kichCo.setNgayTao(new Date());
         kichCo.setNgaySua(new Date());
         kichCo.setTrangThai(0);
         kichCoService.save(kichCo);
 
-        redirectAttributes.addFlashAttribute("checkThongBaoAdd", "thanhCongAdd"); // Thêm thông báo cho việc thêm
+        redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+        redirectAttributes.addFlashAttribute("successMessage", "Thêm kích cỡ thành công!");
         return "redirect:/admin/kich-co";
     }
 }

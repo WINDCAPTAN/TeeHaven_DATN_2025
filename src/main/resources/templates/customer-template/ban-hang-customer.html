@@ -246,9 +246,9 @@
                                         <div class="container" style="width: 90%">
                                             <div class="pf-card" style="margin-top: -30%">
                                                 <a class="product-item"
-                                                   th:href="${hoaDonCT.chiTietSanPham.soLuong > 0 ? 
-                                                              '/user/shop-single/' + hoaDonCT.chiTietSanPham.sanPham.id : 
-                                                              'javascript:void(0);'}" 
+                                                   th:href="${hoaDonCT.chiTietSanPham.soLuong > 0 ?
+                                                              '/user/shop-single/' + hoaDonCT.chiTietSanPham.sanPham.id :
+                                                              'javascript:void(0);'}"
                                                    th:data-out-of-stock="${hoaDonCT.chiTietSanPham.soLuong == 0}"
                                                    onclick="handleProductClick(this)">
                                                     <div class="product-thumbnail-container">
@@ -267,13 +267,13 @@
                                                         <strong class="product-price"
                                                                 th:text="${#numbers.formatDecimal(hoaDonCT.chiTietSanPham.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></strong>
                                                         <div class="button-group">
-                                                            <form th:if="${hoaDonCT.chiTietSanPham.soLuong > 0}" 
+                                                            <form th:if="${hoaDonCT.chiTietSanPham.soLuong > 0}"
                                                                   th:action="@{/user/gio-hang-chi-tiet/add-fast/{idChiTietSpAdd}/{soLuongAdd}(idChiTietSpAdd=${hoaDonCT.chiTietSanPham.id},soLuongAdd=1)}"
                                                                   method="post">
                                                                 <button type="submit" class="buy-now-btn">Mua Nhanh</button>
                                                             </form>
-                                                            <button th:if="${hoaDonCT.chiTietSanPham.soLuong == 0}" 
-                                                                    class="buy-now-btn out-of-stock-btn" 
+                                                            <button th:if="${hoaDonCT.chiTietSanPham.soLuong == 0}"
+                                                                    class="buy-now-btn out-of-stock-btn"
                                                                     type="button"
                                                                     disabled>Mua Nhanh</button>
                                                         </div>
@@ -322,9 +322,9 @@
                                         <div class="container" style="width: 90%">
                                             <div class="pf-card" style="margin-top: -30%">
                                                 <a class="product-item"
-                                                   th:href="${hoaDonCT.chiTietSanPham.soLuong > 0 ? 
-                                                              '/user/shop-single/' + hoaDonCT.chiTietSanPham.sanPham.id : 
-                                                              'javascript:void(0);'}" 
+                                                   th:href="${hoaDonCT.chiTietSanPham.soLuong > 0 ?
+                                                              '/user/shop-single/' + hoaDonCT.chiTietSanPham.sanPham.id :
+                                                              'javascript:void(0);'}"
                                                    th:data-out-of-stock="${hoaDonCT.chiTietSanPham.soLuong == 0}"
                                                    onclick="handleProductClick(this)">
                                                     <div class="product-thumbnail-container">
@@ -343,13 +343,13 @@
                                                         <strong class="product-price"
                                                                 th:text="${#numbers.formatDecimal(hoaDonCT.chiTietSanPham.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></strong>
                                                         <div class="button-group">
-                                                            <form th:if="${hoaDonCT.chiTietSanPham.soLuong > 0}" 
+                                                            <form th:if="${hoaDonCT.chiTietSanPham.soLuong > 0}"
                                                                   th:action="@{/user/gio-hang-chi-tiet/add-fast/{idChiTietSpAdd}/{soLuongAdd}(idChiTietSpAdd=${hoaDonCT.chiTietSanPham.id},soLuongAdd=1)}"
                                                                   method="post">
                                                                 <button type="submit" class="buy-now-btn">Mua Nhanh</button>
                                                             </form>
-                                                            <button th:if="${hoaDonCT.chiTietSanPham.soLuong == 0}" 
-                                                                    class="buy-now-btn out-of-stock-btn" 
+                                                            <button th:if="${hoaDonCT.chiTietSanPham.soLuong == 0}"
+                                                                    class="buy-now-btn out-of-stock-btn"
                                                                     type="button"
                                                                     disabled>Mua Nhanh</button>
                                                         </div>

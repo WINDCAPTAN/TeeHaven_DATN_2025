@@ -1,8 +1,5 @@
 package com.example.datn_teehaven.service.impl;
 
-
-
-
 import com.example.datn_teehaven.entyti.MauSac;
 import com.example.datn_teehaven.repository.MauSacRepository;
 import com.example.datn_teehaven.service.MauSacService;
@@ -11,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class MauSacServiceImpl implements MauSacService {
@@ -20,32 +18,23 @@ public class MauSacServiceImpl implements MauSacService {
 
     @Override
     public List<MauSac> findAll() {
-
         Sort sort = Sort.by(Sort.Direction.DESC, "ngaySua");
         return mauSacRepository.findAll(sort);
-
     }
 
     @Override
     public List<MauSac> getAllDangHoatDong() {
-
         return mauSacRepository.fillAllDangHoatDong();
-
     }
 
     @Override
     public List<MauSac> getAllNgungHoatDong() {
-
         return mauSacRepository.fillAllNgungHoatDong();
-
     }
-
 
     @Override
     public MauSac save(MauSac mauSac) {
-
         return mauSacRepository.save(mauSac);
-
     }
 
     @Override
@@ -76,19 +65,15 @@ public class MauSacServiceImpl implements MauSacService {
         return true;
     }
 
-
     @Override
     public MauSac update(MauSac mauSac) {
-
         return mauSacRepository.save(mauSac);
     }
 
     @Override
     public MauSac getById(Long id) {
-
         return mauSacRepository.findById(id).get();
     }
-
 
     @Override
     public Integer genMaTuDong() {
@@ -110,7 +95,18 @@ public class MauSacServiceImpl implements MauSacService {
         int ma = Integer.parseInt(maStr);
         return ++ma;
     }
+
+    @Override
     public boolean isTenValid(String ten) {
-        return ten != null && ten.matches("^[a-zA-Z0-9\\s]+$");
+        // Kiểm tra null hoặc rỗng
+        if (ten == null || ten.trim().isEmpty()) {
+            return false;
+        }
+
+        // Regex cho phép chữ cái tiếng Việt có dấu và khoảng trắng
+        // Không cho phép số và ký tự đặc biệt
+        String vietnameseRegex = "^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]+$";
+
+        return Pattern.matches(vietnameseRegex, ten);
     }
 }

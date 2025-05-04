@@ -95,6 +95,10 @@ public class HoaDon {
     private Integer trangThai;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "phuong_thuc_thanh_toan_id", referencedColumnName = "id")
+    private PhuongThucThanhToan phuongThucThanhToan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voucher_id", referencedColumnName = "id")
     private Voucher voucher;
 
@@ -166,7 +170,8 @@ public class HoaDon {
                 return "Đã hủy";
             case 6:
                 return "Hoàn trả";
-
+            case 7:
+                return "Đã thanh toán";
             case 8:
                 return "Đơn đổi trả tạm";
             default:

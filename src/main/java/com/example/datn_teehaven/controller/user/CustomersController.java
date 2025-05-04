@@ -20,10 +20,12 @@ import com.example.datn_teehaven.service.TaiKhoanService;
 import com.example.datn_teehaven.service.TayAoService;
 import com.example.datn_teehaven.service.ThuongHieuService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,7 +36,7 @@ import java.util.List;
 
 @Controller
 public class CustomersController {
-//huynh1 //6/4
+    //huynh1 //6/4 //1
     private Long idTaiKhoan;
 
     @Autowired
@@ -340,7 +342,7 @@ public class CustomersController {
             diaChi.setTaiKhoan(TaiKhoan.builder().id(idTaiKhoan).build());
             diaChiService.save(diaChi);
         }
-        
+
 //        // Trừ số lượng sản phẩm trong kho
 //        for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
 //            ChiTietSanPham chiTietSanPham = chiTietSanPhamSerivce.getById(gioHangChiTiet.getChiTietSanPham().getId());
@@ -526,7 +528,107 @@ public class CustomersController {
 
         return "/customer-template/don-mua-chi-tiet";
     }
+    @GetMapping("/user/dia-chi")
+    public String diaChiKhachHang(
+            Model model) {
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT((khachHang.getGioHang() != null ? khachHang.getGioHang().getId() : null)));
+        List<DiaChi> diaChi = diaChiService.getAllByTaiKhoan(idTaiKhoan);
+        model.addAttribute("listDiaChi", diaChi);
+        if (diaChi.size() == 5) {
+            model.addAttribute("checkButtonAdd", "true");
+            model.addAttribute("soDiaChi", diaChi.size());
+        } else {
+            model.addAttribute("checkButtonAdd", "false");
+            model.addAttribute("soDiaChi", diaChi.size());
+        }
+        return "/customer-template/dia-chi";
+    }
+    @GetMapping("/user/dia-chi/delete/{id}")
+    public String deleteDiaChiKhachHang(
+            @PathVariable("id") Long idDiaChi,
+            RedirectAttributes redirectAttributes) {
+        diaChiService.deleteById(idDiaChi);
+        redirectAttributes.addFlashAttribute("checkModal", "modal");
+        return "redirect:/user/dia-chi";
+    }
+    @GetMapping("/user/mat-khau")
+    public String doiMatKhau(
+            Model model) {
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT((khachHang.getGioHang() != null ? khachHang.getGioHang().getId() : null)));
+        return "/customer-template/doi-mat-khau-khach-hang";
+    }
+    @GetMapping("/user/mat-khau/update")
+    public String updateMatKhau(
+            @RequestParam("matKhauCu") String matKhauCu,
+            @RequestParam("xacNhanmatKhauMoi") String xacNhanmatKhauMoi,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        TaiKhoan khachHang = khachHangService.getById(idTaiKhoan);
+        if (!passwordEncoder.matches(matKhauCu, khachHang.getMatKhau())) {
+            model.addAttribute("messages", "Mật khẩu cũ không chính xác, vui lòng thử lại");
+        } else {
+            khachHang.setNgaySua(new Date());
+            khachHang.setMatKhau(passwordEncoder.encode(xacNhanmatKhauMoi));
+            khachHangService.update(khachHang);
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            return "redirect:/user/mat-khau";
+        }
+        return "/customer-template/doi-mat-khau-khach-hang";
+    }
+    @PostMapping("/user/thong-tin-khach-hang/update")
+    public String updateInfo(
+            @Valid @ModelAttribute("khachHang") TaiKhoan khachHang,
+            BindingResult result,
+            Model model,
+            RedirectAttributes redirectAttributes) {
 
+        TaiKhoan kh = khachHangService.getById(idTaiKhoan);
+
+        // Kiểm tra lỗi validate
+        if (result.hasErrors()) {
+            // Kiểm tra null trước khi truy cập GioHang
+            if (kh.getGioHang() != null) {
+                model.addAttribute("soLuongSPGioHangCT", gioHangChiTietService.soLuongSPGioHangCT(kh.getGioHang().getId()));
+            } else {
+                model.addAttribute("soLuongSPGioHangCT", 0);  // Hoặc một giá trị mặc định nếu không có giỏ hàng
+            }
+            return "/customer-template/thong-tin-khach-hang";
+        }
+
+        // Kiểm tra ngày sinh
+        if (!khachHang.isValidNgaySinh()) {
+            if (kh.getGioHang() != null) {
+                model.addAttribute("soLuongSPGioHangCT", gioHangChiTietService.soLuongSPGioHangCT(kh.getGioHang().getId()));
+            } else {
+                model.addAttribute("soLuongSPGioHangCT", 0);  // Giỏ hàng null
+            }
+            model.addAttribute("checkNgaySinh", "Năm sinh phải lớn 1900");
+            return "/customer-template/thong-tin-khach-hang";
+        }
+
+        // Kiểm tra email
+        if (!khachHangService.checkEmailSua(khachHang.getId(), khachHang.getEmail())) {
+            if (kh.getGioHang() != null) {
+                model.addAttribute("soLuongSPGioHangCT", gioHangChiTietService.soLuongSPGioHangCT(kh.getGioHang().getId()));
+            } else {
+                model.addAttribute("soLuongSPGioHangCT", 0);  // Giỏ hàng null
+            }
+            model.addAttribute("checkEmailTrung", "Email đã được đăng ký");
+            return "/customer-template/thong-tin-khach-hang";
+        }
+
+        // Thực hiện cập nhật tài khoản
+        khachHang.setNgaySua(new Date());
+        khachHang.setVaiTro(VaiTro.builder().id(Long.valueOf(2)).build());
+        redirectAttributes.addFlashAttribute("checkModal", "modal");
+        khachHangService.update(khachHang);
+
+        return "redirect:/user/thong-tin-khach-hang";
+    }
 
 
 
