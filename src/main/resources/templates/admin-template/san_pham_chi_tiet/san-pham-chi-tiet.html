@@ -252,6 +252,78 @@
         border-radius: 10px !important;
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
+
+    /* Delete button styles */
+    .delete-row-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .delete-row-btn:hover {
+        background-color: #c0392b;
+    }
+
+    /* Empty product notification */
+    .empty-product-alert {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #ffeeba;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+    }
+
+    .empty-product-alert i {
+        font-size: 24px;
+        margin-right: 10px;
+    }
+
+    /* Pagination styles */
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pagination li {
+        margin: 0 5px;
+    }
+
+    .pagination li a, .pagination li span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #4154f1;
+        background-color: #f6f9ff;
+        transition: all 0.3s;
+    }
+
+    .pagination li.active a, .pagination li.active span {
+        background-color: #4154f1;
+        color: white;
+    }
+
+    .pagination li a:hover {
+        background-color: #e0e7ff;
+    }
 </style>
 <body>
 
@@ -433,8 +505,8 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-<!--                                        <a th:href="@{/admin/san-pham-chi-tiet/export-excel}" style="margin-left: 15%"-->
-<!--                                           class="btn btn-primary">Xuất File</a>-->
+                                        <!--                                        <a th:href="@{/admin/san-pham-chi-tiet/export-excel}" style="margin-left: 15%"-->
+                                        <!--                                           class="btn btn-primary">Xuất File</a>-->
                                         <a href="/admin/san-pham-chi-tiet" style="float: right"
                                            class="btn btn-primary">
                                             <i class="bi bi-arrow-clockwise"> Làm mới</i>
@@ -443,11 +515,18 @@
                                 </div>
                                 <!--     tìm kiếm theo trạng thái end-->
 
+                                <!-- Thông báo khi sản phẩm có số lượng 0 -->
+                                <div th:if="${chiTietSP != null && chiTietSP.soLuongTon == 0}" class="empty-product-alert">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                    <span>Sản phẩm chưa có chi tiết. Vui lòng thêm chi tiết sản phẩm.</span>
+                                </div>
+
                                 <!--    bảng-->
                                 <table id="example" class="display" style="width:100%">
                                     <thead>
                                     <tr>
                                         <th>STT</th>
+                                        <th>Mã</th>
                                         <th>Tên Sản Phẩm</th>
                                         <th>Thương hiệu</th>
                                         <th>Giá Bán</th>
@@ -458,21 +537,10 @@
                                     <tbody>
                                     <tr th:each="chiTietSP,iterStat : ${listChiTietSP}">
                                         <td th:text="${iterStat.index+1}"></td>
-
+                                        <td th:text="${chiTietSP.sanPham.ma}"></td>
                                         <td th:text="${chiTietSP.sanPham.ten}"></td>
-                                        <!--                                        <td th:text="${chiTietSP.soLuong}"></td>-->
-                                        <!--                                        <td th:text="${chiTietSP.kichCo.ten}"></td>-->
-                                        <!--                                                                                <td th:text="${chiTietSP.tayAo.ten}"></td>-->
                                         <td th:text="${chiTietSP.sanPham.thuongHieu.ten}"></td>
                                         <td th:text="${#numbers.formatDecimal(chiTietSP.giaHienHanh, 0, 'POINT', 0, 'POINT') + ' VNĐ'}"></td>
-
-
-                                        <!--                                        <td class="trangthaidkd" th:if="${chiTietSP.trangThai==0}">Đang kinh-->
-                                        <!--                                            doanh-->
-                                        <!--                                        </td>-->
-                                        <!--                                        <td class="trangthainkd" th:if="${chiTietSP.trangThai==1}">Ngừng kinh-->
-                                        <!--                                            doanh-->
-                                        <!--                                        </td>-->
                                         <td class="trangthaidhd" th:if="${chiTietSP.trangThai==0}">Đang Hoạt Động</td>
                                         <td class="trangthainhd" th:if="${chiTietSP.trangThai==1}">Ngừng Hoạt Động</td>
                                         <td>
@@ -486,17 +554,45 @@
                                     <tfoot hidden="hidden">
                                     <tr>
                                         <th>STT</th>
+                                        <th>Mã</th>
                                         <th>Tên Sản Phẩm</th>
-                                        <!--                                        <th>Số Lượng</th>-->
                                         <th>Thương Hiệu</th>
                                         <th>Giá Bán</th>
                                         <th>Trạng Thái</th>
-                                        <!--                                        <th>Kích Cỡ</th>-->
-                                        <!--                                        <th>Màu Sắc</th>-->
                                         <th>Hành Động</th>
                                     </tr>
                                     </tfoot>
                                 </table><!-- partial -->
+
+                                <!-- Phân trang -->
+                                <div class="pagination-container">
+                                    <ul class="pagination" th:if="${totalPages > 0}">
+                                        <li th:class="${currentPage == 0 ? 'disabled' : ''}">
+                                            <a th:href="@{/admin/san-pham-chi-tiet(page=0)}" aria-label="First">
+                                                <i class="bi bi-chevron-double-left"></i>
+                                            </a>
+                                        </li>
+                                        <li th:class="${currentPage == 0 ? 'disabled' : ''}">
+                                            <a th:href="@{/admin/san-pham-chi-tiet(page=${currentPage - 1})}" aria-label="Previous">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                            th:class="${currentPage == i ? 'active' : ''}">
+                                            <a th:href="@{/admin/san-pham-chi-tiet(page=${i})}" th:text="${i + 1}"></a>
+                                        </li>
+                                        <li th:class="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                            <a th:href="@{/admin/san-pham-chi-tiet(page=${currentPage + 1})}" aria-label="Next">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                        <li th:class="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                            <a th:href="@{/admin/san-pham-chi-tiet(page=${totalPages - 1})}" aria-label="Last">
+                                                <i class="bi bi-chevron-double-right"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
 
                             </div>
                             <!-- chi tiết sp - danh sách - end -->
@@ -540,33 +636,39 @@
                                     });
                                 </script>
 
-<!--                                <form th:action="@{/admin/san-pham-chi-tiet/import-excel}"-->
-<!--                                      style="border: 1px solid #c3c3c3;border-radius: 20px;margin-top: 2%"-->
-<!--                                      enctype="multipart/form-data"-->
-<!--                                      method="post" class="row">-->
-<!--                                    <div class="col-md-12" style="margin-top: 3%">-->
-<!--                                        <input type="file" class="form-control" name="file">-->
-<!--                                    </div>-->
-<!--                                    <div class="col-md-12" style="margin-top: 3%;margin-bottom: 3%">-->
-<!--                                        <div class="check-loi" th:text="${thongBaoLoiImport}"></div>-->
-<!--                                        <button type="submit" style="float: right" class="btn btn-success">Nhập Excel</button>-->
-<!--                                        <a th:href="@{/admin/san-pham-chi-tiet/file-mau-excel}" style="float: right;margin-right: 10%"-->
-<!--                                           class="btn btn-primary">Xuất File Mẫu</a>-->
-<!--                                    </div>-->
-<!--                                </form>-->
+                                <!--                                <form th:action="@{/admin/san-pham-chi-tiet/import-excel}"-->
+                                <!--                                      style="border: 1px solid #c3c3c3;border-radius: 20px;margin-top: 2%"-->
+                                <!--                                      enctype="multipart/form-data"-->
+                                <!--                                      method="post" class="row">-->
+                                <!--                                    <div class="col-md-12" style="margin-top: 3%">-->
+                                <!--                                        <input type="file" class="form-control" name="file">-->
+                                <!--                                    </div>-->
+                                <!--                                    <div class="col-md-12" style="margin-top: 3%;margin-bottom: 3%">-->
+                                <!--                                        <div class="check-loi" th:text="${thongBaoLoiImport}"></div>-->
+                                <!--                                        <button type="submit" style="float: right" class="btn btn-success">Nhập Excel</button>-->
+                                <!--                                        <a th:href="@{/admin/san-pham-chi-tiet/file-mau-excel}" style="float: right;margin-right: 10%"-->
+                                <!--                                           class="btn btn-primary">Xuất File Mẫu</a>-->
+                                <!--                                    </div>-->
+                                <!--                                </form>-->
 
                                 <!-- from thêm chi tiết sản phẩm -->
                                 <form th:action="@{/admin/san-pham-chi-tiet/add}" class="row g-3"
                                       onsubmit="return checkSelections()"
                                       enctype="multipart/form-data" method="post" style="margin-top: 2%;">
-                                    <div class="col-12">
+                                    <!-- Nút làm mới đã được di chuyển lên đầu -->
+                                    <div class="col-md-12" style="text-align: right;">
+                                        <button type="reset" class="btn btn-primary">
+                                            <i class="bi bi-arrow-clockwise"></i> Làm mới
+                                        </button>
+                                    </div>
+
+                                    <div class="col-md-8">
                                         <label class="form-label">Tên sản phẩm:</label>
                                         <div class="input-group flex-nowrap">
-
                                             <select class="form-select" id="sanPhamSelect"
                                                     aria-label="Default select example">
                                                 <option th:each="sanPham : ${listSanPham}" th:value="${sanPham.id}"
-                                                        th:label="${sanPham.ten}"></option>
+                                                        th:label="${sanPham.ten}" th:data-ma="${sanPham.ma}"></option>
                                             </select>
                                             <!-- Button trigger modal -->
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -574,6 +676,10 @@
                                                 +
                                             </button>
                                         </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Mã sản phẩm:</label>
+                                        <input type="text" class="form-control" id="maSanPham" readonly>
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label">Tay áo:</label>
@@ -656,13 +762,12 @@
                                                 <th scope="col">Tay áo</th>
                                                 <th scope="col">Số lượng</th>
                                                 <th scope="col">Đơn Giá</th>
-<!--                                                <th scope="col">Hình ảnh</th>-->
+                                                <th scope="col">Hành động</th>
                                             </tr>
                                             </thead>
                                             <tbody style="display: none" id="tableBody">
                                             </tbody>
                                         </table>
-
                                         <button type="submit" class="btn btn-success"
                                                 style="float: right;margin-top: 3%;margin-bottom: 2%;">Thêm sản phẩm
                                         </button>
@@ -742,8 +847,6 @@
                                                     } else {
                                                         return false; // Trả về false nếu có lỗi
                                                     }
-
-
                                                 }
                                             }
 
@@ -754,12 +857,25 @@
                                                 const mauSacSelect = document.getElementById("mauSacSelect");
                                                 const tableBody = document.getElementById("tableBody");
                                                 const nhapFullDuLieu = document.getElementById("nhapFullDuLieu");
+                                                const maSanPham = document.getElementById("maSanPham");
                                                 tableBody.style.display = "none";
+
+                                                // Hiển thị mã sản phẩm khi trang được tải
+                                                if (sanPhamSelect.options.length > 0) {
+                                                    const selectedOption = sanPhamSelect.options[sanPhamSelect.selectedIndex];
+                                                    maSanPham.value = selectedOption.getAttribute('data-ma');
+                                                }
+
+                                                // Cập nhật mã sản phẩm khi thay đổi sản phẩm
+                                                sanPhamSelect.addEventListener("change", function() {
+                                                    const selectedOption = sanPhamSelect.options[sanPhamSelect.selectedIndex];
+                                                    maSanPham.value = selectedOption.getAttribute('data-ma');
+                                                    updateTable();
+                                                });
 
                                                 kichCoSelect.addEventListener("change", updateTable);
                                                 mauSacSelect.addEventListener("change", updateTable);
                                                 tayAoSelect.addEventListener("change", updateTable);
-                                                sanPhamSelect.addEventListener("change", updateTable);
 
                                                 function updateTable() {
                                                     const kichCoValues = getSelectedValues("kichCoSelect");
@@ -857,6 +973,25 @@
                                                                         cell.appendChild(errorDiv);
                                                                     }
                                                                 });
+
+                                                                // Thêm nút xóa vào mỗi hàng
+                                                                const deleteCell = row.insertCell();
+                                                                const deleteButton = document.createElement("button");
+                                                                deleteButton.type = "button";
+                                                                deleteButton.className = "delete-row-btn";
+                                                                deleteButton.innerHTML = '<i class="bi bi-trash"></i>';
+                                                                deleteButton.title = "Xóa";
+                                                                deleteButton.onclick = function() {
+                                                                    // Xóa hàng khi nút được nhấn
+                                                                    row.remove();
+
+                                                                    // Kiểm tra nếu không còn hàng nào thì ẩn bảng
+                                                                    if (tableBody.rows.length === 0) {
+                                                                        tableBody.style.display = "none";
+                                                                        nhapFullDuLieu.style.display = "none";
+                                                                    }
+                                                                };
+                                                                deleteCell.appendChild(deleteButton);
                                                             });
                                                         });
 

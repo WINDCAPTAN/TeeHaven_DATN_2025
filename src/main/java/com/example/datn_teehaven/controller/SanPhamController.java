@@ -28,7 +28,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/san-pham")
 public class SanPhamController {
-//huynh
+    //huynh
     @Autowired
     private SanPhamService sanPhamService;
 
@@ -146,6 +146,11 @@ public class SanPhamController {
         return "admin-template/san_pham/sua-san-pham";
     }
 
+    @GetMapping("/detail-redirect/{id}")
+    public String redirectToDetail(@PathVariable("id") Long id) {
+        return "redirect:/admin/san-pham-chi-tiet/view-update/" + id;
+    }
+
     @PostMapping("/update")
     public String update(@ModelAttribute("sanPham") @Valid SanPham sanPham,
                          BindingResult result,
@@ -204,5 +209,4 @@ public class SanPhamController {
 
         return "redirect:/admin/san-pham";
     }
-
 }
