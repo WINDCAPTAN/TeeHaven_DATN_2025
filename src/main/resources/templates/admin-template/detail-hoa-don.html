@@ -553,26 +553,6 @@
                                                                                   th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
                                                                         </div>
                                                                     </div>
-                                                                    <div th:if="${listLichSuHoaDon.size()==4}">
-                                                                        <div th:each="lshd, iterStat : ${listLichSuHoaDon}"
-                                                                             th:class="'image-order-status image-order-status-' +
-                                                              (${iterStat.index} == 0 ? 'new' :
-                                                               (${iterStat.index} == 1 ? 'active' :
-                                                                (${iterStat.index} == 2 ? 'intransit' :
-                                                                 (${iterStat.index} == 3 ? 'cancel' : '')))) +
-                                                              ' img-circle'">
-                                                                            <div class="icon"></div>
-                                                                            <span class="status"
-                                                                                  th:switch="${lshd.trangThai}">
-                                                                                <span th:case="0">Đã Đặt Hàng</span>
-                                                                                <span th:case="1">Đã Xác Nhận</span>
-                                                                                <span th:case="2">Đã giao cho ĐVVC</span>
-                                                                                <span th:case="5">Đã Hủy</span>
-                                                                            </span>
-                                                                            <span class="status-end"
-                                                                                  th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>
-                                                                        </div>
-                                                                    </div>
                                                                 </div>
                                                             </div>
 
@@ -826,7 +806,7 @@
                                     <!-- <button th:if="${hoaDon.trangThai!=0&&hoaDon.trangThai>0&&hoaDon.trangThai!=6&&checkRollback!=8}"
                                         data-bs-toggle="modal" data-bs-target="#rollback" type="button"
                                         class="btn btn-primary">Hoàn tác</button> -->
-                                    <button th:if="${hoaDon.trangThai==0||hoaDon.trangThai==1 ||hoaDon.trangThai==2 }" type="button"
+                                    <button th:if="${hoaDon.trangThai==0||hoaDon.trangThai==1  }" type="button"
                                             class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#ghiChuHuyModal">Hủy</button>
 
@@ -1905,15 +1885,15 @@
 
                                                                         <!-- Button trigger modal -->
 
-                                                                        <button type="button"
-                                                                                class="btn btn-primary"
-                                                                                th:data-bs-toggle="modal"
-                                                                                th:data-bs-target="${'#modalEditSoLuong'+obj.id}">
-                                                                            Sửa
-                                                                            <input type="hidden" name="idHdct"
-                                                                                   th:value="${obj.id}">
-                                                                            <input type="hidden" th:value="${hoaDon.id}" name="idhdc">
-                                                                        </button>
+<!--                                                                        <button type="button"-->
+<!--                                                                                class="btn btn-primary"-->
+<!--                                                                                th:data-bs-toggle="modal"-->
+<!--                                                                                th:data-bs-target="${'#modalEditSoLuong'+obj.id}">-->
+<!--                                                                            Sửa-->
+<!--                                                                            <input type="hidden" name="idHdct"-->
+<!--                                                                                   th:value="${obj.id}">-->
+<!--                                                                            <input type="hidden" th:value="${hoaDon.id}" name="idhdc">-->
+<!--                                                                        </button>-->
 
 
 
@@ -2064,24 +2044,24 @@
                                                             </div> -->
                                                             <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==0}" class="row">
                                                                 <div class="col">
-                                                                    <h6>Voucher: </h6>
+<!--                                                                    <h6>Voucher: </h6>-->
 
                                                                 </div>
                                                                 <div class="col" style="margin-top: 1%">
                                                                     <div class="input-group flex-nowrap">
-                                                                        <input type="text" class="form-control"
-                                                                               id="c_code" disabled
-                                                                               aria-label="Coupon Code"
-                                                                               aria-describedby="button-addon2" />
-                                                                        <button
-                                                                                th:if="${hoaDon.trangThai==0||hoaDon.trangThai==1}"
-                                                                                class="btn btn-primary btn-sm"
-                                                                                type="button"
-                                                                                onclick="checkAndDisplayVouchers()"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#voucher">
-                                                                            Chọn voucher
-                                                                        </button>
+<!--                                                                        <input type="text" class="form-control"-->
+<!--                                                                               id="c_code" disabled-->
+<!--                                                                               aria-label="Coupon Code"-->
+<!--                                                                               aria-describedby="button-addon2" />-->
+<!--                                                                        <button-->
+<!--                                                                                th:if="${hoaDon.trangThai==0||hoaDon.trangThai==1}"-->
+<!--                                                                                class="btn btn-primary btn-sm"-->
+<!--                                                                                type="button"-->
+<!--                                                                                onclick="checkAndDisplayVouchers()"-->
+<!--                                                                                data-bs-toggle="modal"-->
+<!--                                                                                data-bs-target="#voucher">-->
+<!--                                                                            Chọn voucher-->
+<!--                                                                        </button>-->
                                                                         <!-- Modal -->
                                                                         <div class="modal fade" id="voucher"
                                                                              tabindex="-1"
@@ -2470,7 +2450,7 @@
                 <p><span class="info-label">Tổng tiền :</span>
                     <span class="info-value">
                 <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" id="thanhTienIn">
-                    [[${#numbers.formatDecimal(hoaDon.tongTien + hoaDon.phiShip, 0, 'POINT', 0, 'NONE')}]]
+                  <span th:text="${#numbers.formatDecimal((hoaDon.tongTienHoaDon() + hoaDon.phiShip - hoaDon.tienGiam) , 0, 'POINT', 0, 'NONE')} + ' VND'">
                 </span>
                 <span th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">0</span> VND
             </span>

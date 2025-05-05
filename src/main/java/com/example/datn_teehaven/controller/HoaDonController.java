@@ -22,6 +22,7 @@ import com.example.datn_teehaven.service.VoucherService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -366,25 +367,40 @@ public class HoaDonController {
 
         return "redirect:/hoa-don/quan-ly";
     }
-    void updateSoLuongRollBack(Long idhdc) {
+    @Transactional
+    public void updateSoLuongRollBack(Long idhdc) {
         HoaDon hd = hoaDonService.findById(idhdc);
-        List<ChiTietSanPham> lstCtsp = chiTietSanPhamSerivce.getAll();
-        for (HoaDonChiTiet hoaDonChiTiet : hd.getLstHoaDonChiTiet()) {
-            for (ChiTietSanPham ctsp : lstCtsp) {
-                if (hoaDonChiTiet.getChiTietSanPham().getId() == ctsp.getId()) {
-                    ctsp.setSoLuong(ctsp.getSoLuong() + hoaDonChiTiet.getSoLuong());
-                    chiTietSanPhamSerivce.update(ctsp);
-                }
+        Integer trangThai = hd.getTrangThai();
+
+        System.out.println("Trạng thái hóa đơn: " + trangThai); // Kiểm tra trạng thái thực tế
+
+        if (trangThai != null && (trangThai.equals(1) || trangThai.equals(2))) {
+
+            // Rollback sản phẩm
+            for (HoaDonChiTiet hoaDonChiTiet : hd.getLstHoaDonChiTiet()) {
+                ChiTietSanPham ctsp = hoaDonChiTiet.getChiTietSanPham();
+                ctsp.setSoLuong(ctsp.getSoLuong() + hoaDonChiTiet.getSoLuong());
+                chiTietSanPhamSerivce.update(ctsp);
             }
-        }
 
-        if (hd.getVoucher() != null) {
-            Voucher v = hd.getVoucher();
-            v.setSoLuong(v.getSoLuong().add(new BigDecimal(1)));
-            voucherService.save(v);
-        }
+            // Rollback voucher nếu có
+            if (hd.getVoucher() != null) {
+                Voucher v = hd.getVoucher();
+                v.setSoLuong(v.getSoLuong().add(BigDecimal.ONE));
+                voucherService.save(v);
+            }
 
+            // Đặt trạng thái thành hủy (5)
+            hd.setTrangThai(5);
+            hoaDonService.saveOrUpdate(hd);
+
+        } else {
+            System.out.println("Hóa đơn không thể rollback vì không ở trạng thái 1 hoặc 2.");
+        }
     }
+
+
+
     @PostMapping("/delete/{id}")
     public String delete(RedirectAttributes redirectAttributes, @PathVariable Long id, @RequestParam String ghiChu) {
         HoaDon hd = hoaDonService.findById(id);
