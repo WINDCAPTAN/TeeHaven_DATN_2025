@@ -5,6 +5,7 @@ import com.example.datn_teehaven.repository.HoaDonChiTietRepository;
 import com.example.datn_teehaven.repository.HoaDonRepository;
 import com.example.datn_teehaven.repository.ChiTietSanPhamRepository;
 import com.example.datn_teehaven.service.HoaDonChiTietService;
+import com.example.datn_teehaven.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,6 @@ import java.util.stream.Collectors;
 @Service
 public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
-
-
     @Autowired
     HoaDonChiTietRepository hoaDonChiTietRepository;
 
@@ -26,6 +25,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Autowired
     ChiTietSanPhamRepository chiTietSanPhamRepository;
 
+    @Autowired
+    SanPhamService sanPhamService;
 
     @Override
     public List<HoaDonChiTiet> findAll() {
@@ -33,25 +34,28 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-
     public HoaDonChiTiet findById(Long id) {
         return hoaDonChiTietRepository.findById(id).orElse(null);
     }
 
     @Override
-
     public void deleteById(Long id) {
         hoaDonChiTietRepository.deleteById(id);
     }
 
     @Override
     public void saveOrUpdate(HoaDonChiTiet hoaDonChiTiet) {
+        // Lưu hoặc cập nhật chi tiết hóa đơn
         hoaDonChiTietRepository.save(hoaDonChiTiet);
+        
+        // Cập nhật số lượng tồn của sản phẩm
+        if (hoaDonChiTiet.getChiTietSanPham() != null && hoaDonChiTiet.getChiTietSanPham().getSanPham() != null) {
+            sanPhamService.updateSoLuongTon(hoaDonChiTiet.getChiTietSanPham().getSanPham().getId());
+        }
     }
 
     @Override
     public List<HoaDonChiTiet> findByIdHoaDon(Long idHoaDon) {
-        // TODO Auto-generated method stub
         return hoaDonChiTietRepository.findByIdHoaDon(idHoaDon);
     }
 

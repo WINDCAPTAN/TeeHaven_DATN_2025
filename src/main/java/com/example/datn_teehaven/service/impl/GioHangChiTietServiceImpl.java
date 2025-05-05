@@ -7,6 +7,8 @@ import com.example.datn_teehaven.repository.HoaDonChiTietRepository;
 import com.example.datn_teehaven.repository.HoaDonRepository;
 import com.example.datn_teehaven.service.GioHangChiTietService;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
+import com.example.datn_teehaven.service.ChiTietSanPhamSerivce;
+import com.example.datn_teehaven.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,12 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
     @Autowired
     private LichSuHoaDonService lichSuHoaDonService;
+
+    @Autowired
+    private ChiTietSanPhamSerivce chiTietSanPhamSerivce;
+
+    @Autowired
+    private SanPhamService sanPhamService;
 
     @Override
     public GioHangChiTiet fillByIdCTSP(Long idCTSP) {

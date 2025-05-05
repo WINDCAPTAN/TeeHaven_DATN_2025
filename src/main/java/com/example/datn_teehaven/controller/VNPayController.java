@@ -24,6 +24,11 @@ import java.util.Arrays;
 
 import com.example.datn_teehaven.entyti.LichSuHoaDon;
 import com.example.datn_teehaven.service.LichSuHoaDonService;
+import com.example.datn_teehaven.entyti.HoaDonChiTiet;
+import com.example.datn_teehaven.service.ChiTietSanPhamSerivce;
+import com.example.datn_teehaven.entyti.ChiTietSanPham;
+import com.example.datn_teehaven.service.SanPhamService;
+import com.example.datn_teehaven.entyti.SanPham;
 
 @Controller
 public class VNPayController {
@@ -44,6 +49,12 @@ public class VNPayController {
 
     @Autowired
     private LichSuHoaDonService lichSuHoaDonService;
+
+    @Autowired
+    private ChiTietSanPhamSerivce chiTietSanPhamSerivce;
+
+    @Autowired
+    private SanPhamService sanPhamService;
 
     private PrincipalCustom principalCustom = new PrincipalCustom();
 
