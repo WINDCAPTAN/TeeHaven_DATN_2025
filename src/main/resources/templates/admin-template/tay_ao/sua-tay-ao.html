@@ -476,6 +476,12 @@ function validateTayAoInput(input) {
         errorElement.textContent = 'Không được chứa khoảng trống ở đầu hoặc cuối';
         return false;
     }
+    // Kiểm tra số
+    const hasNumber = /\d/;
+    if (hasNumber.test(value)) {
+        errorElement.textContent = 'Không được chứa số';
+        return false;
+    }
     
     // Kiểm tra ký tự đặc biệt
     const specialChars = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
